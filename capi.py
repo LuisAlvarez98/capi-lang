@@ -1,6 +1,6 @@
 #------------------------------------------------------
 # Capi Lang
-# lex.py
+# capi.py
 # 
 # By:
 # Luis Felipe Alvarez & David Cantu Martinez
