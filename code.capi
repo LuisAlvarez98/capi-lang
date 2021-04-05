@@ -4,14 +4,14 @@ global : {
 
 @ Comments
 
-int func ex(var pep:int):{
+void func ex():{
     var pep: int = 2;
     pep = 5;
     print(5 >= 2,"hello");
     var i,j,z: int;
     var flag: bool = True; var test: string;
     
-    for(var i:int = 0; i < 4; i + 2;):{
+    for(i = 0; i < 4; i + 2;):{
         print("for loop");
         for(j = 0; j < 3; j +2;):{
             print("double for");
@@ -24,6 +24,6 @@ int func ex(var pep:int):{
     a = ex();
     b =  a + 5;
     c = c / 2;
-    d = ((5 + 2) * 3);
+    d = ((5 + 2) / 3);
     return ex();
 };

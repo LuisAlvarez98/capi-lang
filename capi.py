@@ -9,11 +9,11 @@
 import ply.lex as lex
 
 tokens = (
-    'ID','IF','ELSE','EX','TERM','RELOP','LOGIC','LEFTPAR','RIGHTPAR',
+    'ID','IF','ELSE','EX','TERMS','RELOP','LOGIC','LEFTPAR','RIGHTPAR',
     'LEFTKEY','RIGHTKEY','LEFTBRACKET','RIGHTBRACKET','EQUAL','SEMICOLON',
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
-    'RUN','START','RETURN', 'LEFTHAT','RIGHTHAT','TRUE','FALSE','BOOL','TBOOL', 'COMMENT'
+    'RUN','START','RETURN', 'LEFTHAT','RIGHTHAT','TRUE','FALSE','BOOL','TBOOL', 'COMMENT', 'VOID'
 )
 
 reserved = {
@@ -35,14 +35,15 @@ reserved = {
     'object': 'TOBJECT',
     'run': 'RUN',
     'start': 'START',
-    'return' : 'RETURN',
+    'return': 'RETURN',
+    'void': 'VOID',
 }
 
 t_EQUAL  = r'\='
 t_RELOP = r'\<\=|\>\=|\>|\<|\!\=|\=\='
 t_LOGIC = r'\|\| | \&\&'
 t_EX = r'\+|\-'
-t_TERM = r'\*|\/'
+t_TERMS = r'\*|\/'
 t_LEFTPAR = r'\('
 t_RIGHTPAR = r'\)'
 t_LEFTKEY = r'\{'
@@ -183,7 +184,6 @@ def p_loop(p):
 def p_for(p):
     '''
     for : FOR LEFTPAR assign SEMICOLON expression SEMICOLON expression SEMICOLON RIGHTPAR block
-        | FOR LEFTPAR VAR ID COLON type EQUAL expression SEMICOLON expression SEMICOLON expression SEMICOLON RIGHTPAR block
     '''
 def p_while(p):
     '''
@@ -194,12 +194,14 @@ def p_function(p):
     '''
     function : type FUNC ID LEFTPAR recparams RIGHTPAR block
              | type FUNC ID LEFTPAR RIGHTPAR block
+             | VOID FUNC ID LEFTPAR recparams RIGHTPAR block
+             | VOID FUNC ID LEFTPAR RIGHTPAR block
     '''
 
 def p_recparams(p):
     '''
-    recparams : VAR ID COLON type
-              | VAR ID COLON type COMMA recparams
+    recparams : ID COLON type
+              | ID COLON type COMMA recparams
     '''
 def p_recfunc(p):
     '''
@@ -246,8 +248,8 @@ def p_expression(p):
     
 def p_exp(p):
     ''' 
-    exp : termino recexp
-        | termino 
+    exp : term recexp
+        | term 
         '''
 
 def p_recexp(p):
@@ -255,21 +257,20 @@ def p_recexp(p):
     recexp : EX exp 
     '''
 
-def p_termino(p):
+def p_term(p):
     ''' 
-    termino : factor recterm 
+    term : factor recterm 
             | factor 
     '''
 
 def p_recterm(p):
     ''' 
-    recterm : TERM termino
+    recterm : TERMS term
     '''
 
 def p_factor(p): 
     ''' factor : LEFTPAR expression RIGHTPAR 
                | EX cte
-               | EX EQUAL cte
                | cte
     '''
 
@@ -309,6 +310,7 @@ def p_cte(p):
         | ID
         | INT
         | FLOAT
+        | BOOL
         | nestedvalue
         | functioncall
         | listaccess
