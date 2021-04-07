@@ -2,28 +2,27 @@ global : {
     var id: int;
 };
 
-@ Comments
+void func test():{
 
-void func ex():{
-    var pep: int = 2;
-    pep = 5;
-    print(5 >= 2,"hello");
-    var i,j,z: int;
-    var flag: bool = True; var test: string;
-    
-    for(i = 0; i < 4; i + 2;):{
-        print("for loop");
-        for(j = 0; j < 3; j +2;):{
-            print("double for");
+};
+
+void func myfunc():{
+
+};
+
+main :{
+    void func start():{
+        function();
+        mifuncion();
+        draw("blue", "yellow");
+        size();
+        print(size() + 2 );
+    };
+
+    void func run():{
+        print(5 + 5);
+        for(i = 5; i >= 0; i = i - 1;):{
+            print(i);
         };
     };
-    
-    while(i != 5):{
-        print("while loop");
-    };
-    a = ex();
-    b =  a + 5;
-    c = c / 2;
-    d = ((5 + 2) / 3);
-    return ex();
 };

@@ -13,7 +13,8 @@ tokens = (
     'LEFTKEY','RIGHTKEY','LEFTBRACKET','RIGHTBRACKET','EQUAL','SEMICOLON',
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
-    'RUN','START','RETURN', 'LEFTHAT','RIGHTHAT','TRUE','FALSE','BOOL','TBOOL', 'COMMENT', 'VOID'
+    'RUN','START','RETURN', 'LEFTHAT','RIGHTHAT','TRUE','FALSE','BOOL','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE',
+    "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT","SET_DIMENSION",'MAIN'
 )
 
 reserved = {
@@ -30,6 +31,7 @@ reserved = {
     'while':'WHILE',
     'global':'GLOBAL',
     'func':'FUNC',
+    'main' :'MAIN',
     'list':'TLIST',
     'print':'PRINT',
     'object': 'TOBJECT',
@@ -37,6 +39,16 @@ reserved = {
     'start': 'START',
     'return': 'RETURN',
     'void': 'VOID',
+    'draw':'DRAW',
+    'size':'SIZE',
+    'head':'HEAD',
+    'tail':'TAIL',
+    'last':'LAST',
+    'set_title': 'SET_TITLE',
+    'set_color': 'SET_COLOR',
+    'create_object': 'CREATE_OBJECT',
+    'create_text': 'CREATE_TEXT',
+    'set_dimension': 'SET_DIMENSION'
 }
 
 t_EQUAL  = r'\='
@@ -111,17 +123,31 @@ def t_error(t):
 
 lex = lex.lex()
 
+
 #Program
 def p_capi(p):
     ''' 
-    capi : global recfunc 
-         | recfunc
+    capi : global recfunc MAIN COLON LEFTKEY start RIGHTKEY SEMICOLON
+         | recfunc MAIN COLON LEFTKEY start RIGHTKEY SEMICOLON
+         | global MAIN COLON LEFTKEY start RIGHTKEY SEMICOLON
+         | MAIN COLON LEFTKEY start RIGHTKEY SEMICOLON
     '''
 
 def p_global(p):
     '''
     global : GLOBAL COLON LEFTKEY vars RIGHTKEY SEMICOLON
     '''
+
+def p_start(p):
+    '''
+    start : VOID FUNC START LEFTPAR RIGHTPAR block run
+    '''
+
+def p_run(p):
+    '''
+    run : VOID FUNC RUN LEFTPAR RIGHTPAR block
+    '''
+
 
 def p_vars(p): 
     ''' 
@@ -164,6 +190,72 @@ def p_statement(p):
               | return SEMICOLON
               | functioncall SEMICOLON
               | nestedassign SEMICOLON
+              | specialfunction SEMICOLON
+    '''
+
+def p_specialfunction(p):
+    '''
+    specialfunction : draw
+                    | size
+                    | head
+                    | tail
+                    | last
+                    | set_title
+                    | set_dimension
+                    | set_color
+                    | create_object
+                    | create_text
+    '''
+
+def p_draw(p):
+    '''
+    draw : DRAW LEFTPAR recfuncexp RIGHTPAR
+        
+    '''
+
+def p_size(p):
+    '''
+    size : SIZE LEFTPAR RIGHTPAR
+    '''
+
+def p_head(p):
+    '''
+    head : HEAD LEFTPAR RIGHTPAR
+    '''
+
+def p_tail(p):
+    '''
+    tail : TAIL LEFTPAR RIGHTPAR
+    '''
+
+def p_last(p):
+    '''
+    last : LAST LEFTPAR RIGHTPAR
+    '''
+
+def p_set_title(p):
+    '''
+    set_title : SET_TITLE LEFTPAR expression RIGHTPAR
+    '''
+
+def p_set_dimension(p):
+    '''
+    set_dimension : SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
+    '''
+
+def p_set_color(p):
+    '''
+    set_color : SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
+    '''
+
+def p_create_object(p):
+    '''
+    create_object : CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
+    '''
+
+def p_create_text(p):
+    '''
+    create_text : CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
     '''
     
 def p_assign(p):
@@ -183,7 +275,7 @@ def p_loop(p):
     '''
 def p_for(p):
     '''
-    for : FOR LEFTPAR assign SEMICOLON expression SEMICOLON expression SEMICOLON RIGHTPAR block
+    for : FOR LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
     '''
 def p_while(p):
     '''
@@ -314,7 +406,10 @@ def p_cte(p):
         | nestedvalue
         | functioncall
         | listaccess
+        | specialfunction
     '''
+
+
 def p_error(p):
     print("ERROR {}".format(p))
     print(f"Syntax error at {p.value!r}")
