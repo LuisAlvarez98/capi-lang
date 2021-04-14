@@ -51,6 +51,9 @@ reserved = {
     'set_dimension': 'SET_DIMENSION'
 }
 
+func_dir = {'start': ['void', []],'run': ['void', []]}
+global_vars = {}
+
 t_EQUAL  = r'\='
 t_RELOP = r'\<\=|\>\=|\>|\<|\!\=|\=\='
 t_LOGIC = r'\|\| | \&\&'
@@ -137,48 +140,97 @@ def p_global(p):
     '''
     global : GLOBAL COLON LEFTKEY vars RIGHTKEY SEMICOLON
     '''
-
+    for v in p[4]:
+        v.append('global')
+        if v[0] in global_vars.keys():
+            print("Variable already exists in global.") #throw error
+        else:
+            global_vars[v[0]] = [v[1],v[2]]
+    
+    
 def p_start(p):
     '''
     start : VOID FUNC START LEFTPAR RIGHTPAR block run
     '''
+    var_func_dict = {} # dictionary used for function scope
+    if p[6] is not None:
+        for v in p[6]:
+            v.append(p[3])
+            if v[0] in var_func_dict.keys():
+                print("Variable already exists in func.") #throw error
+            else:
+                var_func_dict[v[0]] = [v[1],v[2]]
 
+    func_dir['start'].append(var_func_dict)
+    print(func_dir)
+    
 def p_run(p):
     '''
     run : VOID FUNC RUN LEFTPAR RIGHTPAR block
     '''
+    var_func_dict = {} # dictionary used for function scope
+    if p[6] is not None:
+        for v in p[6]:
+            v.append(p[3])
+            if v[0] in var_func_dict.keys():
+                print("Variable already exists in func.") #throw error
+            else:
+                var_func_dict[v[0]] = [v[1],v[2]]
 
+    func_dir['run'].append(var_func_dict)
+    print(func_dir)
 
 def p_vars(p): 
     ''' 
-    vars : VAR recvars 
+    vars :    VAR recids COLON type EQUAL expression SEMICOLON vars 
+            | VAR recids COLON type EQUAL expression SEMICOLON
+            | VAR recids COLON type SEMICOLON vars
+            | VAR recids COLON type SEMICOLON
     '''
+    rule_len = len(p) - 1
+    var_list = []
 
-def p_recvars(p): 
-    ''' 
-    recvars : recids COLON type EQUAL expression SEMICOLON vars 
-            | recids COLON type EQUAL expression SEMICOLON
-            | recids COLON type SEMICOLON vars
-            | recids COLON type SEMICOLON
-    '''
+    if type(p[2]) == list:
+        for l in p[2]:
+            var_list.append([l, p[4]])
+    else:
+        var_list.append([p[2],p[4]])
 
+    if rule_len == 8: 
+        var_list = var_list + p[8]
+    elif rule_len == 6: 
+        var_list = var_list + p[6]
+    
+    p[0] = var_list
+    
 def p_recids(p):  
     ''' 
     recids : ID 
            | ID COMMA recids 
     '''
+    rule_len = len(p) - 1
+    if rule_len == 1:
+        p[0] = p[1]
+    elif rule_len == 3:
+        p[0] = [p[1]] + [p[3]]
 
 def p_block(p):
     '''
     block : COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
           | COLON LEFTKEY RIGHTKEY SEMICOLON
     '''
-    
+    # in this case we just send the statements when the rule length is 5
+    rule_len = len(p) - 1
+    if rule_len == 5:
+        p[0] = p[3]
+
 def p_recstatement(p):
     ''' 
     recstatement : statement recstatement  
                  | statement  
     '''
+    # this currently works just for one statement
+    p[0] = p[1]
 
 def p_statement(p):
     '''
@@ -192,6 +244,8 @@ def p_statement(p):
               | nestedassign SEMICOLON
               | specialfunction SEMICOLON
     '''
+    # in here we are sending the first instruction of our grammar
+    p[0] = p[1]
 
 def p_specialfunction(p):
     '''
@@ -289,12 +343,49 @@ def p_function(p):
              | VOID FUNC ID LEFTPAR recparams RIGHTPAR block
              | VOID FUNC ID LEFTPAR RIGHTPAR block
     '''
+    rule_len = len(p) - 1
+    params = [] # array used for funciton params
+
+    var_func_dict = {} # dictionary used for function scope
+
+    if rule_len == 7:
+        for v in p[7]:
+            v.append(p[3])
+            if v[0] in var_func_dict.keys():
+                print("Variable already exists in func.") #throw error
+            else:
+                var_func_dict[v[0]] = [v[1],v[2]]
+
+        params = p[5]
+    elif rule_len == 6:
+        for v in p[6]:
+            v.append(p[3])
+            if v[0] in var_func_dict.keys():
+                print("Variable already exists in func.") #throw error
+            else:
+                var_func_dict[v[0]] = [v[1],v[2]]
+        params = []  
+   
+    if p[3] in func_dir.keys():
+       print("Function name already exists.") 
+    else:
+       func_dir[p[3]] = [p[1], params,var_func_dict]
+
+    print(func_dir)
+ 
 
 def p_recparams(p):
     '''
     recparams : ID COLON type
               | ID COLON type COMMA recparams
     '''
+    rule_len = len(p) - 1
+    if rule_len == 3:
+        p[0] = [(p[1],p[3])]
+    elif rule_len  == 5:
+        p[0] = [(p[1],p[3])] + p[5]
+
+
 def p_recfunc(p):
     '''
     recfunc : function recfunc
@@ -371,6 +462,7 @@ def p_type(p):
     type : primitivetype
         | LIST LEFTHAT primitivetype RIGHTHAT
     '''
+    p[0] = p[1]
 
 def p_primitivetype(p):
     '''
@@ -380,6 +472,7 @@ def p_primitivetype(p):
                   | TBOOL
                   | TOBJECT
     '''
+    p[0] = p[1]
 
 def p_listaccess(p):
     '''
