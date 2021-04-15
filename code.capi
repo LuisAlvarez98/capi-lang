@@ -7,16 +7,25 @@ global : {
 @ Definition of functions
 
 void func test(id: int, pepe:string):{
-    var id: int;
-};
+    var onTest :int;
+    while(1):{
+        var insideWhile: int;
+        if(2 > 3):{
+            var insideFirstIf: string;
+            if(3 < 2):{
+                var insideIf: float;
+            };
+        };
+    };
+ };
 
 
 @ Definition of main module
-
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
         test();
+        var vOne: int;
         draw("blue", "yellow");
         print(size() + 2 );
     };
@@ -24,8 +33,5 @@ main :{
     @ Definition of run function - this function is the game infinite loop
     void func run():{
         print(5 + 5);
-        for(i = 5; i >= 0; i = i - 1;):{
-            print(i);
-        };
     };
 };

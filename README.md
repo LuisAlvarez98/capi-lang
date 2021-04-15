@@ -49,3 +49,7 @@ main :{
 - Definition of diagrams [✔]
 - Definition of context free grammars [✔]
 - Lex & Yacc in PLY [✔]
+- Function Directory [✔]
+- Tables of Variables [✔]
+- Table of Semantic Considerations (designed) [✔]
+- Implemented Stack to manage different scopes [✔]

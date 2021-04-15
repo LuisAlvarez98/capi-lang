@@ -7,6 +7,7 @@
 #
 #------------------------------------------------------
 import ply.lex as lex
+from collections import deque #Para el stack de scopes
 
 tokens = (
     'ID','IF','ELSE','EX','TERMS','RELOP','LOGIC','LEFTPAR','RIGHTPAR',
@@ -51,8 +52,31 @@ reserved = {
     'set_dimension': 'SET_DIMENSION'
 }
 
-func_dir = {'start': ['void', []],'run': ['void', []]}
-global_vars = {}
+class variable():
+    def __init__(self, varid, vartype):
+        self.id = varid
+        self.type = vartype
+    def __str__(self):
+        return f'Id: {self.id}, Type: {self.type}'
+    def __repr__(self):
+        return f'Id: {self.id}, Type: {self.type}'
+
+class function_values():
+    def __init__(self, functiontype='', params=[], scopevars={}):
+        self.functiontype = functiontype
+        self.params = params.copy()
+        self.vars = scopevars.copy()
+
+    def __str__(self):
+        return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
+    def __repr__(self):
+        return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
+
+#func_dir = {'start': ['void', []],'run': ['void', []]}
+func_dir = {}
+active_scopes = deque() #Stack de scopes
+active_scopes.append(function_values('global', [], {}))
+
 
 t_EQUAL  = r'\='
 t_RELOP = r'\<\=|\>\=|\>|\<|\!\=|\=\='
@@ -130,55 +154,42 @@ lex = lex.lex()
 #Program
 def p_capi(p):
     ''' 
-    capi : global recfunc MAIN COLON LEFTKEY start RIGHTKEY SEMICOLON
-         | recfunc MAIN COLON LEFTKEY start RIGHTKEY SEMICOLON
-         | global MAIN COLON LEFTKEY start RIGHTKEY SEMICOLON
-         | MAIN COLON LEFTKEY start RIGHTKEY SEMICOLON
+    capi : global recfunc MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
+         | recfunc MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
+         | global MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
+         | MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
     '''
+    #print(func_dir)
 
 def p_global(p):
     '''
     global : GLOBAL COLON LEFTKEY vars RIGHTKEY SEMICOLON
     '''
-    for v in p[4]:
-        v.append('global')
-        if v[0] in global_vars.keys():
-            print("Variable already exists in global.") #throw error
-        else:
-            global_vars[v[0]] = [v[1],v[2]]
-    
+    globalscope = active_scopes.pop()
+    func_dir['global'] = globalscope
+    active_scopes.append(globalscope)
+
     
 def p_start(p):
     '''
-    start : VOID FUNC START LEFTPAR RIGHTPAR block run
+    start : VOID FUNC START startscope_action LEFTPAR RIGHTPAR block 
     '''
-    var_func_dict = {} # dictionary used for function scope
-    if p[6] is not None:
-        for v in p[6]:
-            v.append(p[3])
-            if v[0] in var_func_dict.keys():
-                print("Variable already exists in func.") #throw error
-            else:
-                var_func_dict[v[0]] = [v[1],v[2]]
-
-    func_dir['start'].append(var_func_dict)
-    print(func_dir)
+    new_func = active_scopes.pop()
+    new_func.functiontype =  'void'
+    new_func.params = []
+    
+    func_dir[p[3]] = new_func
     
 def p_run(p):
     '''
-    run : VOID FUNC RUN LEFTPAR RIGHTPAR block
+    run : VOID FUNC RUN  startscope_action LEFTPAR RIGHTPAR block
     '''
-    var_func_dict = {} # dictionary used for function scope
-    if p[6] is not None:
-        for v in p[6]:
-            v.append(p[3])
-            if v[0] in var_func_dict.keys():
-                print("Variable already exists in func.") #throw error
-            else:
-                var_func_dict[v[0]] = [v[1],v[2]]
+    new_func = active_scopes.pop()
+    new_func.functiontype =  'void'
+    new_func.params = []
+    
+    func_dir[p[3]] = new_func
 
-    func_dir['run'].append(var_func_dict)
-    print(func_dir)
 
 def p_vars(p): 
     ''' 
@@ -188,21 +199,14 @@ def p_vars(p):
             | VAR recids COLON type SEMICOLON
     '''
     rule_len = len(p) - 1
-    var_list = []
+    #print(active_scopes)
+    current_function = active_scopes.pop()
 
-    if type(p[2]) == list:
-        for l in p[2]:
-            var_list.append([l, p[4]])
-    else:
-        var_list.append([p[2],p[4]])
-
-    if rule_len == 8: 
-        var_list = var_list + p[8]
-    elif rule_len == 6: 
-        var_list = var_list + p[6]
+    for l in p[2]:
+        current_function.vars[l] = variable(l,p[4])
     
-    p[0] = var_list
-    
+        
+    active_scopes.append(current_function)
 def p_recids(p):  
     ''' 
     recids : ID 
@@ -210,7 +214,7 @@ def p_recids(p):
     '''
     rule_len = len(p) - 1
     if rule_len == 1:
-        p[0] = p[1]
+        p[0] = [p[1]]
     elif rule_len == 3:
         p[0] = [p[1]] + [p[3]]
 
@@ -219,10 +223,6 @@ def p_block(p):
     block : COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
           | COLON LEFTKEY RIGHTKEY SEMICOLON
     '''
-    # in this case we just send the statements when the rule length is 5
-    rule_len = len(p) - 1
-    if rule_len == 5:
-        p[0] = p[3]
 
 def p_recstatement(p):
     ''' 
@@ -230,7 +230,6 @@ def p_recstatement(p):
                  | statement  
     '''
     # this currently works just for one statement
-    p[0] = p[1]
 
 def p_statement(p):
     '''
@@ -318,61 +317,71 @@ def p_assign(p):
     '''
 
 def p_condition(p):
-    ''' condition : IF LEFTPAR expression RIGHTPAR block 
-                  | IF LEFTPAR expression RIGHTPAR block ELSE block 
+    ''' condition : IF startscope_action LEFTPAR expression RIGHTPAR block 
+                  | IF startscope_action LEFTPAR expression RIGHTPAR block ELSE block 
      '''
+    print(active_scopes)
+    new_func = active_scopes.pop() # Get the last function created
+    new_func.functiontype =  ""  # Assign a name to the function
+    new_func.params = []
      
 def p_loop(p):
     '''
     loop : for
         | while
     '''
+
 def p_for(p):
     '''
-    for : FOR LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
+    for : FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
     '''
+    new_func = active_scopes.pop() # Get the last function created
+    new_func.functiontype =  ""  # Assign a name to the function
+    new_func.params = []
+
+
 def p_while(p):
     '''
-    while : WHILE LEFTPAR expression RIGHTPAR block
+    while : WHILE startscope_action LEFTPAR expression RIGHTPAR block
     '''
+    new_func = active_scopes.pop() # Get the last function created
+    new_func.functiontype =  ""  # Assign a name to the function
+    new_func.params = []
 
 def p_function(p):
     '''
-    function : type FUNC ID LEFTPAR recparams RIGHTPAR block
-             | type FUNC ID LEFTPAR RIGHTPAR block
-             | VOID FUNC ID LEFTPAR recparams RIGHTPAR block
-             | VOID FUNC ID LEFTPAR RIGHTPAR block
+    function : type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+             | type FUNC ID startscope_action LEFTPAR RIGHTPAR block
+             | VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+             | VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
     '''
     rule_len = len(p) - 1
     params = [] # array used for funciton params
 
-    var_func_dict = {} # dictionary used for function scope
 
-    if rule_len == 7:
-        for v in p[7]:
-            v.append(p[3])
-            if v[0] in var_func_dict.keys():
-                print("Variable already exists in func.") #throw error
-            else:
-                var_func_dict[v[0]] = [v[1],v[2]]
-
-        params = p[5]
-    elif rule_len == 6:
-        for v in p[6]:
-            v.append(p[3])
-            if v[0] in var_func_dict.keys():
-                print("Variable already exists in func.") #throw error
-            else:
-                var_func_dict[v[0]] = [v[1],v[2]]
+    if rule_len == 8:
+        params = p[6]
+    elif rule_len == 7:
         params = []  
    
     if p[3] in func_dir.keys():
        print("Function name already exists.") 
     else:
-       func_dir[p[3]] = [p[1], params,var_func_dict]
+        new_func = active_scopes.pop()
+        new_func.functiontype =  p[1]
+        new_func.params = params
+        func_dir[p[3]] = new_func
 
-    print(func_dir)
+        #func_dir[p[3]] = [p[1], params,var_func_dict]
+
  
+def p_startscope_action(p):
+    '''
+    startscope_action : 
+    '''
+    new_function = function_values()
+    active_scopes.append(new_function)
+
 
 def p_recparams(p):
     '''
@@ -381,9 +390,9 @@ def p_recparams(p):
     '''
     rule_len = len(p) - 1
     if rule_len == 3:
-        p[0] = [(p[1],p[3])]
+        p[0] = [variable(p[1],p[3])]
     elif rule_len  == 5:
-        p[0] = [(p[1],p[3])] + p[5]
+        p[0] = [variable(p[1],p[3])] + p[5]
 
 
 def p_recfunc(p):
