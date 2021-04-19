@@ -8,6 +8,10 @@
 #------------------------------------------------------
 import ply.lex as lex
 from collections import deque #Para el stack de scopes
+from semantic_cube import *
+
+# Inits the semantic cube
+s_cube = semantic_cube()
 
 tokens = (
     'ID','IF','ELSE','EX','TERMS','RELOP','LOGIC','LEFTPAR','RIGHTPAR',
@@ -52,6 +56,8 @@ reserved = {
     'set_dimension': 'SET_DIMENSION'
 }
 
+
+
 class variable():
     def __init__(self, varid, vartype):
         self.id = varid
@@ -71,6 +77,7 @@ class function_values():
         return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
     def __repr__(self):
         return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
+
 
 #func_dir = {'start': ['void', []],'run': ['void', []]}
 func_dir = {}
@@ -525,5 +532,6 @@ s = f.read()
 f.close()
 
 yacc.parse(s)
+
 
 print('Code is okay.')
