@@ -9,6 +9,7 @@
 import ply.lex as lex
 from collections import deque #Para el stack de scopes
 from semantic_cube import *
+from util import get_type, get_type_s
 
 # Inits the semantic cube
 s_cube = semantic_cube()
@@ -56,7 +57,19 @@ reserved = {
     'set_dimension': 'SET_DIMENSION'
 }
 
+temporals = 0
 
+class quadruple():
+    def __init__(self, operator, left_operand, right_operand, temp):
+        self.id = -1
+        self.operator = operator
+        self.left_operand = left_operand
+        self.right_operand = right_operand
+        self.temp = temp
+    def __str__(self):
+        return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}\n'
+    def __repr__(self):
+        return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}\n'
 
 class variable():
     def __init__(self, varid, vartype):
@@ -79,7 +92,17 @@ class function_values():
         return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
 
 
-#func_dir = {'start': ['void', []],'run': ['void', []]}
+def get_next_avail():
+    global temporals
+    temporals = temporals + 1
+    return "t" + str(temporals)
+
+quadruples = [] #Lista de cuadruplos
+operator_stack = deque() # Stack de operadores + - * /
+operand_stack = deque() # Stack de operandos variables 
+types_stack = deque() #Stack de tipos int, float
+
+# Function Directory
 func_dir = {}
 active_scopes = deque() #Stack de scopes
 active_scopes.append(function_values('global', [], {}))
@@ -444,34 +467,91 @@ def p_expression(p):
                | exp LOGIC exp
                | exp
     '''
-    
+    print(quadruples)
+
 def p_exp(p):
     ''' 
     exp : term recexp
         | term 
         '''
+    print(operator_stack)
+    if len(operator_stack) > 0:
+        if  operator_stack[-1] == "+" or operator_stack[-1] == "-":
+            right_operand = operand_stack.pop()
+            left_operand = operand_stack.pop()
+            right_type = types_stack.pop()
+            left_type = types_stack.pop()
+            operator = operator_stack.pop()
+            result_type = s_cube.validate_expression(left_type, right_type, operator)
+            if result_type != "ERROR":
+                temp = get_next_avail()
+                quadruples.append(quadruple(operator, left_operand, right_operand, temp))
+                operand_stack.append(temp)
+                real_type = get_type_s(result_type)
+                types_stack.append(real_type)
+                # return to avail if operand were a temp
+            else:
+                print("Type mismatch")
+
+    p[0] = p[1]
+
 
 def p_recexp(p):
     ''' 
     recexp : EX exp 
     '''
+    operator_stack.append(p[1])
+
 
 def p_term(p):
     ''' 
     term : factor recterm 
-            | factor 
+         | factor 
     '''
+    if len(operator_stack) > 0:
+        if  operator_stack[-1] == "*" or operator_stack[-1] == "/":
+            right_operand = operand_stack.pop()
+            left_operand = operand_stack.pop()
+            right_type = types_stack.pop()
+            left_type = types_stack.pop()
+            operator = operator_stack.pop()
+            result_type = s_cube.validate_expression(left_type, right_type, operator)
+
+            if result_type != "ERROR":
+                temp = get_next_avail()
+                quadruples.append(quadruple(operator, left_operand, right_operand, temp))
+                operand_stack.append(temp)
+                real_type = get_type_s(result_type)
+                types_stack.append(real_type)
+                # return to avail if operand were a temp
+            else:
+                print("Type mismatch")
+
+    p[0] = p[1]
+
 
 def p_recterm(p):
     ''' 
     recterm : TERMS term
     '''
+    operator_stack.append(p[1])
 
 def p_factor(p): 
     ''' factor : LEFTPAR expression RIGHTPAR 
-               | EX cte
-               | cte
+               | EX cte 
+               | cte 
     '''
+    rule_len = len(p) - 1
+    if rule_len == 2:
+       operand_stack.append(p[2])
+       operator_stack.append(p[1])
+       types_stack.append(get_type(p[2]))
+    elif rule_len == 1:
+       operand_stack.append(p[1])
+       types_stack.append(get_type(p[1]))
+       
+
+
 
 def p_type(p):
     '''
@@ -517,7 +597,7 @@ def p_cte(p):
         | listaccess
         | specialfunction
     '''
-
+    p[0] = p[1]
 
 def p_error(p):
     print("ERROR {}".format(p))

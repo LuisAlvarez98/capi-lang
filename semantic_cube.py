@@ -67,8 +67,8 @@ class semantic_cube():
 
     def validate_expression(self, left_op, right_op, operand):
         formatted_exp = self.format_expression(left_op,right_op,operand)
-        print(formatted_exp)
+        #print(formatted_exp)
         if formatted_exp in self.sem_cube.keys():
-            print(self.sem_cube[formatted_exp])
+            return self.sem_cube[formatted_exp]
         else:
-            print("error")
+            return "ERROR"

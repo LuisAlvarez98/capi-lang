@@ -7,16 +7,7 @@ global : {
 @ Definition of functions
 
 void func test(id: int, pepe:string):{
-    var onTest :int;
-    while(1):{
-        var insideWhile: int;
-        if(2 > 3):{
-            var insideFirstIf: string;
-            if(3 < 2):{
-                var insideIf: float;
-            };
-        };
-    };
+    id = 5 + 2 - 1;
  };
 
 
@@ -24,14 +15,10 @@ void func test(id: int, pepe:string):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        test();
-        var vOne: int;
-        draw("blue", "yellow");
-        print(size() + 2 );
+   
     };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
-        print(5 + 5);
     };
 };
