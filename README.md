@@ -53,3 +53,5 @@ main :{
 - Tables of Variables [✔]
 - Table of Semantic Considerations (designed) [✔]
 - Implemented Stack to manage different scopes [✔]
+- Implemented Semantic Cube [✔]
+- Implemented actions to generate quadruples in arithmetic expressions [✔]
