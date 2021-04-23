@@ -59,6 +59,7 @@ reserved = {
 
 temporals = 0
 
+
 class quadruple():
     def __init__(self, operator, left_operand, right_operand, temp):
         self.id = -1
@@ -402,9 +403,6 @@ def p_function(p):
         new_func.params = params
         func_dir[p[3]] = new_func
 
-        #func_dir[p[3]] = [p[1], params,var_func_dict]
-
- 
 def p_startscope_action(p):
     '''
     startscope_action : 
@@ -471,10 +469,17 @@ def p_expression(p):
 
 def p_exp(p):
     ''' 
-    exp : term recexp
-        | term 
+    exp : term exp_action recexp
+        | term exp_action 
         '''
+    p[0] = p[1]
+
+def p_exp_action(p):
+    '''
+    exp_action :
+    '''
     print(operator_stack)
+    print(operand_stack)
     if len(operator_stack) > 0:
         if  operator_stack[-1] == "+" or operator_stack[-1] == "-":
             right_operand = operand_stack.pop()
@@ -493,20 +498,22 @@ def p_exp(p):
             else:
                 print("Type mismatch")
 
-    p[0] = p[1]
-
 
 def p_recexp(p):
     ''' 
-    recexp : EX exp 
+    recexp : EX add_operator exp 
     '''
-    operator_stack.append(p[1])
-
 
 def p_term(p):
     ''' 
-    term : factor recterm 
-         | factor 
+    term : factor term_action recterm 
+         | factor term_action 
+    '''
+    p[0] = p[1]
+
+def p_term_action(p):
+    '''
+    term_action :
     '''
     if len(operator_stack) > 0:
         if  operator_stack[-1] == "*" or operator_stack[-1] == "/":
@@ -527,15 +534,18 @@ def p_term(p):
             else:
                 print("Type mismatch")
 
-    p[0] = p[1]
-
-
 def p_recterm(p):
     ''' 
-    recterm : TERMS term
+    recterm : TERMS add_operator term
     '''
-    operator_stack.append(p[1])
 
+def p_add_operator(p):
+    '''
+    add_operator :
+    '''    
+    operator_stack.append(p[-1])
+
+# add action
 def p_factor(p): 
     ''' factor : LEFTPAR expression RIGHTPAR 
                | EX cte 
@@ -549,8 +559,6 @@ def p_factor(p):
     elif rule_len == 1:
        operand_stack.append(p[1])
        types_stack.append(get_type(p[1]))
-       
-
 
 
 def p_type(p):
