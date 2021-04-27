@@ -16,3 +16,6 @@ def get_type_s(cte):
         return "f"
     elif cte == "String" or cte == "string":
         return "s"
+    elif cte == "Bool" or cte == "bool":
+        return "b"
+

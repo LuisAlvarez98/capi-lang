@@ -102,6 +102,7 @@ quadruples = [] #Lista de cuadruplos
 operator_stack = deque() # Stack de operadores + - * /
 operand_stack = deque() # Stack de operandos variables 
 types_stack = deque() #Stack de tipos int, float
+go_to_stack = deque() #Stack de saltos
 
 # Function Directory
 func_dir = {}
@@ -126,6 +127,9 @@ t_COMMA = r','
 t_DOT = r'\.'
 t_LEFTHAT = r'\<'
 t_RIGHTHAT = r'\>'
+
+relop_arr = ['<=',">=",">","<","!=","=="]
+logic_arr = ["||","&&"]
 
 def t_FLOAT(t):
     r'\d+\.\d+'
@@ -387,13 +391,41 @@ def p_assign_action2(p):
 
 
 def p_condition(p):
-    ''' condition : IF startscope_action LEFTPAR expression RIGHTPAR block 
-                  | IF startscope_action LEFTPAR expression RIGHTPAR block ELSE block 
+    ''' condition : IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR  block condition_action2
+                  | IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR  block ELSE condition_action3 block condition_action2
      '''
     new_func = active_scopes.pop() # Get the last function created
     new_func.functiontype =  ""  # Assign a name to the function
     new_func.params = []
      
+def p_condition_action1(p):
+    '''
+    condition_action1 :
+    '''
+    exp_type = types_stack.pop()
+    if exp_type != "b":
+        print("Error, Type Mismatch") 
+    else:
+        result = operand_stack.pop()
+        quadruples.append(quadruple("GOTO_F", result,None,None))
+        go_to_stack.append(len(quadruples)-1)
+        
+def p_condition_action2(p):
+    '''
+    condition_action2 :
+    '''
+    jump = go_to_stack.pop()
+    quadruples[jump] = quadruple("GOTO_F", quadruples[jump].left_operand,None, len(quadruples))
+    
+def p_condition_action3(p):
+    '''
+    condition_action3 :
+    '''
+    quadruples.append(quadruple("GOTO", None,None,None))
+    false = go_to_stack.pop()
+    go_to_stack.append(len(quadruples) - 1)
+    quadruples[false] = quadruple("GOTO",None,None,len(quadruples))
+
 def p_loop(p):
     '''
     loop : for
@@ -483,6 +515,7 @@ def p_action_recwrite_exp(p):
     '''
     action_recwrite_exp :
     '''
+    # We need to validate the ID. Check if it exists.
     result = operand_stack.pop()
     quadruples.append(quadruple("print", None, None, result))
 
@@ -511,11 +544,67 @@ def p_recfuncexp(p):
 
 def p_expression(p):
     '''
-    expression : exp RELOP exp
-               | exp LOGIC exp
+    expression : exp RELOP relop_action1 exp relop_action2
+               | exp LOGIC logic_action1 exp logic_action2
                | exp
     '''
 
+def p_relop_action1(p):
+    '''
+    relop_action1 : 
+    '''
+    operator_stack.append(p[-1])
+
+def p_relop_action2(p):
+    '''
+    relop_action2 : 
+    '''
+    if len(operator_stack) > 0:
+        if  operator_stack[-1] in relop_arr:
+            right_operand = operand_stack.pop()
+            left_operand = operand_stack.pop()
+            right_type = types_stack.pop()
+            left_type = types_stack.pop()
+            operator = operator_stack.pop()
+            result_type = s_cube.validate_expression(left_type, right_type, operator)
+            if result_type != "ERROR":
+                temp = get_next_avail()
+                quadruples.append(quadruple(operator, left_operand, right_operand, temp))
+                operand_stack.append(temp)
+                real_type = get_type_s(result_type)
+                types_stack.append(real_type)
+                # return to avail if operand were a temp
+            else:
+                print("Type mismatch")
+
+
+def p_login_action1(p):
+    '''
+    logic_action1 : 
+    '''
+    operator_stack.append(p[-1])
+
+def p_logic_action2(p):
+    '''
+    logic_action2 : 
+    '''
+    if len(operator_stack) > 0:
+        if  operator_stack[-1] in login_arr:
+            right_operand = operand_stack.pop()
+            left_operand = operand_stack.pop()
+            right_type = types_stack.pop()
+            left_type = types_stack.pop()
+            operator = operator_stack.pop()
+            result_type = s_cube.validate_expression(left_type, right_type, operator)
+            if result_type != "ERROR":
+                temp = get_next_avail()
+                quadruples.append(quadruple(operator, left_operand, right_operand, temp))
+                operand_stack.append(temp)
+                real_type = get_type_s(result_type)
+                types_stack.append(real_type)
+                # return to avail if operand were a temp
+            else:
+                print("Type mismatch")
 
 def p_exp(p):
     ''' 
