@@ -10,9 +10,9 @@ def get_type(cte):
 
 
 def get_type_s(cte):
-    if cte == "Int":
+    if cte == "Int" or cte == "int":
         return "i"
-    elif cte == "Float":
+    elif cte == "Float" or cte == "float":
         return "f"
-    elif cte == "String":
+    elif cte == "String" or cte == "string":
         return "s"

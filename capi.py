@@ -190,7 +190,7 @@ def p_capi(p):
          | global MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
          | MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
     '''
-    #print(func_dir)
+    print(quadruples)
 
 def p_global(p):
     '''
@@ -236,7 +236,6 @@ def p_vars(p):
     for l in p[2]:
         current_function.vars[l] = variable(l,p[4])
     
-        
     active_scopes.append(current_function)
 def p_recids(p):  
     ''' 
@@ -344,14 +343,53 @@ def p_create_text(p):
     
 def p_assign(p):
     '''
-    assign : ID EQUAL expression
+    assign : ID assign_action1 EQUAL assign_action2 expression 
     '''
+    # we need to do the same for var i :int = 5;
+    result = operand_stack.pop()
+    type_result = types_stack.pop()
+    if len(operand_stack) > 0:
+        left_operand = operand_stack.pop()
+        left_operand_type = types_stack.pop()
+        operator = operator_stack.pop()
+
+        expression_type = s_cube.validate_expression(type_result, left_operand_type, operator)
+        if expression_type != "ERROR":
+            quadruples.append(quadruple(operator, result, None, left_operand))
+            
+
+def p_assign_action1(p):
+    '''
+    assign_action1 : 
+    '''
+    current_id = p[-1] #get current ID
+    current_active_scopes = active_scopes.copy()
+    current_type = ""
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        if current_id in current_vars:
+            current_type = current_vars[current_id].type
+            break
+        current_active_scopes.pop()
+    
+    if(len(current_active_scopes) <= 0):
+        print("Variable does not exist!")
+    else:
+        operand_stack.append(current_id)
+        types_stack.append(get_type_s(current_type))
+
+
+def p_assign_action2(p):
+    '''
+    assign_action2 : 
+    '''
+    operator_stack.append(p[-1])
+
 
 def p_condition(p):
     ''' condition : IF startscope_action LEFTPAR expression RIGHTPAR block 
                   | IF startscope_action LEFTPAR expression RIGHTPAR block ELSE block 
      '''
-    print(active_scopes)
     new_func = active_scopes.pop() # Get the last function created
     new_func.functiontype =  ""  # Assign a name to the function
     new_func.params = []
@@ -433,14 +471,26 @@ def p_write(p):
     ''' 
     write : PRINT LEFTPAR recwrite RIGHTPAR 
     '''
-    
+  
 def p_recwrite(p):
     ''' 
-    recwrite : expression COMMA recwrite 
-               | STRING COMMA recwrite 
-               | expression 
-               | STRING
+    recwrite : expression action_recwrite_exp COMMA recwrite 
+               | STRING action_recwrite_cte COMMA  recwrite 
+               | expression action_recwrite_exp 
+               | STRING action_recwrite_cte
     '''
+def p_action_recwrite_exp(p):
+    '''
+    action_recwrite_exp :
+    '''
+    result = operand_stack.pop()
+    quadruples.append(quadruple("print", None, None, result))
+
+def p_action_recwrite_cte(p):
+    '''
+    action_recwrite_cte : 
+    '''
+    quadruples.append(quadruple("print",None, None, p[-1]))
 
 def p_return(p):
     '''
@@ -465,21 +515,18 @@ def p_expression(p):
                | exp LOGIC exp
                | exp
     '''
-    print(quadruples)
+
 
 def p_exp(p):
     ''' 
     exp : term exp_action recexp
         | term exp_action 
         '''
-    p[0] = p[1]
 
 def p_exp_action(p):
     '''
     exp_action :
     '''
-    print(operator_stack)
-    print(operand_stack)
     if len(operator_stack) > 0:
         if  operator_stack[-1] == "+" or operator_stack[-1] == "-":
             right_operand = operand_stack.pop()
@@ -509,7 +556,6 @@ def p_term(p):
     term : factor term_action recterm 
          | factor term_action 
     '''
-    p[0] = p[1]
 
 def p_term_action(p):
     '''
@@ -559,7 +605,7 @@ def p_factor(p):
     elif rule_len == 1:
        operand_stack.append(p[1])
        types_stack.append(get_type(p[1]))
-
+    p[0] = p[1]  
 
 def p_type(p):
     '''
