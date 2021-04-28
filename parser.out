@@ -67,140 +67,143 @@ Rule 53    condition_action2 -> <empty>
 Rule 54    condition_action3 -> <empty>
 Rule 55    loop -> for
 Rule 56    loop -> while
-Rule 57    for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
-Rule 58    while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
-Rule 59    while_action1 -> <empty>
-Rule 60    while_action2 -> <empty>
-Rule 61    while_action3 -> <empty>
-Rule 62    function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-Rule 63    function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block
-Rule 64    function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-Rule 65    function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
-Rule 66    startscope_action -> <empty>
-Rule 67    recparams -> ID COLON type
-Rule 68    recparams -> ID COLON type COMMA recparams
-Rule 69    recfunc -> function recfunc
-Rule 70    recfunc -> function
-Rule 71    write -> PRINT LEFTPAR recwrite RIGHTPAR
-Rule 72    recwrite -> expression action_recwrite_exp COMMA recwrite
-Rule 73    recwrite -> STRING action_recwrite_cte COMMA recwrite
-Rule 74    recwrite -> expression action_recwrite_exp
-Rule 75    recwrite -> STRING action_recwrite_cte
-Rule 76    action_recwrite_exp -> <empty>
-Rule 77    action_recwrite_cte -> <empty>
-Rule 78    return -> RETURN expression
-Rule 79    functioncall -> ID LEFTPAR recfuncexp RIGHTPAR
-Rule 80    functioncall -> ID LEFTPAR RIGHTPAR
-Rule 81    recfuncexp -> expression COMMA recfuncexp
-Rule 82    recfuncexp -> expression
-Rule 83    expression -> exp RELOP relop_action1 exp relop_action2
-Rule 84    expression -> exp LOGIC logic_action1 exp logic_action2
-Rule 85    expression -> exp
-Rule 86    relop_action1 -> <empty>
-Rule 87    relop_action2 -> <empty>
-Rule 88    logic_action1 -> <empty>
-Rule 89    logic_action2 -> <empty>
-Rule 90    exp -> term exp_action recexp
-Rule 91    exp -> term exp_action
-Rule 92    exp_action -> <empty>
-Rule 93    recexp -> EX add_operator exp
-Rule 94    term -> factor term_action recterm
-Rule 95    term -> factor term_action
-Rule 96    term_action -> <empty>
-Rule 97    recterm -> TERMS add_operator term
-Rule 98    add_operator -> <empty>
-Rule 99    factor -> LEFTPAR expression RIGHTPAR
-Rule 100   factor -> EX cte
-Rule 101   factor -> cte
-Rule 102   type -> primitivetype
-Rule 103   type -> LIST LEFTHAT primitivetype RIGHTHAT
-Rule 104   primitivetype -> TINT
-Rule 105   primitivetype -> TFLOAT
-Rule 106   primitivetype -> TSTRING
-Rule 107   primitivetype -> TBOOL
-Rule 108   primitivetype -> TOBJECT
-Rule 109   listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
-Rule 110   nestedvalue -> ID DOT ID
-Rule 111   nestedassign -> nestedvalue EQUAL expression
-Rule 112   cte -> STRING
-Rule 113   cte -> ID
-Rule 114   cte -> INT
-Rule 115   cte -> FLOAT
-Rule 116   cte -> BOOL
-Rule 117   cte -> nestedvalue
-Rule 118   cte -> functioncall
-Rule 119   cte -> listaccess
-Rule 120   cte -> specialfunction
+Rule 57    for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
+Rule 58    for_action1 -> <empty>
+Rule 59    for_action2 -> <empty>
+Rule 60    for_action3 -> <empty>
+Rule 61    while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
+Rule 62    while_action1 -> <empty>
+Rule 63    while_action2 -> <empty>
+Rule 64    while_action3 -> <empty>
+Rule 65    function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+Rule 66    function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block
+Rule 67    function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+Rule 68    function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
+Rule 69    startscope_action -> <empty>
+Rule 70    recparams -> ID COLON type
+Rule 71    recparams -> ID COLON type COMMA recparams
+Rule 72    recfunc -> function recfunc
+Rule 73    recfunc -> function
+Rule 74    write -> PRINT LEFTPAR recwrite RIGHTPAR
+Rule 75    recwrite -> expression action_recwrite_exp COMMA recwrite
+Rule 76    recwrite -> STRING action_recwrite_cte COMMA recwrite
+Rule 77    recwrite -> expression action_recwrite_exp
+Rule 78    recwrite -> STRING action_recwrite_cte
+Rule 79    action_recwrite_exp -> <empty>
+Rule 80    action_recwrite_cte -> <empty>
+Rule 81    return -> RETURN expression
+Rule 82    functioncall -> ID LEFTPAR recfuncexp RIGHTPAR
+Rule 83    functioncall -> ID LEFTPAR RIGHTPAR
+Rule 84    recfuncexp -> expression COMMA recfuncexp
+Rule 85    recfuncexp -> expression
+Rule 86    expression -> exp RELOP relop_action1 exp relop_action2
+Rule 87    expression -> exp LOGIC logic_action1 exp logic_action2
+Rule 88    expression -> exp
+Rule 89    relop_action1 -> <empty>
+Rule 90    relop_action2 -> <empty>
+Rule 91    logic_action1 -> <empty>
+Rule 92    logic_action2 -> <empty>
+Rule 93    exp -> term exp_action recexp
+Rule 94    exp -> term exp_action
+Rule 95    exp_action -> <empty>
+Rule 96    recexp -> EX add_operator exp
+Rule 97    term -> factor term_action recterm
+Rule 98    term -> factor term_action
+Rule 99    term_action -> <empty>
+Rule 100   recterm -> TERMS add_operator term
+Rule 101   add_operator -> <empty>
+Rule 102   factor -> LEFTPAR expression RIGHTPAR
+Rule 103   factor -> EX cte
+Rule 104   factor -> cte
+Rule 105   type -> primitivetype
+Rule 106   type -> LIST LEFTHAT primitivetype RIGHTHAT
+Rule 107   primitivetype -> TINT
+Rule 108   primitivetype -> TFLOAT
+Rule 109   primitivetype -> TSTRING
+Rule 110   primitivetype -> TBOOL
+Rule 111   primitivetype -> TOBJECT
+Rule 112   listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+Rule 113   nestedvalue -> ID DOT ID
+Rule 114   nestedassign -> nestedvalue EQUAL expression
+Rule 115   cte -> STRING
+Rule 116   cte -> ID
+Rule 117   cte -> INT
+Rule 118   cte -> FLOAT
+Rule 119   cte -> BOOL
+Rule 120   cte -> nestedvalue
+Rule 121   cte -> functioncall
+Rule 122   cte -> listaccess
+Rule 123   cte -> specialfunction
 
 Terminals, with rules where they appear
 
-BOOL                 : 116
-COLON                : 1 2 3 4 5 8 9 10 11 14 15 67 68
-COMMA                : 13 43 44 44 68 72 73 81
+BOOL                 : 119
+COLON                : 1 2 3 4 5 8 9 10 11 14 15 70 71
+COMMA                : 13 43 44 44 71 75 76 84
 COMMENT              : 
 CREATE_OBJECT        : 45
 CREATE_TEXT          : 46
-DOT                  : 110
+DOT                  : 113
 DRAW                 : 37
 ELSE                 : 51
-EQUAL                : 8 9 47 111
-EX                   : 93 100
+EQUAL                : 8 9 47 114
+EX                   : 96 103
 FALSE                : 
-FLOAT                : 115
+FLOAT                : 118
 FOR                  : 57
-FUNC                 : 6 7 62 63 64 65
+FUNC                 : 6 7 65 66 67 68
 GLOBAL               : 5
 HEAD                 : 39
-ID                   : 12 13 47 62 63 64 65 67 68 79 80 109 110 110 113
+ID                   : 12 13 47 65 66 67 68 70 71 82 83 112 113 113 116
 IF                   : 50 51
-INT                  : 114
+INT                  : 117
 LAST                 : 41
-LEFTBRACKET          : 109
-LEFTHAT              : 103
+LEFTBRACKET          : 112
+LEFTHAT              : 106
 LEFTKEY              : 1 2 3 4 5 14 15
-LEFTPAR              : 6 7 37 38 39 40 41 42 43 44 45 46 50 51 57 58 62 63 64 65 71 79 80 99
-LIST                 : 103
-LOGIC                : 84
+LEFTPAR              : 6 7 37 38 39 40 41 42 43 44 45 46 50 51 57 61 65 66 67 68 74 82 83 102
+LIST                 : 106
+LOGIC                : 87
 MAIN                 : 1 2 3 4
 OBJECT               : 
-PRINT                : 71
-RELOP                : 83
-RETURN               : 78
-RIGHTBRACKET         : 109
-RIGHTHAT             : 103
+PRINT                : 74
+RELOP                : 86
+RETURN               : 81
+RIGHTBRACKET         : 112
+RIGHTHAT             : 106
 RIGHTKEY             : 1 2 3 4 5 14 15
-RIGHTPAR             : 6 7 37 38 39 40 41 42 43 44 45 46 50 51 57 58 62 63 64 65 71 79 80 99
+RIGHTPAR             : 6 7 37 38 39 40 41 42 43 44 45 46 50 51 57 61 65 66 67 68 74 82 83 102
 RUN                  : 7
-SEMICOLON            : 1 2 3 4 5 8 9 10 11 14 15 18 22 23 24 25 26 57 57 57 109
+SEMICOLON            : 1 2 3 4 5 8 9 10 11 14 15 18 22 23 24 25 26 57 57 57 112
 SET_COLOR            : 44
 SET_DIMENSION        : 43
 SET_TITLE            : 42
 SIZE                 : 38
 START                : 6
-STRING               : 73 75 112
+STRING               : 76 78 115
 TAIL                 : 40
-TBOOL                : 107
-TERMS                : 97
-TFLOAT               : 105
-TINT                 : 104
+TBOOL                : 110
+TERMS                : 100
+TFLOAT               : 108
+TINT                 : 107
 TLIST                : 
-TOBJECT              : 108
+TOBJECT              : 111
 TRUE                 : 
-TSTRING              : 106
+TSTRING              : 109
 VAR                  : 8 9 10 11
-VOID                 : 6 7 64 65
-WHILE                : 58
+VOID                 : 6 7 67 68
+WHILE                : 61
 error                : 
 
 Nonterminals, with rules where they appear
 
-action_recwrite_cte  : 73 75
-action_recwrite_exp  : 72 74
-add_operator         : 93 97
+action_recwrite_cte  : 76 78
+action_recwrite_exp  : 75 77
+add_operator         : 96 100
 assign               : 18 57 57
 assign_action1       : 47
 assign_action2       : 47
-block                : 6 7 50 51 51 57 58 62 63 64 65
+block                : 6 7 50 51 51 57 61 65 66 67 68
 capi                 : 0
 condition            : 19
 condition_action1    : 50 51
@@ -208,54 +211,57 @@ condition_action2    : 50 51
 condition_action3    : 51
 create_object        : 35
 create_text          : 36
-cte                  : 100 101
+cte                  : 103 104
 draw                 : 27
-exp                  : 83 83 84 84 85 93
-exp_action           : 90 91
-expression           : 8 9 42 43 43 44 44 44 47 50 51 57 58 72 74 78 81 82 99 109 111
-factor               : 94 95
+exp                  : 86 86 87 87 88 96
+exp_action           : 93 94
+expression           : 8 9 42 43 43 44 44 44 47 50 51 57 61 75 77 81 84 85 102 112 114
+factor               : 97 98
 for                  : 55
-function             : 69 70
-functioncall         : 24 118
+for_action1          : 57
+for_action2          : 57
+for_action3          : 57
+function             : 72 73
+functioncall         : 24 121
 global               : 1 3
 head                 : 29
 last                 : 31
-listaccess           : 119
-logic_action1        : 84
-logic_action2        : 84
+listaccess           : 122
+logic_action1        : 87
+logic_action2        : 87
 loop                 : 21
 nestedassign         : 25
-nestedvalue          : 111 117
-primitivetype        : 102 103
-recexp               : 90
-recfunc              : 1 2 69
-recfuncexp           : 37 45 46 79 81
+nestedvalue          : 114 120
+primitivetype        : 105 106
+recexp               : 93
+recfunc              : 1 2 72
+recfuncexp           : 37 45 46 82 84
 recids               : 8 9 10 11 13
-recparams            : 62 64 68
+recparams            : 65 67 71
 recstatement         : 14 16
-recterm              : 94
-recwrite             : 71 72 73
-relop_action1        : 83
-relop_action2        : 83
+recterm              : 97
+recwrite             : 74 75 76
+relop_action1        : 86
+relop_action2        : 86
 return               : 23
 run                  : 1 2 3 4
 set_color            : 34
 set_dimension        : 33
 set_title            : 32
 size                 : 28
-specialfunction      : 26 120
+specialfunction      : 26 123
 start                : 1 2 3 4
-startscope_action    : 6 7 50 51 57 58 62 63 64 65
+startscope_action    : 6 7 50 51 57 61 65 66 67 68
 statement            : 16 17
 tail                 : 30
-term                 : 90 91 97
-term_action          : 94 95
-type                 : 8 9 10 11 62 63 67 68
+term                 : 93 94 100
+term_action          : 97 98
+type                 : 8 9 10 11 65 66 70 71
 vars                 : 5 8 10 20
 while                : 56
-while_action1        : 58
-while_action2        : 58
-while_action3        : 58
+while_action1        : 61
+while_action2        : 61
+while_action3        : 61
 write                : 22
 
 Parsing method: LALR
@@ -268,19 +274,19 @@ state 0
     (3) capi -> . global MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
     (4) capi -> . MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
     (5) global -> . GLOBAL COLON LEFTKEY vars RIGHTKEY SEMICOLON
-    (69) recfunc -> . function recfunc
-    (70) recfunc -> . function
-    (62) function -> . type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (63) function -> . type FUNC ID startscope_action LEFTPAR RIGHTPAR block
-    (64) function -> . VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (65) function -> . VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
-    (102) type -> . primitivetype
-    (103) type -> . LIST LEFTHAT primitivetype RIGHTHAT
-    (104) primitivetype -> . TINT
-    (105) primitivetype -> . TFLOAT
-    (106) primitivetype -> . TSTRING
-    (107) primitivetype -> . TBOOL
-    (108) primitivetype -> . TOBJECT
+    (72) recfunc -> . function recfunc
+    (73) recfunc -> . function
+    (65) function -> . type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (66) function -> . type FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    (67) function -> . VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (68) function -> . VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    (105) type -> . primitivetype
+    (106) type -> . LIST LEFTHAT primitivetype RIGHTHAT
+    (107) primitivetype -> . TINT
+    (108) primitivetype -> . TFLOAT
+    (109) primitivetype -> . TSTRING
+    (110) primitivetype -> . TBOOL
+    (111) primitivetype -> . TOBJECT
 
     MAIN            shift and go to state 4
     GLOBAL          shift and go to state 5
@@ -309,19 +315,19 @@ state 2
 
     (1) capi -> global . recfunc MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
     (3) capi -> global . MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
-    (69) recfunc -> . function recfunc
-    (70) recfunc -> . function
-    (62) function -> . type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (63) function -> . type FUNC ID startscope_action LEFTPAR RIGHTPAR block
-    (64) function -> . VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (65) function -> . VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
-    (102) type -> . primitivetype
-    (103) type -> . LIST LEFTHAT primitivetype RIGHTHAT
-    (104) primitivetype -> . TINT
-    (105) primitivetype -> . TFLOAT
-    (106) primitivetype -> . TSTRING
-    (107) primitivetype -> . TBOOL
-    (108) primitivetype -> . TOBJECT
+    (72) recfunc -> . function recfunc
+    (73) recfunc -> . function
+    (65) function -> . type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (66) function -> . type FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    (67) function -> . VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (68) function -> . VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    (105) type -> . primitivetype
+    (106) type -> . LIST LEFTHAT primitivetype RIGHTHAT
+    (107) primitivetype -> . TINT
+    (108) primitivetype -> . TFLOAT
+    (109) primitivetype -> . TSTRING
+    (110) primitivetype -> . TBOOL
+    (111) primitivetype -> . TOBJECT
 
     MAIN            shift and go to state 17
     VOID            shift and go to state 8
@@ -360,23 +366,23 @@ state 5
 
 state 6
 
-    (69) recfunc -> function . recfunc
-    (70) recfunc -> function .
-    (69) recfunc -> . function recfunc
-    (70) recfunc -> . function
-    (62) function -> . type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (63) function -> . type FUNC ID startscope_action LEFTPAR RIGHTPAR block
-    (64) function -> . VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (65) function -> . VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
-    (102) type -> . primitivetype
-    (103) type -> . LIST LEFTHAT primitivetype RIGHTHAT
-    (104) primitivetype -> . TINT
-    (105) primitivetype -> . TFLOAT
-    (106) primitivetype -> . TSTRING
-    (107) primitivetype -> . TBOOL
-    (108) primitivetype -> . TOBJECT
+    (72) recfunc -> function . recfunc
+    (73) recfunc -> function .
+    (72) recfunc -> . function recfunc
+    (73) recfunc -> . function
+    (65) function -> . type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (66) function -> . type FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    (67) function -> . VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (68) function -> . VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    (105) type -> . primitivetype
+    (106) type -> . LIST LEFTHAT primitivetype RIGHTHAT
+    (107) primitivetype -> . TINT
+    (108) primitivetype -> . TFLOAT
+    (109) primitivetype -> . TSTRING
+    (110) primitivetype -> . TBOOL
+    (111) primitivetype -> . TOBJECT
 
-    MAIN            reduce using rule 70 (recfunc -> function .)
+    MAIN            reduce using rule 73 (recfunc -> function .)
     VOID            shift and go to state 8
     LIST            shift and go to state 10
     TINT            shift and go to state 11
@@ -392,96 +398,96 @@ state 6
 
 state 7
 
-    (62) function -> type . FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (63) function -> type . FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    (65) function -> type . FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (66) function -> type . FUNC ID startscope_action LEFTPAR RIGHTPAR block
 
     FUNC            shift and go to state 22
 
 
 state 8
 
-    (64) function -> VOID . FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (65) function -> VOID . FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    (67) function -> VOID . FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (68) function -> VOID . FUNC ID startscope_action LEFTPAR RIGHTPAR block
 
     FUNC            shift and go to state 23
 
 
 state 9
 
-    (102) type -> primitivetype .
+    (105) type -> primitivetype .
 
-    FUNC            reduce using rule 102 (type -> primitivetype .)
-    EQUAL           reduce using rule 102 (type -> primitivetype .)
-    SEMICOLON       reduce using rule 102 (type -> primitivetype .)
-    COMMA           reduce using rule 102 (type -> primitivetype .)
-    RIGHTPAR        reduce using rule 102 (type -> primitivetype .)
+    FUNC            reduce using rule 105 (type -> primitivetype .)
+    EQUAL           reduce using rule 105 (type -> primitivetype .)
+    SEMICOLON       reduce using rule 105 (type -> primitivetype .)
+    COMMA           reduce using rule 105 (type -> primitivetype .)
+    RIGHTPAR        reduce using rule 105 (type -> primitivetype .)
 
 
 state 10
 
-    (103) type -> LIST . LEFTHAT primitivetype RIGHTHAT
+    (106) type -> LIST . LEFTHAT primitivetype RIGHTHAT
 
     LEFTHAT         shift and go to state 24
 
 
 state 11
 
-    (104) primitivetype -> TINT .
+    (107) primitivetype -> TINT .
 
-    FUNC            reduce using rule 104 (primitivetype -> TINT .)
-    RIGHTHAT        reduce using rule 104 (primitivetype -> TINT .)
-    EQUAL           reduce using rule 104 (primitivetype -> TINT .)
-    SEMICOLON       reduce using rule 104 (primitivetype -> TINT .)
-    COMMA           reduce using rule 104 (primitivetype -> TINT .)
-    RIGHTPAR        reduce using rule 104 (primitivetype -> TINT .)
+    FUNC            reduce using rule 107 (primitivetype -> TINT .)
+    RIGHTHAT        reduce using rule 107 (primitivetype -> TINT .)
+    EQUAL           reduce using rule 107 (primitivetype -> TINT .)
+    SEMICOLON       reduce using rule 107 (primitivetype -> TINT .)
+    COMMA           reduce using rule 107 (primitivetype -> TINT .)
+    RIGHTPAR        reduce using rule 107 (primitivetype -> TINT .)
 
 
 state 12
 
-    (105) primitivetype -> TFLOAT .
+    (108) primitivetype -> TFLOAT .
 
-    FUNC            reduce using rule 105 (primitivetype -> TFLOAT .)
-    RIGHTHAT        reduce using rule 105 (primitivetype -> TFLOAT .)
-    EQUAL           reduce using rule 105 (primitivetype -> TFLOAT .)
-    SEMICOLON       reduce using rule 105 (primitivetype -> TFLOAT .)
-    COMMA           reduce using rule 105 (primitivetype -> TFLOAT .)
-    RIGHTPAR        reduce using rule 105 (primitivetype -> TFLOAT .)
+    FUNC            reduce using rule 108 (primitivetype -> TFLOAT .)
+    RIGHTHAT        reduce using rule 108 (primitivetype -> TFLOAT .)
+    EQUAL           reduce using rule 108 (primitivetype -> TFLOAT .)
+    SEMICOLON       reduce using rule 108 (primitivetype -> TFLOAT .)
+    COMMA           reduce using rule 108 (primitivetype -> TFLOAT .)
+    RIGHTPAR        reduce using rule 108 (primitivetype -> TFLOAT .)
 
 
 state 13
 
-    (106) primitivetype -> TSTRING .
+    (109) primitivetype -> TSTRING .
 
-    FUNC            reduce using rule 106 (primitivetype -> TSTRING .)
-    RIGHTHAT        reduce using rule 106 (primitivetype -> TSTRING .)
-    EQUAL           reduce using rule 106 (primitivetype -> TSTRING .)
-    SEMICOLON       reduce using rule 106 (primitivetype -> TSTRING .)
-    COMMA           reduce using rule 106 (primitivetype -> TSTRING .)
-    RIGHTPAR        reduce using rule 106 (primitivetype -> TSTRING .)
+    FUNC            reduce using rule 109 (primitivetype -> TSTRING .)
+    RIGHTHAT        reduce using rule 109 (primitivetype -> TSTRING .)
+    EQUAL           reduce using rule 109 (primitivetype -> TSTRING .)
+    SEMICOLON       reduce using rule 109 (primitivetype -> TSTRING .)
+    COMMA           reduce using rule 109 (primitivetype -> TSTRING .)
+    RIGHTPAR        reduce using rule 109 (primitivetype -> TSTRING .)
 
 
 state 14
 
-    (107) primitivetype -> TBOOL .
+    (110) primitivetype -> TBOOL .
 
-    FUNC            reduce using rule 107 (primitivetype -> TBOOL .)
-    RIGHTHAT        reduce using rule 107 (primitivetype -> TBOOL .)
-    EQUAL           reduce using rule 107 (primitivetype -> TBOOL .)
-    SEMICOLON       reduce using rule 107 (primitivetype -> TBOOL .)
-    COMMA           reduce using rule 107 (primitivetype -> TBOOL .)
-    RIGHTPAR        reduce using rule 107 (primitivetype -> TBOOL .)
+    FUNC            reduce using rule 110 (primitivetype -> TBOOL .)
+    RIGHTHAT        reduce using rule 110 (primitivetype -> TBOOL .)
+    EQUAL           reduce using rule 110 (primitivetype -> TBOOL .)
+    SEMICOLON       reduce using rule 110 (primitivetype -> TBOOL .)
+    COMMA           reduce using rule 110 (primitivetype -> TBOOL .)
+    RIGHTPAR        reduce using rule 110 (primitivetype -> TBOOL .)
 
 
 state 15
 
-    (108) primitivetype -> TOBJECT .
+    (111) primitivetype -> TOBJECT .
 
-    FUNC            reduce using rule 108 (primitivetype -> TOBJECT .)
-    RIGHTHAT        reduce using rule 108 (primitivetype -> TOBJECT .)
-    EQUAL           reduce using rule 108 (primitivetype -> TOBJECT .)
-    SEMICOLON       reduce using rule 108 (primitivetype -> TOBJECT .)
-    COMMA           reduce using rule 108 (primitivetype -> TOBJECT .)
-    RIGHTPAR        reduce using rule 108 (primitivetype -> TOBJECT .)
+    FUNC            reduce using rule 111 (primitivetype -> TOBJECT .)
+    RIGHTHAT        reduce using rule 111 (primitivetype -> TOBJECT .)
+    EQUAL           reduce using rule 111 (primitivetype -> TOBJECT .)
+    SEMICOLON       reduce using rule 111 (primitivetype -> TOBJECT .)
+    COMMA           reduce using rule 111 (primitivetype -> TOBJECT .)
+    RIGHTPAR        reduce using rule 111 (primitivetype -> TOBJECT .)
 
 
 state 16
@@ -521,35 +527,35 @@ state 20
 
 state 21
 
-    (69) recfunc -> function recfunc .
+    (72) recfunc -> function recfunc .
 
-    MAIN            reduce using rule 69 (recfunc -> function recfunc .)
+    MAIN            reduce using rule 72 (recfunc -> function recfunc .)
 
 
 state 22
 
-    (62) function -> type FUNC . ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (63) function -> type FUNC . ID startscope_action LEFTPAR RIGHTPAR block
+    (65) function -> type FUNC . ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (66) function -> type FUNC . ID startscope_action LEFTPAR RIGHTPAR block
 
     ID              shift and go to state 30
 
 
 state 23
 
-    (64) function -> VOID FUNC . ID startscope_action LEFTPAR recparams RIGHTPAR block
-    (65) function -> VOID FUNC . ID startscope_action LEFTPAR RIGHTPAR block
+    (67) function -> VOID FUNC . ID startscope_action LEFTPAR recparams RIGHTPAR block
+    (68) function -> VOID FUNC . ID startscope_action LEFTPAR RIGHTPAR block
 
     ID              shift and go to state 31
 
 
 state 24
 
-    (103) type -> LIST LEFTHAT . primitivetype RIGHTHAT
-    (104) primitivetype -> . TINT
-    (105) primitivetype -> . TFLOAT
-    (106) primitivetype -> . TSTRING
-    (107) primitivetype -> . TBOOL
-    (108) primitivetype -> . TOBJECT
+    (106) type -> LIST LEFTHAT . primitivetype RIGHTHAT
+    (107) primitivetype -> . TINT
+    (108) primitivetype -> . TFLOAT
+    (109) primitivetype -> . TSTRING
+    (110) primitivetype -> . TBOOL
+    (111) primitivetype -> . TOBJECT
 
     TINT            shift and go to state 11
     TFLOAT          shift and go to state 12
@@ -603,27 +609,27 @@ state 29
 
 state 30
 
-    (62) function -> type FUNC ID . startscope_action LEFTPAR recparams RIGHTPAR block
-    (63) function -> type FUNC ID . startscope_action LEFTPAR RIGHTPAR block
-    (66) startscope_action -> .
+    (65) function -> type FUNC ID . startscope_action LEFTPAR recparams RIGHTPAR block
+    (66) function -> type FUNC ID . startscope_action LEFTPAR RIGHTPAR block
+    (69) startscope_action -> .
 
-    LEFTPAR         reduce using rule 66 (startscope_action -> .)
+    LEFTPAR         reduce using rule 69 (startscope_action -> .)
 
     startscope_action              shift and go to state 40
 
 state 31
 
-    (64) function -> VOID FUNC ID . startscope_action LEFTPAR recparams RIGHTPAR block
-    (65) function -> VOID FUNC ID . startscope_action LEFTPAR RIGHTPAR block
-    (66) startscope_action -> .
+    (67) function -> VOID FUNC ID . startscope_action LEFTPAR recparams RIGHTPAR block
+    (68) function -> VOID FUNC ID . startscope_action LEFTPAR RIGHTPAR block
+    (69) startscope_action -> .
 
-    LEFTPAR         reduce using rule 66 (startscope_action -> .)
+    LEFTPAR         reduce using rule 69 (startscope_action -> .)
 
     startscope_action              shift and go to state 41
 
 state 32
 
-    (103) type -> LIST LEFTHAT primitivetype . RIGHTHAT
+    (106) type -> LIST LEFTHAT primitivetype . RIGHTHAT
 
     RIGHTHAT        shift and go to state 42
 
@@ -691,29 +697,29 @@ state 39
 
 state 40
 
-    (62) function -> type FUNC ID startscope_action . LEFTPAR recparams RIGHTPAR block
-    (63) function -> type FUNC ID startscope_action . LEFTPAR RIGHTPAR block
+    (65) function -> type FUNC ID startscope_action . LEFTPAR recparams RIGHTPAR block
+    (66) function -> type FUNC ID startscope_action . LEFTPAR RIGHTPAR block
 
     LEFTPAR         shift and go to state 52
 
 
 state 41
 
-    (64) function -> VOID FUNC ID startscope_action . LEFTPAR recparams RIGHTPAR block
-    (65) function -> VOID FUNC ID startscope_action . LEFTPAR RIGHTPAR block
+    (67) function -> VOID FUNC ID startscope_action . LEFTPAR recparams RIGHTPAR block
+    (68) function -> VOID FUNC ID startscope_action . LEFTPAR RIGHTPAR block
 
     LEFTPAR         shift and go to state 53
 
 
 state 42
 
-    (103) type -> LIST LEFTHAT primitivetype RIGHTHAT .
+    (106) type -> LIST LEFTHAT primitivetype RIGHTHAT .
 
-    FUNC            reduce using rule 103 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
-    EQUAL           reduce using rule 103 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
-    SEMICOLON       reduce using rule 103 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
-    COMMA           reduce using rule 103 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
-    RIGHTPAR        reduce using rule 103 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
+    FUNC            reduce using rule 106 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
+    EQUAL           reduce using rule 106 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
+    SEMICOLON       reduce using rule 106 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
+    COMMA           reduce using rule 106 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
+    RIGHTPAR        reduce using rule 106 (type -> LIST LEFTHAT primitivetype RIGHTHAT .)
 
 
 state 43
@@ -792,10 +798,10 @@ state 51
 
 state 52
 
-    (62) function -> type FUNC ID startscope_action LEFTPAR . recparams RIGHTPAR block
-    (63) function -> type FUNC ID startscope_action LEFTPAR . RIGHTPAR block
-    (67) recparams -> . ID COLON type
-    (68) recparams -> . ID COLON type COMMA recparams
+    (65) function -> type FUNC ID startscope_action LEFTPAR . recparams RIGHTPAR block
+    (66) function -> type FUNC ID startscope_action LEFTPAR . RIGHTPAR block
+    (70) recparams -> . ID COLON type
+    (71) recparams -> . ID COLON type COMMA recparams
 
     RIGHTPAR        shift and go to state 65
     ID              shift and go to state 63
@@ -804,10 +810,10 @@ state 52
 
 state 53
 
-    (64) function -> VOID FUNC ID startscope_action LEFTPAR . recparams RIGHTPAR block
-    (65) function -> VOID FUNC ID startscope_action LEFTPAR . RIGHTPAR block
-    (67) recparams -> . ID COLON type
-    (68) recparams -> . ID COLON type COMMA recparams
+    (67) function -> VOID FUNC ID startscope_action LEFTPAR . recparams RIGHTPAR block
+    (68) function -> VOID FUNC ID startscope_action LEFTPAR . RIGHTPAR block
+    (70) recparams -> . ID COLON type
+    (71) recparams -> . ID COLON type COMMA recparams
 
     RIGHTPAR        shift and go to state 67
     ID              shift and go to state 63
@@ -854,9 +860,9 @@ state 58
 state 59
 
     (6) start -> VOID FUNC START . startscope_action LEFTPAR RIGHTPAR block
-    (66) startscope_action -> .
+    (69) startscope_action -> .
 
-    LEFTPAR         reduce using rule 66 (startscope_action -> .)
+    LEFTPAR         reduce using rule 69 (startscope_action -> .)
 
     startscope_action              shift and go to state 73
 
@@ -880,13 +886,13 @@ state 61
     (9) vars -> VAR recids COLON . type EQUAL expression SEMICOLON
     (10) vars -> VAR recids COLON . type SEMICOLON vars
     (11) vars -> VAR recids COLON . type SEMICOLON
-    (102) type -> . primitivetype
-    (103) type -> . LIST LEFTHAT primitivetype RIGHTHAT
-    (104) primitivetype -> . TINT
-    (105) primitivetype -> . TFLOAT
-    (106) primitivetype -> . TSTRING
-    (107) primitivetype -> . TBOOL
-    (108) primitivetype -> . TOBJECT
+    (105) type -> . primitivetype
+    (106) type -> . LIST LEFTHAT primitivetype RIGHTHAT
+    (107) primitivetype -> . TINT
+    (108) primitivetype -> . TFLOAT
+    (109) primitivetype -> . TSTRING
+    (110) primitivetype -> . TBOOL
+    (111) primitivetype -> . TOBJECT
 
     LIST            shift and go to state 10
     TINT            shift and go to state 11
@@ -910,22 +916,22 @@ state 62
 
 state 63
 
-    (67) recparams -> ID . COLON type
-    (68) recparams -> ID . COLON type COMMA recparams
+    (70) recparams -> ID . COLON type
+    (71) recparams -> ID . COLON type COMMA recparams
 
     COLON           shift and go to state 76
 
 
 state 64
 
-    (62) function -> type FUNC ID startscope_action LEFTPAR recparams . RIGHTPAR block
+    (65) function -> type FUNC ID startscope_action LEFTPAR recparams . RIGHTPAR block
 
     RIGHTPAR        shift and go to state 77
 
 
 state 65
 
-    (63) function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR . block
+    (66) function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR . block
     (14) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
     (15) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
 
@@ -935,14 +941,14 @@ state 65
 
 state 66
 
-    (64) function -> VOID FUNC ID startscope_action LEFTPAR recparams . RIGHTPAR block
+    (67) function -> VOID FUNC ID startscope_action LEFTPAR recparams . RIGHTPAR block
 
     RIGHTPAR        shift and go to state 80
 
 
 state 67
 
-    (65) function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR . block
+    (68) function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR . block
     (14) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
     (15) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
 
@@ -981,9 +987,9 @@ state 71
 state 72
 
     (7) run -> VOID FUNC RUN . startscope_action LEFTPAR RIGHTPAR block
-    (66) startscope_action -> .
+    (69) startscope_action -> .
 
-    LEFTPAR         reduce using rule 66 (startscope_action -> .)
+    LEFTPAR         reduce using rule 69 (startscope_action -> .)
 
     startscope_action              shift and go to state 85
 
@@ -1014,15 +1020,15 @@ state 75
 
 state 76
 
-    (67) recparams -> ID COLON . type
-    (68) recparams -> ID COLON . type COMMA recparams
-    (102) type -> . primitivetype
-    (103) type -> . LIST LEFTHAT primitivetype RIGHTHAT
-    (104) primitivetype -> . TINT
-    (105) primitivetype -> . TFLOAT
-    (106) primitivetype -> . TSTRING
-    (107) primitivetype -> . TBOOL
-    (108) primitivetype -> . TOBJECT
+    (70) recparams -> ID COLON . type
+    (71) recparams -> ID COLON . type COMMA recparams
+    (105) type -> . primitivetype
+    (106) type -> . LIST LEFTHAT primitivetype RIGHTHAT
+    (107) primitivetype -> . TINT
+    (108) primitivetype -> . TFLOAT
+    (109) primitivetype -> . TSTRING
+    (110) primitivetype -> . TBOOL
+    (111) primitivetype -> . TOBJECT
 
     LIST            shift and go to state 10
     TINT            shift and go to state 11
@@ -1036,7 +1042,7 @@ state 76
 
 state 77
 
-    (62) function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR . block
+    (65) function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR . block
     (14) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
     (15) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
 
@@ -1046,16 +1052,16 @@ state 77
 
 state 78
 
-    (63) function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .
+    (66) function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .
 
-    VOID            reduce using rule 63 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    LIST            reduce using rule 63 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TINT            reduce using rule 63 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TFLOAT          reduce using rule 63 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TSTRING         reduce using rule 63 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TBOOL           reduce using rule 63 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TOBJECT         reduce using rule 63 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    MAIN            reduce using rule 63 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    VOID            reduce using rule 66 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    LIST            reduce using rule 66 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TINT            reduce using rule 66 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TFLOAT          reduce using rule 66 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TSTRING         reduce using rule 66 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TBOOL           reduce using rule 66 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TOBJECT         reduce using rule 66 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    MAIN            reduce using rule 66 (function -> type FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
 
 
 state 79
@@ -1068,7 +1074,7 @@ state 79
 
 state 80
 
-    (64) function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR . block
+    (67) function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR . block
     (14) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
     (15) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
 
@@ -1078,16 +1084,16 @@ state 80
 
 state 81
 
-    (65) function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .
+    (68) function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .
 
-    VOID            reduce using rule 65 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    LIST            reduce using rule 65 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TINT            reduce using rule 65 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TFLOAT          reduce using rule 65 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TSTRING         reduce using rule 65 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TBOOL           reduce using rule 65 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    TOBJECT         reduce using rule 65 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
-    MAIN            reduce using rule 65 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    VOID            reduce using rule 68 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    LIST            reduce using rule 68 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TINT            reduce using rule 68 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TFLOAT          reduce using rule 68 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TSTRING         reduce using rule 68 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TBOOL           reduce using rule 68 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    TOBJECT         reduce using rule 68 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
+    MAIN            reduce using rule 68 (function -> VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block .)
 
 
 state 82
@@ -1129,29 +1135,29 @@ state 87
 
     (8) vars -> VAR recids COLON type EQUAL . expression SEMICOLON vars
     (9) vars -> VAR recids COLON type EQUAL . expression SEMICOLON
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -1246,25 +1252,25 @@ state 88
 
 state 89
 
-    (67) recparams -> ID COLON type .
-    (68) recparams -> ID COLON type . COMMA recparams
+    (70) recparams -> ID COLON type .
+    (71) recparams -> ID COLON type . COMMA recparams
 
-    RIGHTPAR        reduce using rule 67 (recparams -> ID COLON type .)
+    RIGHTPAR        reduce using rule 70 (recparams -> ID COLON type .)
     COMMA           shift and go to state 133
 
 
 state 90
 
-    (62) function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .
+    (65) function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .
 
-    VOID            reduce using rule 62 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    LIST            reduce using rule 62 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TINT            reduce using rule 62 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TFLOAT          reduce using rule 62 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TSTRING         reduce using rule 62 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TBOOL           reduce using rule 62 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TOBJECT         reduce using rule 62 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    MAIN            reduce using rule 62 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    VOID            reduce using rule 65 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    LIST            reduce using rule 65 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TINT            reduce using rule 65 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TFLOAT          reduce using rule 65 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TSTRING         reduce using rule 65 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TBOOL           reduce using rule 65 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TOBJECT         reduce using rule 65 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    MAIN            reduce using rule 65 (function -> type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
 
 
 state 91
@@ -1291,11 +1297,11 @@ state 91
     (11) vars -> . VAR recids COLON type SEMICOLON
     (55) loop -> . for
     (56) loop -> . while
-    (71) write -> . PRINT LEFTPAR recwrite RIGHTPAR
-    (78) return -> . RETURN expression
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (111) nestedassign -> . nestedvalue EQUAL expression
+    (74) write -> . PRINT LEFTPAR recwrite RIGHTPAR
+    (81) return -> . RETURN expression
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (114) nestedassign -> . nestedvalue EQUAL expression
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -1306,9 +1312,9 @@ state 91
     (34) specialfunction -> . set_color
     (35) specialfunction -> . create_object
     (36) specialfunction -> . create_text
-    (57) for -> . FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
-    (58) while -> . WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
-    (110) nestedvalue -> . ID DOT ID
+    (57) for -> . FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
+    (61) while -> . WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
+    (113) nestedvalue -> . ID DOT ID
     (37) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
     (38) size -> . SIZE LEFTPAR RIGHTPAR
     (39) head -> . HEAD LEFTPAR RIGHTPAR
@@ -1366,16 +1372,16 @@ state 91
 
 state 92
 
-    (64) function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .
+    (67) function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .
 
-    VOID            reduce using rule 64 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    LIST            reduce using rule 64 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TINT            reduce using rule 64 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TFLOAT          reduce using rule 64 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TSTRING         reduce using rule 64 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TBOOL           reduce using rule 64 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    TOBJECT         reduce using rule 64 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
-    MAIN            reduce using rule 64 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    VOID            reduce using rule 67 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    LIST            reduce using rule 67 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TINT            reduce using rule 67 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TFLOAT          reduce using rule 67 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TSTRING         reduce using rule 67 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TBOOL           reduce using rule 67 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    TOBJECT         reduce using rule 67 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
+    MAIN            reduce using rule 67 (function -> VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block .)
 
 
 state 93
@@ -1412,77 +1418,77 @@ state 96
 
 state 97
 
-    (83) expression -> exp . RELOP relop_action1 exp relop_action2
-    (84) expression -> exp . LOGIC logic_action1 exp logic_action2
-    (85) expression -> exp .
+    (86) expression -> exp . RELOP relop_action1 exp relop_action2
+    (87) expression -> exp . LOGIC logic_action1 exp logic_action2
+    (88) expression -> exp .
 
     RELOP           shift and go to state 158
     LOGIC           shift and go to state 159
-    SEMICOLON       reduce using rule 85 (expression -> exp .)
-    RIGHTPAR        reduce using rule 85 (expression -> exp .)
-    COMMA           reduce using rule 85 (expression -> exp .)
-    RIGHTBRACKET    reduce using rule 85 (expression -> exp .)
+    SEMICOLON       reduce using rule 88 (expression -> exp .)
+    RIGHTPAR        reduce using rule 88 (expression -> exp .)
+    COMMA           reduce using rule 88 (expression -> exp .)
+    RIGHTBRACKET    reduce using rule 88 (expression -> exp .)
 
 
 state 98
 
-    (90) exp -> term . exp_action recexp
-    (91) exp -> term . exp_action
-    (92) exp_action -> .
+    (93) exp -> term . exp_action recexp
+    (94) exp -> term . exp_action
+    (95) exp_action -> .
 
-    EX              reduce using rule 92 (exp_action -> .)
-    RELOP           reduce using rule 92 (exp_action -> .)
-    LOGIC           reduce using rule 92 (exp_action -> .)
-    SEMICOLON       reduce using rule 92 (exp_action -> .)
-    RIGHTPAR        reduce using rule 92 (exp_action -> .)
-    COMMA           reduce using rule 92 (exp_action -> .)
-    RIGHTBRACKET    reduce using rule 92 (exp_action -> .)
+    EX              reduce using rule 95 (exp_action -> .)
+    RELOP           reduce using rule 95 (exp_action -> .)
+    LOGIC           reduce using rule 95 (exp_action -> .)
+    SEMICOLON       reduce using rule 95 (exp_action -> .)
+    RIGHTPAR        reduce using rule 95 (exp_action -> .)
+    COMMA           reduce using rule 95 (exp_action -> .)
+    RIGHTBRACKET    reduce using rule 95 (exp_action -> .)
 
     exp_action                     shift and go to state 160
 
 state 99
 
-    (94) term -> factor . term_action recterm
-    (95) term -> factor . term_action
-    (96) term_action -> .
+    (97) term -> factor . term_action recterm
+    (98) term -> factor . term_action
+    (99) term_action -> .
 
-    TERMS           reduce using rule 96 (term_action -> .)
-    EX              reduce using rule 96 (term_action -> .)
-    RELOP           reduce using rule 96 (term_action -> .)
-    LOGIC           reduce using rule 96 (term_action -> .)
-    SEMICOLON       reduce using rule 96 (term_action -> .)
-    RIGHTPAR        reduce using rule 96 (term_action -> .)
-    COMMA           reduce using rule 96 (term_action -> .)
-    RIGHTBRACKET    reduce using rule 96 (term_action -> .)
+    TERMS           reduce using rule 99 (term_action -> .)
+    EX              reduce using rule 99 (term_action -> .)
+    RELOP           reduce using rule 99 (term_action -> .)
+    LOGIC           reduce using rule 99 (term_action -> .)
+    SEMICOLON       reduce using rule 99 (term_action -> .)
+    RIGHTPAR        reduce using rule 99 (term_action -> .)
+    COMMA           reduce using rule 99 (term_action -> .)
+    RIGHTBRACKET    reduce using rule 99 (term_action -> .)
 
     term_action                    shift and go to state 161
 
 state 100
 
-    (99) factor -> LEFTPAR . expression RIGHTPAR
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (102) factor -> LEFTPAR . expression RIGHTPAR
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -1544,20 +1550,20 @@ state 100
 
 state 101
 
-    (100) factor -> EX . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (103) factor -> EX . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -1613,48 +1619,48 @@ state 101
 
 state 102
 
-    (101) factor -> cte .
+    (104) factor -> cte .
 
-    TERMS           reduce using rule 101 (factor -> cte .)
-    EX              reduce using rule 101 (factor -> cte .)
-    RELOP           reduce using rule 101 (factor -> cte .)
-    LOGIC           reduce using rule 101 (factor -> cte .)
-    SEMICOLON       reduce using rule 101 (factor -> cte .)
-    RIGHTPAR        reduce using rule 101 (factor -> cte .)
-    COMMA           reduce using rule 101 (factor -> cte .)
-    RIGHTBRACKET    reduce using rule 101 (factor -> cte .)
+    TERMS           reduce using rule 104 (factor -> cte .)
+    EX              reduce using rule 104 (factor -> cte .)
+    RELOP           reduce using rule 104 (factor -> cte .)
+    LOGIC           reduce using rule 104 (factor -> cte .)
+    SEMICOLON       reduce using rule 104 (factor -> cte .)
+    RIGHTPAR        reduce using rule 104 (factor -> cte .)
+    COMMA           reduce using rule 104 (factor -> cte .)
+    RIGHTBRACKET    reduce using rule 104 (factor -> cte .)
 
 
 state 103
 
-    (112) cte -> STRING .
+    (115) cte -> STRING .
 
-    TERMS           reduce using rule 112 (cte -> STRING .)
-    EX              reduce using rule 112 (cte -> STRING .)
-    RELOP           reduce using rule 112 (cte -> STRING .)
-    LOGIC           reduce using rule 112 (cte -> STRING .)
-    SEMICOLON       reduce using rule 112 (cte -> STRING .)
-    RIGHTPAR        reduce using rule 112 (cte -> STRING .)
-    COMMA           reduce using rule 112 (cte -> STRING .)
-    RIGHTBRACKET    reduce using rule 112 (cte -> STRING .)
+    TERMS           reduce using rule 115 (cte -> STRING .)
+    EX              reduce using rule 115 (cte -> STRING .)
+    RELOP           reduce using rule 115 (cte -> STRING .)
+    LOGIC           reduce using rule 115 (cte -> STRING .)
+    SEMICOLON       reduce using rule 115 (cte -> STRING .)
+    RIGHTPAR        reduce using rule 115 (cte -> STRING .)
+    COMMA           reduce using rule 115 (cte -> STRING .)
+    RIGHTBRACKET    reduce using rule 115 (cte -> STRING .)
 
 
 state 104
 
-    (113) cte -> ID .
-    (110) nestedvalue -> ID . DOT ID
-    (79) functioncall -> ID . LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> ID . LEFTPAR RIGHTPAR
-    (109) listaccess -> ID . LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (116) cte -> ID .
+    (113) nestedvalue -> ID . DOT ID
+    (82) functioncall -> ID . LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> ID . LEFTPAR RIGHTPAR
+    (112) listaccess -> ID . LEFTBRACKET expression RIGHTBRACKET SEMICOLON
 
-    TERMS           reduce using rule 113 (cte -> ID .)
-    EX              reduce using rule 113 (cte -> ID .)
-    RELOP           reduce using rule 113 (cte -> ID .)
-    LOGIC           reduce using rule 113 (cte -> ID .)
-    SEMICOLON       reduce using rule 113 (cte -> ID .)
-    RIGHTPAR        reduce using rule 113 (cte -> ID .)
-    COMMA           reduce using rule 113 (cte -> ID .)
-    RIGHTBRACKET    reduce using rule 113 (cte -> ID .)
+    TERMS           reduce using rule 116 (cte -> ID .)
+    EX              reduce using rule 116 (cte -> ID .)
+    RELOP           reduce using rule 116 (cte -> ID .)
+    LOGIC           reduce using rule 116 (cte -> ID .)
+    SEMICOLON       reduce using rule 116 (cte -> ID .)
+    RIGHTPAR        reduce using rule 116 (cte -> ID .)
+    COMMA           reduce using rule 116 (cte -> ID .)
+    RIGHTBRACKET    reduce using rule 116 (cte -> ID .)
     DOT             shift and go to state 164
     LEFTPAR         shift and go to state 165
     LEFTBRACKET     shift and go to state 166
@@ -1662,100 +1668,100 @@ state 104
 
 state 105
 
-    (114) cte -> INT .
+    (117) cte -> INT .
 
-    TERMS           reduce using rule 114 (cte -> INT .)
-    EX              reduce using rule 114 (cte -> INT .)
-    RELOP           reduce using rule 114 (cte -> INT .)
-    LOGIC           reduce using rule 114 (cte -> INT .)
-    SEMICOLON       reduce using rule 114 (cte -> INT .)
-    RIGHTPAR        reduce using rule 114 (cte -> INT .)
-    COMMA           reduce using rule 114 (cte -> INT .)
-    RIGHTBRACKET    reduce using rule 114 (cte -> INT .)
+    TERMS           reduce using rule 117 (cte -> INT .)
+    EX              reduce using rule 117 (cte -> INT .)
+    RELOP           reduce using rule 117 (cte -> INT .)
+    LOGIC           reduce using rule 117 (cte -> INT .)
+    SEMICOLON       reduce using rule 117 (cte -> INT .)
+    RIGHTPAR        reduce using rule 117 (cte -> INT .)
+    COMMA           reduce using rule 117 (cte -> INT .)
+    RIGHTBRACKET    reduce using rule 117 (cte -> INT .)
 
 
 state 106
 
-    (115) cte -> FLOAT .
+    (118) cte -> FLOAT .
 
-    TERMS           reduce using rule 115 (cte -> FLOAT .)
-    EX              reduce using rule 115 (cte -> FLOAT .)
-    RELOP           reduce using rule 115 (cte -> FLOAT .)
-    LOGIC           reduce using rule 115 (cte -> FLOAT .)
-    SEMICOLON       reduce using rule 115 (cte -> FLOAT .)
-    RIGHTPAR        reduce using rule 115 (cte -> FLOAT .)
-    COMMA           reduce using rule 115 (cte -> FLOAT .)
-    RIGHTBRACKET    reduce using rule 115 (cte -> FLOAT .)
+    TERMS           reduce using rule 118 (cte -> FLOAT .)
+    EX              reduce using rule 118 (cte -> FLOAT .)
+    RELOP           reduce using rule 118 (cte -> FLOAT .)
+    LOGIC           reduce using rule 118 (cte -> FLOAT .)
+    SEMICOLON       reduce using rule 118 (cte -> FLOAT .)
+    RIGHTPAR        reduce using rule 118 (cte -> FLOAT .)
+    COMMA           reduce using rule 118 (cte -> FLOAT .)
+    RIGHTBRACKET    reduce using rule 118 (cte -> FLOAT .)
 
 
 state 107
 
-    (116) cte -> BOOL .
+    (119) cte -> BOOL .
 
-    TERMS           reduce using rule 116 (cte -> BOOL .)
-    EX              reduce using rule 116 (cte -> BOOL .)
-    RELOP           reduce using rule 116 (cte -> BOOL .)
-    LOGIC           reduce using rule 116 (cte -> BOOL .)
-    SEMICOLON       reduce using rule 116 (cte -> BOOL .)
-    RIGHTPAR        reduce using rule 116 (cte -> BOOL .)
-    COMMA           reduce using rule 116 (cte -> BOOL .)
-    RIGHTBRACKET    reduce using rule 116 (cte -> BOOL .)
+    TERMS           reduce using rule 119 (cte -> BOOL .)
+    EX              reduce using rule 119 (cte -> BOOL .)
+    RELOP           reduce using rule 119 (cte -> BOOL .)
+    LOGIC           reduce using rule 119 (cte -> BOOL .)
+    SEMICOLON       reduce using rule 119 (cte -> BOOL .)
+    RIGHTPAR        reduce using rule 119 (cte -> BOOL .)
+    COMMA           reduce using rule 119 (cte -> BOOL .)
+    RIGHTBRACKET    reduce using rule 119 (cte -> BOOL .)
 
 
 state 108
 
-    (117) cte -> nestedvalue .
+    (120) cte -> nestedvalue .
 
-    TERMS           reduce using rule 117 (cte -> nestedvalue .)
-    EX              reduce using rule 117 (cte -> nestedvalue .)
-    RELOP           reduce using rule 117 (cte -> nestedvalue .)
-    LOGIC           reduce using rule 117 (cte -> nestedvalue .)
-    SEMICOLON       reduce using rule 117 (cte -> nestedvalue .)
-    RIGHTPAR        reduce using rule 117 (cte -> nestedvalue .)
-    COMMA           reduce using rule 117 (cte -> nestedvalue .)
-    RIGHTBRACKET    reduce using rule 117 (cte -> nestedvalue .)
+    TERMS           reduce using rule 120 (cte -> nestedvalue .)
+    EX              reduce using rule 120 (cte -> nestedvalue .)
+    RELOP           reduce using rule 120 (cte -> nestedvalue .)
+    LOGIC           reduce using rule 120 (cte -> nestedvalue .)
+    SEMICOLON       reduce using rule 120 (cte -> nestedvalue .)
+    RIGHTPAR        reduce using rule 120 (cte -> nestedvalue .)
+    COMMA           reduce using rule 120 (cte -> nestedvalue .)
+    RIGHTBRACKET    reduce using rule 120 (cte -> nestedvalue .)
 
 
 state 109
 
-    (118) cte -> functioncall .
+    (121) cte -> functioncall .
 
-    TERMS           reduce using rule 118 (cte -> functioncall .)
-    EX              reduce using rule 118 (cte -> functioncall .)
-    RELOP           reduce using rule 118 (cte -> functioncall .)
-    LOGIC           reduce using rule 118 (cte -> functioncall .)
-    SEMICOLON       reduce using rule 118 (cte -> functioncall .)
-    RIGHTPAR        reduce using rule 118 (cte -> functioncall .)
-    COMMA           reduce using rule 118 (cte -> functioncall .)
-    RIGHTBRACKET    reduce using rule 118 (cte -> functioncall .)
+    TERMS           reduce using rule 121 (cte -> functioncall .)
+    EX              reduce using rule 121 (cte -> functioncall .)
+    RELOP           reduce using rule 121 (cte -> functioncall .)
+    LOGIC           reduce using rule 121 (cte -> functioncall .)
+    SEMICOLON       reduce using rule 121 (cte -> functioncall .)
+    RIGHTPAR        reduce using rule 121 (cte -> functioncall .)
+    COMMA           reduce using rule 121 (cte -> functioncall .)
+    RIGHTBRACKET    reduce using rule 121 (cte -> functioncall .)
 
 
 state 110
 
-    (119) cte -> listaccess .
+    (122) cte -> listaccess .
 
-    TERMS           reduce using rule 119 (cte -> listaccess .)
-    EX              reduce using rule 119 (cte -> listaccess .)
-    RELOP           reduce using rule 119 (cte -> listaccess .)
-    LOGIC           reduce using rule 119 (cte -> listaccess .)
-    SEMICOLON       reduce using rule 119 (cte -> listaccess .)
-    RIGHTPAR        reduce using rule 119 (cte -> listaccess .)
-    COMMA           reduce using rule 119 (cte -> listaccess .)
-    RIGHTBRACKET    reduce using rule 119 (cte -> listaccess .)
+    TERMS           reduce using rule 122 (cte -> listaccess .)
+    EX              reduce using rule 122 (cte -> listaccess .)
+    RELOP           reduce using rule 122 (cte -> listaccess .)
+    LOGIC           reduce using rule 122 (cte -> listaccess .)
+    SEMICOLON       reduce using rule 122 (cte -> listaccess .)
+    RIGHTPAR        reduce using rule 122 (cte -> listaccess .)
+    COMMA           reduce using rule 122 (cte -> listaccess .)
+    RIGHTBRACKET    reduce using rule 122 (cte -> listaccess .)
 
 
 state 111
 
-    (120) cte -> specialfunction .
+    (123) cte -> specialfunction .
 
-    TERMS           reduce using rule 120 (cte -> specialfunction .)
-    EX              reduce using rule 120 (cte -> specialfunction .)
-    RELOP           reduce using rule 120 (cte -> specialfunction .)
-    LOGIC           reduce using rule 120 (cte -> specialfunction .)
-    SEMICOLON       reduce using rule 120 (cte -> specialfunction .)
-    RIGHTPAR        reduce using rule 120 (cte -> specialfunction .)
-    COMMA           reduce using rule 120 (cte -> specialfunction .)
-    RIGHTBRACKET    reduce using rule 120 (cte -> specialfunction .)
+    TERMS           reduce using rule 123 (cte -> specialfunction .)
+    EX              reduce using rule 123 (cte -> specialfunction .)
+    RELOP           reduce using rule 123 (cte -> specialfunction .)
+    LOGIC           reduce using rule 123 (cte -> specialfunction .)
+    SEMICOLON       reduce using rule 123 (cte -> specialfunction .)
+    RIGHTPAR        reduce using rule 123 (cte -> specialfunction .)
+    COMMA           reduce using rule 123 (cte -> specialfunction .)
+    RIGHTBRACKET    reduce using rule 123 (cte -> specialfunction .)
 
 
 state 112
@@ -1994,9 +2000,9 @@ state 132
 
 state 133
 
-    (68) recparams -> ID COLON type COMMA . recparams
-    (67) recparams -> . ID COLON type
-    (68) recparams -> . ID COLON type COMMA recparams
+    (71) recparams -> ID COLON type COMMA . recparams
+    (70) recparams -> . ID COLON type
+    (71) recparams -> . ID COLON type COMMA recparams
 
     ID              shift and go to state 63
 
@@ -2040,11 +2046,11 @@ state 136
     (11) vars -> . VAR recids COLON type SEMICOLON
     (55) loop -> . for
     (56) loop -> . while
-    (71) write -> . PRINT LEFTPAR recwrite RIGHTPAR
-    (78) return -> . RETURN expression
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (111) nestedassign -> . nestedvalue EQUAL expression
+    (74) write -> . PRINT LEFTPAR recwrite RIGHTPAR
+    (81) return -> . RETURN expression
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (114) nestedassign -> . nestedvalue EQUAL expression
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -2055,9 +2061,9 @@ state 136
     (34) specialfunction -> . set_color
     (35) specialfunction -> . create_object
     (36) specialfunction -> . create_text
-    (57) for -> . FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
-    (58) while -> . WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
-    (110) nestedvalue -> . ID DOT ID
+    (57) for -> . FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
+    (61) while -> . WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
+    (113) nestedvalue -> . ID DOT ID
     (37) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
     (38) size -> . SIZE LEFTPAR RIGHTPAR
     (39) head -> . HEAD LEFTPAR RIGHTPAR
@@ -2230,9 +2236,9 @@ state 145
 state 146
 
     (47) assign -> ID . assign_action1 EQUAL assign_action2 expression
-    (79) functioncall -> ID . LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> ID . LEFTPAR RIGHTPAR
-    (110) nestedvalue -> ID . DOT ID
+    (82) functioncall -> ID . LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> ID . LEFTPAR RIGHTPAR
+    (113) nestedvalue -> ID . DOT ID
     (48) assign_action1 -> .
 
     LEFTPAR         shift and go to state 165
@@ -2245,9 +2251,9 @@ state 147
 
     (50) condition -> IF . startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
     (51) condition -> IF . startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
-    (66) startscope_action -> .
+    (69) startscope_action -> .
 
-    LEFTPAR         reduce using rule 66 (startscope_action -> .)
+    LEFTPAR         reduce using rule 69 (startscope_action -> .)
 
     startscope_action              shift and go to state 188
 
@@ -2301,37 +2307,37 @@ state 149
 
 state 150
 
-    (71) write -> PRINT . LEFTPAR recwrite RIGHTPAR
+    (74) write -> PRINT . LEFTPAR recwrite RIGHTPAR
 
     LEFTPAR         shift and go to state 189
 
 
 state 151
 
-    (78) return -> RETURN . expression
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (81) return -> RETURN . expression
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -2393,26 +2399,26 @@ state 151
 
 state 152
 
-    (111) nestedassign -> nestedvalue . EQUAL expression
+    (114) nestedassign -> nestedvalue . EQUAL expression
 
     EQUAL           shift and go to state 191
 
 
 state 153
 
-    (57) for -> FOR . startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
-    (66) startscope_action -> .
+    (57) for -> FOR . startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
+    (69) startscope_action -> .
 
-    LEFTPAR         reduce using rule 66 (startscope_action -> .)
+    LEFTPAR         reduce using rule 69 (startscope_action -> .)
 
     startscope_action              shift and go to state 192
 
 state 154
 
-    (58) while -> WHILE . startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
-    (66) startscope_action -> .
+    (61) while -> WHILE . startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
+    (69) startscope_action -> .
 
-    LEFTPAR         reduce using rule 66 (startscope_action -> .)
+    LEFTPAR         reduce using rule 69 (startscope_action -> .)
 
     startscope_action              shift and go to state 193
 
@@ -2468,144 +2474,144 @@ state 157
 
 state 158
 
-    (83) expression -> exp RELOP . relop_action1 exp relop_action2
-    (86) relop_action1 -> .
+    (86) expression -> exp RELOP . relop_action1 exp relop_action2
+    (89) relop_action1 -> .
 
-    LEFTPAR         reduce using rule 86 (relop_action1 -> .)
-    EX              reduce using rule 86 (relop_action1 -> .)
-    STRING          reduce using rule 86 (relop_action1 -> .)
-    ID              reduce using rule 86 (relop_action1 -> .)
-    INT             reduce using rule 86 (relop_action1 -> .)
-    FLOAT           reduce using rule 86 (relop_action1 -> .)
-    BOOL            reduce using rule 86 (relop_action1 -> .)
-    DRAW            reduce using rule 86 (relop_action1 -> .)
-    SIZE            reduce using rule 86 (relop_action1 -> .)
-    HEAD            reduce using rule 86 (relop_action1 -> .)
-    TAIL            reduce using rule 86 (relop_action1 -> .)
-    LAST            reduce using rule 86 (relop_action1 -> .)
-    SET_TITLE       reduce using rule 86 (relop_action1 -> .)
-    SET_DIMENSION   reduce using rule 86 (relop_action1 -> .)
-    SET_COLOR       reduce using rule 86 (relop_action1 -> .)
-    CREATE_OBJECT   reduce using rule 86 (relop_action1 -> .)
-    CREATE_TEXT     reduce using rule 86 (relop_action1 -> .)
+    LEFTPAR         reduce using rule 89 (relop_action1 -> .)
+    EX              reduce using rule 89 (relop_action1 -> .)
+    STRING          reduce using rule 89 (relop_action1 -> .)
+    ID              reduce using rule 89 (relop_action1 -> .)
+    INT             reduce using rule 89 (relop_action1 -> .)
+    FLOAT           reduce using rule 89 (relop_action1 -> .)
+    BOOL            reduce using rule 89 (relop_action1 -> .)
+    DRAW            reduce using rule 89 (relop_action1 -> .)
+    SIZE            reduce using rule 89 (relop_action1 -> .)
+    HEAD            reduce using rule 89 (relop_action1 -> .)
+    TAIL            reduce using rule 89 (relop_action1 -> .)
+    LAST            reduce using rule 89 (relop_action1 -> .)
+    SET_TITLE       reduce using rule 89 (relop_action1 -> .)
+    SET_DIMENSION   reduce using rule 89 (relop_action1 -> .)
+    SET_COLOR       reduce using rule 89 (relop_action1 -> .)
+    CREATE_OBJECT   reduce using rule 89 (relop_action1 -> .)
+    CREATE_TEXT     reduce using rule 89 (relop_action1 -> .)
 
     relop_action1                  shift and go to state 196
 
 state 159
 
-    (84) expression -> exp LOGIC . logic_action1 exp logic_action2
-    (88) logic_action1 -> .
+    (87) expression -> exp LOGIC . logic_action1 exp logic_action2
+    (91) logic_action1 -> .
 
-    LEFTPAR         reduce using rule 88 (logic_action1 -> .)
-    EX              reduce using rule 88 (logic_action1 -> .)
-    STRING          reduce using rule 88 (logic_action1 -> .)
-    ID              reduce using rule 88 (logic_action1 -> .)
-    INT             reduce using rule 88 (logic_action1 -> .)
-    FLOAT           reduce using rule 88 (logic_action1 -> .)
-    BOOL            reduce using rule 88 (logic_action1 -> .)
-    DRAW            reduce using rule 88 (logic_action1 -> .)
-    SIZE            reduce using rule 88 (logic_action1 -> .)
-    HEAD            reduce using rule 88 (logic_action1 -> .)
-    TAIL            reduce using rule 88 (logic_action1 -> .)
-    LAST            reduce using rule 88 (logic_action1 -> .)
-    SET_TITLE       reduce using rule 88 (logic_action1 -> .)
-    SET_DIMENSION   reduce using rule 88 (logic_action1 -> .)
-    SET_COLOR       reduce using rule 88 (logic_action1 -> .)
-    CREATE_OBJECT   reduce using rule 88 (logic_action1 -> .)
-    CREATE_TEXT     reduce using rule 88 (logic_action1 -> .)
+    LEFTPAR         reduce using rule 91 (logic_action1 -> .)
+    EX              reduce using rule 91 (logic_action1 -> .)
+    STRING          reduce using rule 91 (logic_action1 -> .)
+    ID              reduce using rule 91 (logic_action1 -> .)
+    INT             reduce using rule 91 (logic_action1 -> .)
+    FLOAT           reduce using rule 91 (logic_action1 -> .)
+    BOOL            reduce using rule 91 (logic_action1 -> .)
+    DRAW            reduce using rule 91 (logic_action1 -> .)
+    SIZE            reduce using rule 91 (logic_action1 -> .)
+    HEAD            reduce using rule 91 (logic_action1 -> .)
+    TAIL            reduce using rule 91 (logic_action1 -> .)
+    LAST            reduce using rule 91 (logic_action1 -> .)
+    SET_TITLE       reduce using rule 91 (logic_action1 -> .)
+    SET_DIMENSION   reduce using rule 91 (logic_action1 -> .)
+    SET_COLOR       reduce using rule 91 (logic_action1 -> .)
+    CREATE_OBJECT   reduce using rule 91 (logic_action1 -> .)
+    CREATE_TEXT     reduce using rule 91 (logic_action1 -> .)
 
     logic_action1                  shift and go to state 197
 
 state 160
 
-    (90) exp -> term exp_action . recexp
-    (91) exp -> term exp_action .
-    (93) recexp -> . EX add_operator exp
+    (93) exp -> term exp_action . recexp
+    (94) exp -> term exp_action .
+    (96) recexp -> . EX add_operator exp
 
-    RELOP           reduce using rule 91 (exp -> term exp_action .)
-    LOGIC           reduce using rule 91 (exp -> term exp_action .)
-    SEMICOLON       reduce using rule 91 (exp -> term exp_action .)
-    RIGHTPAR        reduce using rule 91 (exp -> term exp_action .)
-    COMMA           reduce using rule 91 (exp -> term exp_action .)
-    RIGHTBRACKET    reduce using rule 91 (exp -> term exp_action .)
+    RELOP           reduce using rule 94 (exp -> term exp_action .)
+    LOGIC           reduce using rule 94 (exp -> term exp_action .)
+    SEMICOLON       reduce using rule 94 (exp -> term exp_action .)
+    RIGHTPAR        reduce using rule 94 (exp -> term exp_action .)
+    COMMA           reduce using rule 94 (exp -> term exp_action .)
+    RIGHTBRACKET    reduce using rule 94 (exp -> term exp_action .)
     EX              shift and go to state 199
 
     recexp                         shift and go to state 198
 
 state 161
 
-    (94) term -> factor term_action . recterm
-    (95) term -> factor term_action .
-    (97) recterm -> . TERMS add_operator term
+    (97) term -> factor term_action . recterm
+    (98) term -> factor term_action .
+    (100) recterm -> . TERMS add_operator term
 
-    EX              reduce using rule 95 (term -> factor term_action .)
-    RELOP           reduce using rule 95 (term -> factor term_action .)
-    LOGIC           reduce using rule 95 (term -> factor term_action .)
-    SEMICOLON       reduce using rule 95 (term -> factor term_action .)
-    RIGHTPAR        reduce using rule 95 (term -> factor term_action .)
-    COMMA           reduce using rule 95 (term -> factor term_action .)
-    RIGHTBRACKET    reduce using rule 95 (term -> factor term_action .)
+    EX              reduce using rule 98 (term -> factor term_action .)
+    RELOP           reduce using rule 98 (term -> factor term_action .)
+    LOGIC           reduce using rule 98 (term -> factor term_action .)
+    SEMICOLON       reduce using rule 98 (term -> factor term_action .)
+    RIGHTPAR        reduce using rule 98 (term -> factor term_action .)
+    COMMA           reduce using rule 98 (term -> factor term_action .)
+    RIGHTBRACKET    reduce using rule 98 (term -> factor term_action .)
     TERMS           shift and go to state 201
 
     recterm                        shift and go to state 200
 
 state 162
 
-    (99) factor -> LEFTPAR expression . RIGHTPAR
+    (102) factor -> LEFTPAR expression . RIGHTPAR
 
     RIGHTPAR        shift and go to state 202
 
 
 state 163
 
-    (100) factor -> EX cte .
+    (103) factor -> EX cte .
 
-    TERMS           reduce using rule 100 (factor -> EX cte .)
-    EX              reduce using rule 100 (factor -> EX cte .)
-    RELOP           reduce using rule 100 (factor -> EX cte .)
-    LOGIC           reduce using rule 100 (factor -> EX cte .)
-    SEMICOLON       reduce using rule 100 (factor -> EX cte .)
-    RIGHTPAR        reduce using rule 100 (factor -> EX cte .)
-    COMMA           reduce using rule 100 (factor -> EX cte .)
-    RIGHTBRACKET    reduce using rule 100 (factor -> EX cte .)
+    TERMS           reduce using rule 103 (factor -> EX cte .)
+    EX              reduce using rule 103 (factor -> EX cte .)
+    RELOP           reduce using rule 103 (factor -> EX cte .)
+    LOGIC           reduce using rule 103 (factor -> EX cte .)
+    SEMICOLON       reduce using rule 103 (factor -> EX cte .)
+    RIGHTPAR        reduce using rule 103 (factor -> EX cte .)
+    COMMA           reduce using rule 103 (factor -> EX cte .)
+    RIGHTBRACKET    reduce using rule 103 (factor -> EX cte .)
 
 
 state 164
 
-    (110) nestedvalue -> ID DOT . ID
+    (113) nestedvalue -> ID DOT . ID
 
     ID              shift and go to state 203
 
 
 state 165
 
-    (79) functioncall -> ID LEFTPAR . recfuncexp RIGHTPAR
-    (80) functioncall -> ID LEFTPAR . RIGHTPAR
-    (81) recfuncexp -> . expression COMMA recfuncexp
-    (82) recfuncexp -> . expression
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (82) functioncall -> ID LEFTPAR . recfuncexp RIGHTPAR
+    (83) functioncall -> ID LEFTPAR . RIGHTPAR
+    (84) recfuncexp -> . expression COMMA recfuncexp
+    (85) recfuncexp -> . expression
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -2669,30 +2675,30 @@ state 165
 
 state 166
 
-    (109) listaccess -> ID LEFTBRACKET . expression RIGHTBRACKET SEMICOLON
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (112) listaccess -> ID LEFTBRACKET . expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -2755,31 +2761,31 @@ state 166
 state 167
 
     (37) draw -> DRAW LEFTPAR . recfuncexp RIGHTPAR
-    (81) recfuncexp -> . expression COMMA recfuncexp
-    (82) recfuncexp -> . expression
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (84) recfuncexp -> . expression COMMA recfuncexp
+    (85) recfuncexp -> . expression
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -2871,29 +2877,29 @@ state 171
 state 172
 
     (42) set_title -> SET_TITLE LEFTPAR . expression RIGHTPAR
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -2956,29 +2962,29 @@ state 172
 state 173
 
     (43) set_dimension -> SET_DIMENSION LEFTPAR . expression COMMA expression RIGHTPAR
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -3041,29 +3047,29 @@ state 173
 state 174
 
     (44) set_color -> SET_COLOR LEFTPAR . expression COMMA expression COMMA expression RIGHTPAR
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -3126,31 +3132,31 @@ state 174
 state 175
 
     (45) create_object -> CREATE_OBJECT LEFTPAR . recfuncexp RIGHTPAR
-    (81) recfuncexp -> . expression COMMA recfuncexp
-    (82) recfuncexp -> . expression
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (84) recfuncexp -> . expression COMMA recfuncexp
+    (85) recfuncexp -> . expression
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -3214,31 +3220,31 @@ state 175
 state 176
 
     (46) create_text -> CREATE_TEXT LEFTPAR . recfuncexp RIGHTPAR
-    (81) recfuncexp -> . expression COMMA recfuncexp
-    (82) recfuncexp -> . expression
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (84) recfuncexp -> . expression COMMA recfuncexp
+    (85) recfuncexp -> . expression
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -3301,9 +3307,9 @@ state 176
 
 state 177
 
-    (68) recparams -> ID COLON type COMMA recparams .
+    (71) recparams -> ID COLON type COMMA recparams .
 
-    RIGHTPAR        reduce using rule 68 (recparams -> ID COLON type COMMA recparams .)
+    RIGHTPAR        reduce using rule 71 (recparams -> ID COLON type COMMA recparams .)
 
 
 state 178
@@ -3514,34 +3520,34 @@ state 188
 
 state 189
 
-    (71) write -> PRINT LEFTPAR . recwrite RIGHTPAR
-    (72) recwrite -> . expression action_recwrite_exp COMMA recwrite
-    (73) recwrite -> . STRING action_recwrite_cte COMMA recwrite
-    (74) recwrite -> . expression action_recwrite_exp
-    (75) recwrite -> . STRING action_recwrite_cte
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (74) write -> PRINT LEFTPAR . recwrite RIGHTPAR
+    (75) recwrite -> . expression action_recwrite_exp COMMA recwrite
+    (76) recwrite -> . STRING action_recwrite_cte COMMA recwrite
+    (77) recwrite -> . expression action_recwrite_exp
+    (78) recwrite -> . STRING action_recwrite_cte
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -3604,37 +3610,37 @@ state 189
 
 state 190
 
-    (78) return -> RETURN expression .
+    (81) return -> RETURN expression .
 
-    SEMICOLON       reduce using rule 78 (return -> RETURN expression .)
+    SEMICOLON       reduce using rule 81 (return -> RETURN expression .)
 
 
 state 191
 
-    (111) nestedassign -> nestedvalue EQUAL . expression
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (114) nestedassign -> nestedvalue EQUAL . expression
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -3696,17 +3702,17 @@ state 191
 
 state 192
 
-    (57) for -> FOR startscope_action . LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
+    (57) for -> FOR startscope_action . LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
 
     LEFTPAR         shift and go to state 225
 
 
 state 193
 
-    (58) while -> WHILE startscope_action . while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
-    (59) while_action1 -> .
+    (61) while -> WHILE startscope_action . while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
+    (62) while_action1 -> .
 
-    LEFTPAR         reduce using rule 59 (while_action1 -> .)
+    LEFTPAR         reduce using rule 62 (while_action1 -> .)
 
     while_action1                  shift and go to state 226
 
@@ -3743,27 +3749,27 @@ state 195
 
 state 196
 
-    (83) expression -> exp RELOP relop_action1 . exp relop_action2
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> exp RELOP relop_action1 . exp relop_action2
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -3824,27 +3830,27 @@ state 196
 
 state 197
 
-    (84) expression -> exp LOGIC logic_action1 . exp logic_action2
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (87) expression -> exp LOGIC logic_action1 . exp logic_action2
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -3905,141 +3911,141 @@ state 197
 
 state 198
 
-    (90) exp -> term exp_action recexp .
+    (93) exp -> term exp_action recexp .
 
-    RELOP           reduce using rule 90 (exp -> term exp_action recexp .)
-    LOGIC           reduce using rule 90 (exp -> term exp_action recexp .)
-    SEMICOLON       reduce using rule 90 (exp -> term exp_action recexp .)
-    RIGHTPAR        reduce using rule 90 (exp -> term exp_action recexp .)
-    COMMA           reduce using rule 90 (exp -> term exp_action recexp .)
-    RIGHTBRACKET    reduce using rule 90 (exp -> term exp_action recexp .)
+    RELOP           reduce using rule 93 (exp -> term exp_action recexp .)
+    LOGIC           reduce using rule 93 (exp -> term exp_action recexp .)
+    SEMICOLON       reduce using rule 93 (exp -> term exp_action recexp .)
+    RIGHTPAR        reduce using rule 93 (exp -> term exp_action recexp .)
+    COMMA           reduce using rule 93 (exp -> term exp_action recexp .)
+    RIGHTBRACKET    reduce using rule 93 (exp -> term exp_action recexp .)
 
 
 state 199
 
-    (93) recexp -> EX . add_operator exp
-    (98) add_operator -> .
+    (96) recexp -> EX . add_operator exp
+    (101) add_operator -> .
 
-    LEFTPAR         reduce using rule 98 (add_operator -> .)
-    EX              reduce using rule 98 (add_operator -> .)
-    STRING          reduce using rule 98 (add_operator -> .)
-    ID              reduce using rule 98 (add_operator -> .)
-    INT             reduce using rule 98 (add_operator -> .)
-    FLOAT           reduce using rule 98 (add_operator -> .)
-    BOOL            reduce using rule 98 (add_operator -> .)
-    DRAW            reduce using rule 98 (add_operator -> .)
-    SIZE            reduce using rule 98 (add_operator -> .)
-    HEAD            reduce using rule 98 (add_operator -> .)
-    TAIL            reduce using rule 98 (add_operator -> .)
-    LAST            reduce using rule 98 (add_operator -> .)
-    SET_TITLE       reduce using rule 98 (add_operator -> .)
-    SET_DIMENSION   reduce using rule 98 (add_operator -> .)
-    SET_COLOR       reduce using rule 98 (add_operator -> .)
-    CREATE_OBJECT   reduce using rule 98 (add_operator -> .)
-    CREATE_TEXT     reduce using rule 98 (add_operator -> .)
+    LEFTPAR         reduce using rule 101 (add_operator -> .)
+    EX              reduce using rule 101 (add_operator -> .)
+    STRING          reduce using rule 101 (add_operator -> .)
+    ID              reduce using rule 101 (add_operator -> .)
+    INT             reduce using rule 101 (add_operator -> .)
+    FLOAT           reduce using rule 101 (add_operator -> .)
+    BOOL            reduce using rule 101 (add_operator -> .)
+    DRAW            reduce using rule 101 (add_operator -> .)
+    SIZE            reduce using rule 101 (add_operator -> .)
+    HEAD            reduce using rule 101 (add_operator -> .)
+    TAIL            reduce using rule 101 (add_operator -> .)
+    LAST            reduce using rule 101 (add_operator -> .)
+    SET_TITLE       reduce using rule 101 (add_operator -> .)
+    SET_DIMENSION   reduce using rule 101 (add_operator -> .)
+    SET_COLOR       reduce using rule 101 (add_operator -> .)
+    CREATE_OBJECT   reduce using rule 101 (add_operator -> .)
+    CREATE_TEXT     reduce using rule 101 (add_operator -> .)
 
     add_operator                   shift and go to state 229
 
 state 200
 
-    (94) term -> factor term_action recterm .
+    (97) term -> factor term_action recterm .
 
-    EX              reduce using rule 94 (term -> factor term_action recterm .)
-    RELOP           reduce using rule 94 (term -> factor term_action recterm .)
-    LOGIC           reduce using rule 94 (term -> factor term_action recterm .)
-    SEMICOLON       reduce using rule 94 (term -> factor term_action recterm .)
-    RIGHTPAR        reduce using rule 94 (term -> factor term_action recterm .)
-    COMMA           reduce using rule 94 (term -> factor term_action recterm .)
-    RIGHTBRACKET    reduce using rule 94 (term -> factor term_action recterm .)
+    EX              reduce using rule 97 (term -> factor term_action recterm .)
+    RELOP           reduce using rule 97 (term -> factor term_action recterm .)
+    LOGIC           reduce using rule 97 (term -> factor term_action recterm .)
+    SEMICOLON       reduce using rule 97 (term -> factor term_action recterm .)
+    RIGHTPAR        reduce using rule 97 (term -> factor term_action recterm .)
+    COMMA           reduce using rule 97 (term -> factor term_action recterm .)
+    RIGHTBRACKET    reduce using rule 97 (term -> factor term_action recterm .)
 
 
 state 201
 
-    (97) recterm -> TERMS . add_operator term
-    (98) add_operator -> .
+    (100) recterm -> TERMS . add_operator term
+    (101) add_operator -> .
 
-    LEFTPAR         reduce using rule 98 (add_operator -> .)
-    EX              reduce using rule 98 (add_operator -> .)
-    STRING          reduce using rule 98 (add_operator -> .)
-    ID              reduce using rule 98 (add_operator -> .)
-    INT             reduce using rule 98 (add_operator -> .)
-    FLOAT           reduce using rule 98 (add_operator -> .)
-    BOOL            reduce using rule 98 (add_operator -> .)
-    DRAW            reduce using rule 98 (add_operator -> .)
-    SIZE            reduce using rule 98 (add_operator -> .)
-    HEAD            reduce using rule 98 (add_operator -> .)
-    TAIL            reduce using rule 98 (add_operator -> .)
-    LAST            reduce using rule 98 (add_operator -> .)
-    SET_TITLE       reduce using rule 98 (add_operator -> .)
-    SET_DIMENSION   reduce using rule 98 (add_operator -> .)
-    SET_COLOR       reduce using rule 98 (add_operator -> .)
-    CREATE_OBJECT   reduce using rule 98 (add_operator -> .)
-    CREATE_TEXT     reduce using rule 98 (add_operator -> .)
+    LEFTPAR         reduce using rule 101 (add_operator -> .)
+    EX              reduce using rule 101 (add_operator -> .)
+    STRING          reduce using rule 101 (add_operator -> .)
+    ID              reduce using rule 101 (add_operator -> .)
+    INT             reduce using rule 101 (add_operator -> .)
+    FLOAT           reduce using rule 101 (add_operator -> .)
+    BOOL            reduce using rule 101 (add_operator -> .)
+    DRAW            reduce using rule 101 (add_operator -> .)
+    SIZE            reduce using rule 101 (add_operator -> .)
+    HEAD            reduce using rule 101 (add_operator -> .)
+    TAIL            reduce using rule 101 (add_operator -> .)
+    LAST            reduce using rule 101 (add_operator -> .)
+    SET_TITLE       reduce using rule 101 (add_operator -> .)
+    SET_DIMENSION   reduce using rule 101 (add_operator -> .)
+    SET_COLOR       reduce using rule 101 (add_operator -> .)
+    CREATE_OBJECT   reduce using rule 101 (add_operator -> .)
+    CREATE_TEXT     reduce using rule 101 (add_operator -> .)
 
     add_operator                   shift and go to state 230
 
 state 202
 
-    (99) factor -> LEFTPAR expression RIGHTPAR .
+    (102) factor -> LEFTPAR expression RIGHTPAR .
 
-    TERMS           reduce using rule 99 (factor -> LEFTPAR expression RIGHTPAR .)
-    EX              reduce using rule 99 (factor -> LEFTPAR expression RIGHTPAR .)
-    RELOP           reduce using rule 99 (factor -> LEFTPAR expression RIGHTPAR .)
-    LOGIC           reduce using rule 99 (factor -> LEFTPAR expression RIGHTPAR .)
-    SEMICOLON       reduce using rule 99 (factor -> LEFTPAR expression RIGHTPAR .)
-    RIGHTPAR        reduce using rule 99 (factor -> LEFTPAR expression RIGHTPAR .)
-    COMMA           reduce using rule 99 (factor -> LEFTPAR expression RIGHTPAR .)
-    RIGHTBRACKET    reduce using rule 99 (factor -> LEFTPAR expression RIGHTPAR .)
+    TERMS           reduce using rule 102 (factor -> LEFTPAR expression RIGHTPAR .)
+    EX              reduce using rule 102 (factor -> LEFTPAR expression RIGHTPAR .)
+    RELOP           reduce using rule 102 (factor -> LEFTPAR expression RIGHTPAR .)
+    LOGIC           reduce using rule 102 (factor -> LEFTPAR expression RIGHTPAR .)
+    SEMICOLON       reduce using rule 102 (factor -> LEFTPAR expression RIGHTPAR .)
+    RIGHTPAR        reduce using rule 102 (factor -> LEFTPAR expression RIGHTPAR .)
+    COMMA           reduce using rule 102 (factor -> LEFTPAR expression RIGHTPAR .)
+    RIGHTBRACKET    reduce using rule 102 (factor -> LEFTPAR expression RIGHTPAR .)
 
 
 state 203
 
-    (110) nestedvalue -> ID DOT ID .
+    (113) nestedvalue -> ID DOT ID .
 
-    TERMS           reduce using rule 110 (nestedvalue -> ID DOT ID .)
-    EX              reduce using rule 110 (nestedvalue -> ID DOT ID .)
-    RELOP           reduce using rule 110 (nestedvalue -> ID DOT ID .)
-    LOGIC           reduce using rule 110 (nestedvalue -> ID DOT ID .)
-    SEMICOLON       reduce using rule 110 (nestedvalue -> ID DOT ID .)
-    EQUAL           reduce using rule 110 (nestedvalue -> ID DOT ID .)
-    RIGHTPAR        reduce using rule 110 (nestedvalue -> ID DOT ID .)
-    COMMA           reduce using rule 110 (nestedvalue -> ID DOT ID .)
-    RIGHTBRACKET    reduce using rule 110 (nestedvalue -> ID DOT ID .)
+    TERMS           reduce using rule 113 (nestedvalue -> ID DOT ID .)
+    EX              reduce using rule 113 (nestedvalue -> ID DOT ID .)
+    RELOP           reduce using rule 113 (nestedvalue -> ID DOT ID .)
+    LOGIC           reduce using rule 113 (nestedvalue -> ID DOT ID .)
+    SEMICOLON       reduce using rule 113 (nestedvalue -> ID DOT ID .)
+    EQUAL           reduce using rule 113 (nestedvalue -> ID DOT ID .)
+    RIGHTPAR        reduce using rule 113 (nestedvalue -> ID DOT ID .)
+    COMMA           reduce using rule 113 (nestedvalue -> ID DOT ID .)
+    RIGHTBRACKET    reduce using rule 113 (nestedvalue -> ID DOT ID .)
 
 
 state 204
 
-    (79) functioncall -> ID LEFTPAR recfuncexp . RIGHTPAR
+    (82) functioncall -> ID LEFTPAR recfuncexp . RIGHTPAR
 
     RIGHTPAR        shift and go to state 231
 
 
 state 205
 
-    (80) functioncall -> ID LEFTPAR RIGHTPAR .
+    (83) functioncall -> ID LEFTPAR RIGHTPAR .
 
-    TERMS           reduce using rule 80 (functioncall -> ID LEFTPAR RIGHTPAR .)
-    EX              reduce using rule 80 (functioncall -> ID LEFTPAR RIGHTPAR .)
-    RELOP           reduce using rule 80 (functioncall -> ID LEFTPAR RIGHTPAR .)
-    LOGIC           reduce using rule 80 (functioncall -> ID LEFTPAR RIGHTPAR .)
-    SEMICOLON       reduce using rule 80 (functioncall -> ID LEFTPAR RIGHTPAR .)
-    RIGHTPAR        reduce using rule 80 (functioncall -> ID LEFTPAR RIGHTPAR .)
-    COMMA           reduce using rule 80 (functioncall -> ID LEFTPAR RIGHTPAR .)
-    RIGHTBRACKET    reduce using rule 80 (functioncall -> ID LEFTPAR RIGHTPAR .)
+    TERMS           reduce using rule 83 (functioncall -> ID LEFTPAR RIGHTPAR .)
+    EX              reduce using rule 83 (functioncall -> ID LEFTPAR RIGHTPAR .)
+    RELOP           reduce using rule 83 (functioncall -> ID LEFTPAR RIGHTPAR .)
+    LOGIC           reduce using rule 83 (functioncall -> ID LEFTPAR RIGHTPAR .)
+    SEMICOLON       reduce using rule 83 (functioncall -> ID LEFTPAR RIGHTPAR .)
+    RIGHTPAR        reduce using rule 83 (functioncall -> ID LEFTPAR RIGHTPAR .)
+    COMMA           reduce using rule 83 (functioncall -> ID LEFTPAR RIGHTPAR .)
+    RIGHTBRACKET    reduce using rule 83 (functioncall -> ID LEFTPAR RIGHTPAR .)
 
 
 state 206
 
-    (81) recfuncexp -> expression . COMMA recfuncexp
-    (82) recfuncexp -> expression .
+    (84) recfuncexp -> expression . COMMA recfuncexp
+    (85) recfuncexp -> expression .
 
     COMMA           shift and go to state 232
-    RIGHTPAR        reduce using rule 82 (recfuncexp -> expression .)
+    RIGHTPAR        reduce using rule 85 (recfuncexp -> expression .)
 
 
 state 207
 
-    (109) listaccess -> ID LEFTBRACKET expression . RIGHTBRACKET SEMICOLON
+    (112) listaccess -> ID LEFTBRACKET expression . RIGHTBRACKET SEMICOLON
 
     RIGHTBRACKET    shift and go to state 233
 
@@ -4204,29 +4210,29 @@ state 220
 
     (50) condition -> IF startscope_action LEFTPAR . expression condition_action1 RIGHTPAR block condition_action2
     (51) condition -> IF startscope_action LEFTPAR . expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -4288,53 +4294,53 @@ state 220
 
 state 221
 
-    (71) write -> PRINT LEFTPAR recwrite . RIGHTPAR
+    (74) write -> PRINT LEFTPAR recwrite . RIGHTPAR
 
     RIGHTPAR        shift and go to state 242
 
 
 state 222
 
-    (72) recwrite -> expression . action_recwrite_exp COMMA recwrite
-    (74) recwrite -> expression . action_recwrite_exp
-    (76) action_recwrite_exp -> .
+    (75) recwrite -> expression . action_recwrite_exp COMMA recwrite
+    (77) recwrite -> expression . action_recwrite_exp
+    (79) action_recwrite_exp -> .
 
-    COMMA           reduce using rule 76 (action_recwrite_exp -> .)
-    RIGHTPAR        reduce using rule 76 (action_recwrite_exp -> .)
+    COMMA           reduce using rule 79 (action_recwrite_exp -> .)
+    RIGHTPAR        reduce using rule 79 (action_recwrite_exp -> .)
 
     action_recwrite_exp            shift and go to state 243
 
 state 223
 
-    (73) recwrite -> STRING . action_recwrite_cte COMMA recwrite
-    (75) recwrite -> STRING . action_recwrite_cte
-    (112) cte -> STRING .
-    (77) action_recwrite_cte -> .
+    (76) recwrite -> STRING . action_recwrite_cte COMMA recwrite
+    (78) recwrite -> STRING . action_recwrite_cte
+    (115) cte -> STRING .
+    (80) action_recwrite_cte -> .
 
-  ! reduce/reduce conflict for COMMA resolved using rule 77 (action_recwrite_cte -> .)
-  ! reduce/reduce conflict for RIGHTPAR resolved using rule 77 (action_recwrite_cte -> .)
-    TERMS           reduce using rule 112 (cte -> STRING .)
-    EX              reduce using rule 112 (cte -> STRING .)
-    RELOP           reduce using rule 112 (cte -> STRING .)
-    LOGIC           reduce using rule 112 (cte -> STRING .)
-    COMMA           reduce using rule 77 (action_recwrite_cte -> .)
-    RIGHTPAR        reduce using rule 77 (action_recwrite_cte -> .)
+  ! reduce/reduce conflict for COMMA resolved using rule 80 (action_recwrite_cte -> .)
+  ! reduce/reduce conflict for RIGHTPAR resolved using rule 80 (action_recwrite_cte -> .)
+    TERMS           reduce using rule 115 (cte -> STRING .)
+    EX              reduce using rule 115 (cte -> STRING .)
+    RELOP           reduce using rule 115 (cte -> STRING .)
+    LOGIC           reduce using rule 115 (cte -> STRING .)
+    COMMA           reduce using rule 80 (action_recwrite_cte -> .)
+    RIGHTPAR        reduce using rule 80 (action_recwrite_cte -> .)
 
-  ! COMMA           [ reduce using rule 112 (cte -> STRING .) ]
-  ! RIGHTPAR        [ reduce using rule 112 (cte -> STRING .) ]
+  ! COMMA           [ reduce using rule 115 (cte -> STRING .) ]
+  ! RIGHTPAR        [ reduce using rule 115 (cte -> STRING .) ]
 
     action_recwrite_cte            shift and go to state 244
 
 state 224
 
-    (111) nestedassign -> nestedvalue EQUAL expression .
+    (114) nestedassign -> nestedvalue EQUAL expression .
 
-    SEMICOLON       reduce using rule 111 (nestedassign -> nestedvalue EQUAL expression .)
+    SEMICOLON       reduce using rule 114 (nestedassign -> nestedvalue EQUAL expression .)
 
 
 state 225
 
-    (57) for -> FOR startscope_action LEFTPAR . assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
+    (57) for -> FOR startscope_action LEFTPAR . assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     (47) assign -> . ID assign_action1 EQUAL assign_action2 expression
 
     ID              shift and go to state 246
@@ -4343,58 +4349,58 @@ state 225
 
 state 226
 
-    (58) while -> WHILE startscope_action while_action1 . LEFTPAR expression while_action2 RIGHTPAR block while_action3
+    (61) while -> WHILE startscope_action while_action1 . LEFTPAR expression while_action2 RIGHTPAR block while_action3
 
     LEFTPAR         shift and go to state 247
 
 
 state 227
 
-    (83) expression -> exp RELOP relop_action1 exp . relop_action2
-    (87) relop_action2 -> .
+    (86) expression -> exp RELOP relop_action1 exp . relop_action2
+    (90) relop_action2 -> .
 
-    SEMICOLON       reduce using rule 87 (relop_action2 -> .)
-    RIGHTPAR        reduce using rule 87 (relop_action2 -> .)
-    COMMA           reduce using rule 87 (relop_action2 -> .)
-    RIGHTBRACKET    reduce using rule 87 (relop_action2 -> .)
+    SEMICOLON       reduce using rule 90 (relop_action2 -> .)
+    RIGHTPAR        reduce using rule 90 (relop_action2 -> .)
+    COMMA           reduce using rule 90 (relop_action2 -> .)
+    RIGHTBRACKET    reduce using rule 90 (relop_action2 -> .)
 
     relop_action2                  shift and go to state 248
 
 state 228
 
-    (84) expression -> exp LOGIC logic_action1 exp . logic_action2
-    (89) logic_action2 -> .
+    (87) expression -> exp LOGIC logic_action1 exp . logic_action2
+    (92) logic_action2 -> .
 
-    SEMICOLON       reduce using rule 89 (logic_action2 -> .)
-    RIGHTPAR        reduce using rule 89 (logic_action2 -> .)
-    COMMA           reduce using rule 89 (logic_action2 -> .)
-    RIGHTBRACKET    reduce using rule 89 (logic_action2 -> .)
+    SEMICOLON       reduce using rule 92 (logic_action2 -> .)
+    RIGHTPAR        reduce using rule 92 (logic_action2 -> .)
+    COMMA           reduce using rule 92 (logic_action2 -> .)
+    RIGHTBRACKET    reduce using rule 92 (logic_action2 -> .)
 
     logic_action2                  shift and go to state 249
 
 state 229
 
-    (93) recexp -> EX add_operator . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (96) recexp -> EX add_operator . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -4455,25 +4461,25 @@ state 229
 
 state 230
 
-    (97) recterm -> TERMS add_operator . term
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (100) recterm -> TERMS add_operator . term
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -4533,46 +4539,46 @@ state 230
 
 state 231
 
-    (79) functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .
+    (82) functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .
 
-    TERMS           reduce using rule 79 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
-    EX              reduce using rule 79 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
-    RELOP           reduce using rule 79 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
-    LOGIC           reduce using rule 79 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
-    SEMICOLON       reduce using rule 79 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
-    RIGHTPAR        reduce using rule 79 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
-    COMMA           reduce using rule 79 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
-    RIGHTBRACKET    reduce using rule 79 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
+    TERMS           reduce using rule 82 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
+    EX              reduce using rule 82 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
+    RELOP           reduce using rule 82 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
+    LOGIC           reduce using rule 82 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
+    SEMICOLON       reduce using rule 82 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
+    RIGHTPAR        reduce using rule 82 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
+    COMMA           reduce using rule 82 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
+    RIGHTBRACKET    reduce using rule 82 (functioncall -> ID LEFTPAR recfuncexp RIGHTPAR .)
 
 
 state 232
 
-    (81) recfuncexp -> expression COMMA . recfuncexp
-    (81) recfuncexp -> . expression COMMA recfuncexp
-    (82) recfuncexp -> . expression
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (84) recfuncexp -> expression COMMA . recfuncexp
+    (84) recfuncexp -> . expression COMMA recfuncexp
+    (85) recfuncexp -> . expression
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -4635,7 +4641,7 @@ state 232
 
 state 233
 
-    (109) listaccess -> ID LEFTBRACKET expression RIGHTBRACKET . SEMICOLON
+    (112) listaccess -> ID LEFTBRACKET expression RIGHTBRACKET . SEMICOLON
 
     SEMICOLON       shift and go to state 253
 
@@ -4671,29 +4677,29 @@ state 235
 state 236
 
     (43) set_dimension -> SET_DIMENSION LEFTPAR expression COMMA . expression RIGHTPAR
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -4756,29 +4762,29 @@ state 236
 state 237
 
     (44) set_color -> SET_COLOR LEFTPAR expression COMMA . expression COMMA expression RIGHTPAR
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -4869,29 +4875,29 @@ state 239
 state 240
 
     (47) assign -> ID assign_action1 EQUAL assign_action2 . expression
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -4963,32 +4969,32 @@ state 241
 
 state 242
 
-    (71) write -> PRINT LEFTPAR recwrite RIGHTPAR .
+    (74) write -> PRINT LEFTPAR recwrite RIGHTPAR .
 
-    SEMICOLON       reduce using rule 71 (write -> PRINT LEFTPAR recwrite RIGHTPAR .)
+    SEMICOLON       reduce using rule 74 (write -> PRINT LEFTPAR recwrite RIGHTPAR .)
 
 
 state 243
 
-    (72) recwrite -> expression action_recwrite_exp . COMMA recwrite
-    (74) recwrite -> expression action_recwrite_exp .
+    (75) recwrite -> expression action_recwrite_exp . COMMA recwrite
+    (77) recwrite -> expression action_recwrite_exp .
 
     COMMA           shift and go to state 258
-    RIGHTPAR        reduce using rule 74 (recwrite -> expression action_recwrite_exp .)
+    RIGHTPAR        reduce using rule 77 (recwrite -> expression action_recwrite_exp .)
 
 
 state 244
 
-    (73) recwrite -> STRING action_recwrite_cte . COMMA recwrite
-    (75) recwrite -> STRING action_recwrite_cte .
+    (76) recwrite -> STRING action_recwrite_cte . COMMA recwrite
+    (78) recwrite -> STRING action_recwrite_cte .
 
     COMMA           shift and go to state 259
-    RIGHTPAR        reduce using rule 75 (recwrite -> STRING action_recwrite_cte .)
+    RIGHTPAR        reduce using rule 78 (recwrite -> STRING action_recwrite_cte .)
 
 
 state 245
 
-    (57) for -> FOR startscope_action LEFTPAR assign . SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
+    (57) for -> FOR startscope_action LEFTPAR assign . SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
 
     SEMICOLON       shift and go to state 260
 
@@ -5004,30 +5010,30 @@ state 246
 
 state 247
 
-    (58) while -> WHILE startscope_action while_action1 LEFTPAR . expression while_action2 RIGHTPAR block while_action3
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (61) while -> WHILE startscope_action while_action1 LEFTPAR . expression while_action2 RIGHTPAR block while_action3
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -5089,68 +5095,68 @@ state 247
 
 state 248
 
-    (83) expression -> exp RELOP relop_action1 exp relop_action2 .
+    (86) expression -> exp RELOP relop_action1 exp relop_action2 .
 
-    SEMICOLON       reduce using rule 83 (expression -> exp RELOP relop_action1 exp relop_action2 .)
-    RIGHTPAR        reduce using rule 83 (expression -> exp RELOP relop_action1 exp relop_action2 .)
-    COMMA           reduce using rule 83 (expression -> exp RELOP relop_action1 exp relop_action2 .)
-    RIGHTBRACKET    reduce using rule 83 (expression -> exp RELOP relop_action1 exp relop_action2 .)
+    SEMICOLON       reduce using rule 86 (expression -> exp RELOP relop_action1 exp relop_action2 .)
+    RIGHTPAR        reduce using rule 86 (expression -> exp RELOP relop_action1 exp relop_action2 .)
+    COMMA           reduce using rule 86 (expression -> exp RELOP relop_action1 exp relop_action2 .)
+    RIGHTBRACKET    reduce using rule 86 (expression -> exp RELOP relop_action1 exp relop_action2 .)
 
 
 state 249
 
-    (84) expression -> exp LOGIC logic_action1 exp logic_action2 .
+    (87) expression -> exp LOGIC logic_action1 exp logic_action2 .
 
-    SEMICOLON       reduce using rule 84 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
-    RIGHTPAR        reduce using rule 84 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
-    COMMA           reduce using rule 84 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
-    RIGHTBRACKET    reduce using rule 84 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
+    SEMICOLON       reduce using rule 87 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
+    RIGHTPAR        reduce using rule 87 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
+    COMMA           reduce using rule 87 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
+    RIGHTBRACKET    reduce using rule 87 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
 
 
 state 250
 
-    (93) recexp -> EX add_operator exp .
+    (96) recexp -> EX add_operator exp .
 
-    RELOP           reduce using rule 93 (recexp -> EX add_operator exp .)
-    LOGIC           reduce using rule 93 (recexp -> EX add_operator exp .)
-    SEMICOLON       reduce using rule 93 (recexp -> EX add_operator exp .)
-    RIGHTPAR        reduce using rule 93 (recexp -> EX add_operator exp .)
-    COMMA           reduce using rule 93 (recexp -> EX add_operator exp .)
-    RIGHTBRACKET    reduce using rule 93 (recexp -> EX add_operator exp .)
+    RELOP           reduce using rule 96 (recexp -> EX add_operator exp .)
+    LOGIC           reduce using rule 96 (recexp -> EX add_operator exp .)
+    SEMICOLON       reduce using rule 96 (recexp -> EX add_operator exp .)
+    RIGHTPAR        reduce using rule 96 (recexp -> EX add_operator exp .)
+    COMMA           reduce using rule 96 (recexp -> EX add_operator exp .)
+    RIGHTBRACKET    reduce using rule 96 (recexp -> EX add_operator exp .)
 
 
 state 251
 
-    (97) recterm -> TERMS add_operator term .
+    (100) recterm -> TERMS add_operator term .
 
-    EX              reduce using rule 97 (recterm -> TERMS add_operator term .)
-    RELOP           reduce using rule 97 (recterm -> TERMS add_operator term .)
-    LOGIC           reduce using rule 97 (recterm -> TERMS add_operator term .)
-    SEMICOLON       reduce using rule 97 (recterm -> TERMS add_operator term .)
-    RIGHTPAR        reduce using rule 97 (recterm -> TERMS add_operator term .)
-    COMMA           reduce using rule 97 (recterm -> TERMS add_operator term .)
-    RIGHTBRACKET    reduce using rule 97 (recterm -> TERMS add_operator term .)
+    EX              reduce using rule 100 (recterm -> TERMS add_operator term .)
+    RELOP           reduce using rule 100 (recterm -> TERMS add_operator term .)
+    LOGIC           reduce using rule 100 (recterm -> TERMS add_operator term .)
+    SEMICOLON       reduce using rule 100 (recterm -> TERMS add_operator term .)
+    RIGHTPAR        reduce using rule 100 (recterm -> TERMS add_operator term .)
+    COMMA           reduce using rule 100 (recterm -> TERMS add_operator term .)
+    RIGHTBRACKET    reduce using rule 100 (recterm -> TERMS add_operator term .)
 
 
 state 252
 
-    (81) recfuncexp -> expression COMMA recfuncexp .
+    (84) recfuncexp -> expression COMMA recfuncexp .
 
-    RIGHTPAR        reduce using rule 81 (recfuncexp -> expression COMMA recfuncexp .)
+    RIGHTPAR        reduce using rule 84 (recfuncexp -> expression COMMA recfuncexp .)
 
 
 state 253
 
-    (109) listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .
+    (112) listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .
 
-    TERMS           reduce using rule 109 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
-    EX              reduce using rule 109 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
-    RELOP           reduce using rule 109 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
-    LOGIC           reduce using rule 109 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
-    SEMICOLON       reduce using rule 109 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
-    RIGHTPAR        reduce using rule 109 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
-    COMMA           reduce using rule 109 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
-    RIGHTBRACKET    reduce using rule 109 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
+    TERMS           reduce using rule 112 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
+    EX              reduce using rule 112 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
+    RELOP           reduce using rule 112 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
+    LOGIC           reduce using rule 112 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
+    SEMICOLON       reduce using rule 112 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
+    RIGHTPAR        reduce using rule 112 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
+    COMMA           reduce using rule 112 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
+    RIGHTBRACKET    reduce using rule 112 (listaccess -> ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON .)
 
 
 state 254
@@ -5184,34 +5190,34 @@ state 257
 
 state 258
 
-    (72) recwrite -> expression action_recwrite_exp COMMA . recwrite
-    (72) recwrite -> . expression action_recwrite_exp COMMA recwrite
-    (73) recwrite -> . STRING action_recwrite_cte COMMA recwrite
-    (74) recwrite -> . expression action_recwrite_exp
-    (75) recwrite -> . STRING action_recwrite_cte
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (75) recwrite -> expression action_recwrite_exp COMMA . recwrite
+    (75) recwrite -> . expression action_recwrite_exp COMMA recwrite
+    (76) recwrite -> . STRING action_recwrite_cte COMMA recwrite
+    (77) recwrite -> . expression action_recwrite_exp
+    (78) recwrite -> . STRING action_recwrite_cte
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -5274,34 +5280,34 @@ state 258
 
 state 259
 
-    (73) recwrite -> STRING action_recwrite_cte COMMA . recwrite
-    (72) recwrite -> . expression action_recwrite_exp COMMA recwrite
-    (73) recwrite -> . STRING action_recwrite_cte COMMA recwrite
-    (74) recwrite -> . expression action_recwrite_exp
-    (75) recwrite -> . STRING action_recwrite_cte
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (76) recwrite -> STRING action_recwrite_cte COMMA . recwrite
+    (75) recwrite -> . expression action_recwrite_exp COMMA recwrite
+    (76) recwrite -> . STRING action_recwrite_cte COMMA recwrite
+    (77) recwrite -> . expression action_recwrite_exp
+    (78) recwrite -> . STRING action_recwrite_cte
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -5364,95 +5370,35 @@ state 259
 
 state 260
 
-    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON . expression SEMICOLON assign SEMICOLON RIGHTPAR block
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
-    (27) specialfunction -> . draw
-    (28) specialfunction -> . size
-    (29) specialfunction -> . head
-    (30) specialfunction -> . tail
-    (31) specialfunction -> . last
-    (32) specialfunction -> . set_title
-    (33) specialfunction -> . set_dimension
-    (34) specialfunction -> . set_color
-    (35) specialfunction -> . create_object
-    (36) specialfunction -> . create_text
-    (37) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
-    (38) size -> . SIZE LEFTPAR RIGHTPAR
-    (39) head -> . HEAD LEFTPAR RIGHTPAR
-    (40) tail -> . TAIL LEFTPAR RIGHTPAR
-    (41) last -> . LAST LEFTPAR RIGHTPAR
-    (42) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
-    (43) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
-    (44) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
-    (45) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
-    (46) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON . for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
+    (58) for_action1 -> .
 
-    LEFTPAR         shift and go to state 100
-    EX              shift and go to state 101
-    STRING          shift and go to state 103
-    ID              shift and go to state 104
-    INT             shift and go to state 105
-    FLOAT           shift and go to state 106
-    BOOL            shift and go to state 107
-    DRAW            shift and go to state 122
-    SIZE            shift and go to state 123
-    HEAD            shift and go to state 124
-    TAIL            shift and go to state 125
-    LAST            shift and go to state 126
-    SET_TITLE       shift and go to state 127
-    SET_DIMENSION   shift and go to state 128
-    SET_COLOR       shift and go to state 129
-    CREATE_OBJECT   shift and go to state 130
-    CREATE_TEXT     shift and go to state 131
+    LEFTPAR         reduce using rule 58 (for_action1 -> .)
+    EX              reduce using rule 58 (for_action1 -> .)
+    STRING          reduce using rule 58 (for_action1 -> .)
+    ID              reduce using rule 58 (for_action1 -> .)
+    INT             reduce using rule 58 (for_action1 -> .)
+    FLOAT           reduce using rule 58 (for_action1 -> .)
+    BOOL            reduce using rule 58 (for_action1 -> .)
+    DRAW            reduce using rule 58 (for_action1 -> .)
+    SIZE            reduce using rule 58 (for_action1 -> .)
+    HEAD            reduce using rule 58 (for_action1 -> .)
+    TAIL            reduce using rule 58 (for_action1 -> .)
+    LAST            reduce using rule 58 (for_action1 -> .)
+    SET_TITLE       reduce using rule 58 (for_action1 -> .)
+    SET_DIMENSION   reduce using rule 58 (for_action1 -> .)
+    SET_COLOR       reduce using rule 58 (for_action1 -> .)
+    CREATE_OBJECT   reduce using rule 58 (for_action1 -> .)
+    CREATE_TEXT     reduce using rule 58 (for_action1 -> .)
 
-    expression                     shift and go to state 267
-    exp                            shift and go to state 97
-    term                           shift and go to state 98
-    factor                         shift and go to state 99
-    cte                            shift and go to state 102
-    nestedvalue                    shift and go to state 108
-    functioncall                   shift and go to state 109
-    listaccess                     shift and go to state 110
-    specialfunction                shift and go to state 111
-    draw                           shift and go to state 112
-    size                           shift and go to state 113
-    head                           shift and go to state 114
-    tail                           shift and go to state 115
-    last                           shift and go to state 116
-    set_title                      shift and go to state 117
-    set_dimension                  shift and go to state 118
-    set_color                      shift and go to state 119
-    create_object                  shift and go to state 120
-    create_text                    shift and go to state 121
+    for_action1                    shift and go to state 267
 
 state 261
 
-    (58) while -> WHILE startscope_action while_action1 LEFTPAR expression . while_action2 RIGHTPAR block while_action3
-    (60) while_action2 -> .
+    (61) while -> WHILE startscope_action while_action1 LEFTPAR expression . while_action2 RIGHTPAR block while_action3
+    (63) while_action2 -> .
 
-    RIGHTPAR        reduce using rule 60 (while_action2 -> .)
+    RIGHTPAR        reduce using rule 63 (while_action2 -> .)
 
     while_action2                  shift and go to state 268
 
@@ -5473,29 +5419,29 @@ state 262
 state 263
 
     (44) set_color -> SET_COLOR LEFTPAR expression COMMA expression COMMA . expression RIGHTPAR
-    (83) expression -> . exp RELOP relop_action1 exp relop_action2
-    (84) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (85) expression -> . exp
-    (90) exp -> . term exp_action recexp
-    (91) exp -> . term exp_action
-    (94) term -> . factor term_action recterm
-    (95) term -> . factor term_action
-    (99) factor -> . LEFTPAR expression RIGHTPAR
-    (100) factor -> . EX cte
-    (101) factor -> . cte
-    (112) cte -> . STRING
-    (113) cte -> . ID
-    (114) cte -> . INT
-    (115) cte -> . FLOAT
-    (116) cte -> . BOOL
-    (117) cte -> . nestedvalue
-    (118) cte -> . functioncall
-    (119) cte -> . listaccess
-    (120) cte -> . specialfunction
-    (110) nestedvalue -> . ID DOT ID
-    (79) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
-    (80) functioncall -> . ID LEFTPAR RIGHTPAR
-    (109) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
     (27) specialfunction -> . draw
     (28) specialfunction -> . size
     (29) specialfunction -> . head
@@ -5568,28 +5514,106 @@ state 264
 
 state 265
 
-    (72) recwrite -> expression action_recwrite_exp COMMA recwrite .
+    (75) recwrite -> expression action_recwrite_exp COMMA recwrite .
 
-    RIGHTPAR        reduce using rule 72 (recwrite -> expression action_recwrite_exp COMMA recwrite .)
+    RIGHTPAR        reduce using rule 75 (recwrite -> expression action_recwrite_exp COMMA recwrite .)
 
 
 state 266
 
-    (73) recwrite -> STRING action_recwrite_cte COMMA recwrite .
+    (76) recwrite -> STRING action_recwrite_cte COMMA recwrite .
 
-    RIGHTPAR        reduce using rule 73 (recwrite -> STRING action_recwrite_cte COMMA recwrite .)
+    RIGHTPAR        reduce using rule 76 (recwrite -> STRING action_recwrite_cte COMMA recwrite .)
 
 
 state 267
 
-    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON expression . SEMICOLON assign SEMICOLON RIGHTPAR block
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 . expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
+    (86) expression -> . exp RELOP relop_action1 exp relop_action2
+    (87) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (88) expression -> . exp
+    (93) exp -> . term exp_action recexp
+    (94) exp -> . term exp_action
+    (97) term -> . factor term_action recterm
+    (98) term -> . factor term_action
+    (102) factor -> . LEFTPAR expression RIGHTPAR
+    (103) factor -> . EX cte
+    (104) factor -> . cte
+    (115) cte -> . STRING
+    (116) cte -> . ID
+    (117) cte -> . INT
+    (118) cte -> . FLOAT
+    (119) cte -> . BOOL
+    (120) cte -> . nestedvalue
+    (121) cte -> . functioncall
+    (122) cte -> . listaccess
+    (123) cte -> . specialfunction
+    (113) nestedvalue -> . ID DOT ID
+    (82) functioncall -> . ID LEFTPAR recfuncexp RIGHTPAR
+    (83) functioncall -> . ID LEFTPAR RIGHTPAR
+    (112) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (27) specialfunction -> . draw
+    (28) specialfunction -> . size
+    (29) specialfunction -> . head
+    (30) specialfunction -> . tail
+    (31) specialfunction -> . last
+    (32) specialfunction -> . set_title
+    (33) specialfunction -> . set_dimension
+    (34) specialfunction -> . set_color
+    (35) specialfunction -> . create_object
+    (36) specialfunction -> . create_text
+    (37) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
+    (38) size -> . SIZE LEFTPAR RIGHTPAR
+    (39) head -> . HEAD LEFTPAR RIGHTPAR
+    (40) tail -> . TAIL LEFTPAR RIGHTPAR
+    (41) last -> . LAST LEFTPAR RIGHTPAR
+    (42) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
+    (43) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
+    (44) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
+    (45) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
+    (46) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
 
-    SEMICOLON       shift and go to state 271
+    LEFTPAR         shift and go to state 100
+    EX              shift and go to state 101
+    STRING          shift and go to state 103
+    ID              shift and go to state 104
+    INT             shift and go to state 105
+    FLOAT           shift and go to state 106
+    BOOL            shift and go to state 107
+    DRAW            shift and go to state 122
+    SIZE            shift and go to state 123
+    HEAD            shift and go to state 124
+    TAIL            shift and go to state 125
+    LAST            shift and go to state 126
+    SET_TITLE       shift and go to state 127
+    SET_DIMENSION   shift and go to state 128
+    SET_COLOR       shift and go to state 129
+    CREATE_OBJECT   shift and go to state 130
+    CREATE_TEXT     shift and go to state 131
 
+    expression                     shift and go to state 271
+    exp                            shift and go to state 97
+    term                           shift and go to state 98
+    factor                         shift and go to state 99
+    cte                            shift and go to state 102
+    nestedvalue                    shift and go to state 108
+    functioncall                   shift and go to state 109
+    listaccess                     shift and go to state 110
+    specialfunction                shift and go to state 111
+    draw                           shift and go to state 112
+    size                           shift and go to state 113
+    head                           shift and go to state 114
+    tail                           shift and go to state 115
+    last                           shift and go to state 116
+    set_title                      shift and go to state 117
+    set_dimension                  shift and go to state 118
+    set_color                      shift and go to state 119
+    create_object                  shift and go to state 120
+    create_text                    shift and go to state 121
 
 state 268
 
-    (58) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 . RIGHTPAR block while_action3
+    (61) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 . RIGHTPAR block while_action3
 
     RIGHTPAR        shift and go to state 272
 
@@ -5633,16 +5657,16 @@ state 270
 
 state 271
 
-    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON . assign SEMICOLON RIGHTPAR block
-    (47) assign -> . ID assign_action1 EQUAL assign_action2 expression
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression . for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
+    (59) for_action2 -> .
 
-    ID              shift and go to state 246
+    SEMICOLON       reduce using rule 59 (for_action2 -> .)
 
-    assign                         shift and go to state 276
+    for_action2                    shift and go to state 276
 
 state 272
 
-    (58) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR . block while_action3
+    (61) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR . block while_action3
     (14) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
     (15) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
 
@@ -5697,34 +5721,34 @@ state 275
 
 state 276
 
-    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign . SEMICOLON RIGHTPAR block
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 . SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
 
     SEMICOLON       shift and go to state 279
 
 
 state 277
 
-    (58) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block . while_action3
-    (61) while_action3 -> .
+    (61) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block . while_action3
+    (64) while_action3 -> .
 
-    ID              reduce using rule 61 (while_action3 -> .)
-    IF              reduce using rule 61 (while_action3 -> .)
-    VAR             reduce using rule 61 (while_action3 -> .)
-    PRINT           reduce using rule 61 (while_action3 -> .)
-    RETURN          reduce using rule 61 (while_action3 -> .)
-    FOR             reduce using rule 61 (while_action3 -> .)
-    WHILE           reduce using rule 61 (while_action3 -> .)
-    DRAW            reduce using rule 61 (while_action3 -> .)
-    SIZE            reduce using rule 61 (while_action3 -> .)
-    HEAD            reduce using rule 61 (while_action3 -> .)
-    TAIL            reduce using rule 61 (while_action3 -> .)
-    LAST            reduce using rule 61 (while_action3 -> .)
-    SET_TITLE       reduce using rule 61 (while_action3 -> .)
-    SET_DIMENSION   reduce using rule 61 (while_action3 -> .)
-    SET_COLOR       reduce using rule 61 (while_action3 -> .)
-    CREATE_OBJECT   reduce using rule 61 (while_action3 -> .)
-    CREATE_TEXT     reduce using rule 61 (while_action3 -> .)
-    RIGHTKEY        reduce using rule 61 (while_action3 -> .)
+    ID              reduce using rule 64 (while_action3 -> .)
+    IF              reduce using rule 64 (while_action3 -> .)
+    VAR             reduce using rule 64 (while_action3 -> .)
+    PRINT           reduce using rule 64 (while_action3 -> .)
+    RETURN          reduce using rule 64 (while_action3 -> .)
+    FOR             reduce using rule 64 (while_action3 -> .)
+    WHILE           reduce using rule 64 (while_action3 -> .)
+    DRAW            reduce using rule 64 (while_action3 -> .)
+    SIZE            reduce using rule 64 (while_action3 -> .)
+    HEAD            reduce using rule 64 (while_action3 -> .)
+    TAIL            reduce using rule 64 (while_action3 -> .)
+    LAST            reduce using rule 64 (while_action3 -> .)
+    SET_TITLE       reduce using rule 64 (while_action3 -> .)
+    SET_DIMENSION   reduce using rule 64 (while_action3 -> .)
+    SET_COLOR       reduce using rule 64 (while_action3 -> .)
+    CREATE_OBJECT   reduce using rule 64 (while_action3 -> .)
+    CREATE_TEXT     reduce using rule 64 (while_action3 -> .)
+    RIGHTKEY        reduce using rule 64 (while_action3 -> .)
 
     while_action3                  shift and go to state 280
 
@@ -5740,33 +5764,35 @@ state 278
 
 state 279
 
-    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON . RIGHTPAR block
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON . assign SEMICOLON RIGHTPAR block for_action3
+    (47) assign -> . ID assign_action1 EQUAL assign_action2 expression
 
-    RIGHTPAR        shift and go to state 282
+    ID              shift and go to state 246
 
+    assign                         shift and go to state 282
 
 state 280
 
-    (58) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .
+    (61) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .
 
-    ID              reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    IF              reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    VAR             reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    PRINT           reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    RETURN          reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    FOR             reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    WHILE           reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    DRAW            reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    SIZE            reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    HEAD            reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    TAIL            reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    LAST            reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    SET_TITLE       reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    SET_DIMENSION   reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    SET_COLOR       reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    CREATE_OBJECT   reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    CREATE_TEXT     reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
-    RIGHTKEY        reduce using rule 58 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    ID              reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    IF              reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    VAR             reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    PRINT           reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    RETURN          reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    FOR             reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    WHILE           reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    DRAW            reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    SIZE            reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    HEAD            reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    TAIL            reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    LAST            reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    SET_TITLE       reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    SET_DIMENSION   reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    SET_COLOR       reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    CREATE_OBJECT   reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    CREATE_TEXT     reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
+    RIGHTKEY        reduce using rule 61 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
 
 
 state 281
@@ -5797,13 +5823,10 @@ state 281
 
 state 282
 
-    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR . block
-    (14) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
-    (15) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign . SEMICOLON RIGHTPAR block for_action3
 
-    COLON           shift and go to state 79
+    SEMICOLON       shift and go to state 284
 
-    block                          shift and go to state 284
 
 state 283
 
@@ -5831,26 +5854,69 @@ state 283
 
 state 284
 
-    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON . RIGHTPAR block for_action3
 
-    ID              reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    IF              reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    VAR             reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    PRINT           reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    RETURN          reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    FOR             reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    WHILE           reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    DRAW            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    SIZE            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    HEAD            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    TAIL            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    LAST            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    SET_TITLE       reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    SET_DIMENSION   reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    SET_COLOR       reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    CREATE_OBJECT   reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    CREATE_TEXT     reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
-    RIGHTKEY        reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block .)
+    RIGHTPAR        shift and go to state 285
+
+
+state 285
+
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR . block for_action3
+    (14) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
+    (15) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
+
+    COLON           shift and go to state 79
+
+    block                          shift and go to state 286
+
+state 286
+
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block . for_action3
+    (60) for_action3 -> .
+
+    ID              reduce using rule 60 (for_action3 -> .)
+    IF              reduce using rule 60 (for_action3 -> .)
+    VAR             reduce using rule 60 (for_action3 -> .)
+    PRINT           reduce using rule 60 (for_action3 -> .)
+    RETURN          reduce using rule 60 (for_action3 -> .)
+    FOR             reduce using rule 60 (for_action3 -> .)
+    WHILE           reduce using rule 60 (for_action3 -> .)
+    DRAW            reduce using rule 60 (for_action3 -> .)
+    SIZE            reduce using rule 60 (for_action3 -> .)
+    HEAD            reduce using rule 60 (for_action3 -> .)
+    TAIL            reduce using rule 60 (for_action3 -> .)
+    LAST            reduce using rule 60 (for_action3 -> .)
+    SET_TITLE       reduce using rule 60 (for_action3 -> .)
+    SET_DIMENSION   reduce using rule 60 (for_action3 -> .)
+    SET_COLOR       reduce using rule 60 (for_action3 -> .)
+    CREATE_OBJECT   reduce using rule 60 (for_action3 -> .)
+    CREATE_TEXT     reduce using rule 60 (for_action3 -> .)
+    RIGHTKEY        reduce using rule 60 (for_action3 -> .)
+
+    for_action3                    shift and go to state 287
+
+state 287
+
+    (57) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .
+
+    ID              reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    IF              reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    VAR             reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    PRINT           reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    RETURN          reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    FOR             reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    WHILE           reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    DRAW            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    SIZE            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    HEAD            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    TAIL            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    LAST            reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    SET_TITLE       reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    SET_DIMENSION   reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    SET_COLOR       reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    CREATE_OBJECT   reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    CREATE_TEXT     reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
+    RIGHTKEY        reduce using rule 57 (for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .)
 
 WARNING: 
 WARNING: Conflicts:

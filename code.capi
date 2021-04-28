@@ -8,9 +8,8 @@ global : {
 @ Definition of functions
 @ We need to fix logical operators
 void func test(id: int, pepe:string):{
-    while(5 > 2 * 3):{
-        papa = 5 - 3;
-        print(papa);
+    for(id = 0; id < ; id = id + 1;):{
+        print("hola");
     };
     id = 5 + 2;
 };

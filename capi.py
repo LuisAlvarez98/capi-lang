@@ -434,13 +434,43 @@ def p_loop(p):
 
 def p_for(p):
     '''
-    for : FOR startscope_action LEFTPAR assign SEMICOLON expression SEMICOLON assign SEMICOLON RIGHTPAR block
+    for : FOR startscope_action LEFTPAR  assign  SEMICOLON for_action1 expression for_action2 SEMICOLON  assign  SEMICOLON RIGHTPAR block for_action3
     '''
     new_func = active_scopes.pop() # Get the last function created
     new_func.functiontype =  ""  # Assign a name to the function
     new_func.params = []
 
+def p_for_action1(p):
+    '''
+    for_action1 : 
+    '''
+    go_to_stack.append(len(quadruples))
 
+def p_for_action2(p):
+    '''
+    for_action2 : 
+    '''
+    print(operand_stack)
+    print(operator_stack)
+    cond = operand_stack.pop()
+    cond_type = types_stack.pop()
+
+    if cond_type != "b":
+        print("Error, Type Mismatch") 
+    else:
+        quadruples.append(quadruple("GOTO_F", cond,None,None))
+        go_to_stack.append(len(quadruples)-1)
+        
+def p_for_action3(p):
+    '''
+    for_action3 : 
+    '''
+    falso = go_to_stack.pop() 
+    ref = go_to_stack.pop()
+    quadruples.append(quadruple("GOTO", None, None, ref))
+    quadruples[falso] = quadruple(quadruples[falso].operator, quadruples[falso].left_operand,None, len(quadruples))
+    
+    
 def p_while(p):
     '''
     while : WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
@@ -589,6 +619,7 @@ def p_relop_action2(p):
     '''
     relop_action2 : 
     '''
+    print(operand_stack)
     if len(operator_stack) > 0:
         if  operator_stack[-1] in relop_arr:
             right_operand = operand_stack.pop()
@@ -596,7 +627,11 @@ def p_relop_action2(p):
             right_type = types_stack.pop()
             left_type = types_stack.pop()
             operator = operator_stack.pop()
+            print(left_type, right_type)
+
+            
             result_type = s_cube.validate_expression(left_type, right_type, operator)
+            print(result_type)
             if result_type != "ERROR":
                 temp = get_next_avail()
                 quadruples.append(quadruple(operator, left_operand, right_operand, temp))
