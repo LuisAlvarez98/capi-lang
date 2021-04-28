@@ -392,7 +392,7 @@ def p_assign_action2(p):
 
 def p_condition(p):
     ''' condition : IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR  block condition_action2
-                  | IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR  block ELSE condition_action3 block condition_action2
+                  | IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR  block condition_action3 ELSE  block condition_action2
      '''
     new_func = active_scopes.pop() # Get the last function created
     new_func.functiontype =  ""  # Assign a name to the function
@@ -415,16 +415,16 @@ def p_condition_action2(p):
     condition_action2 :
     '''
     jump = go_to_stack.pop()
-    quadruples[jump] = quadruple("GOTO_F", quadruples[jump].left_operand,None, len(quadruples))
+    quadruples[jump] = quadruple(quadruples[jump].operator, quadruples[jump].left_operand,None, len(quadruples))
     
 def p_condition_action3(p):
     '''
     condition_action3 :
     '''
-    quadruples.append(quadruple("GOTO", None,None,None))
     false = go_to_stack.pop()
+    quadruples.append(quadruple("GOTO", None,None,None))
     go_to_stack.append(len(quadruples) - 1)
-    quadruples[false] = quadruple("GOTO",None,None,len(quadruples))
+    quadruples[false] = quadruple("GOTO_F",quadruples[false].left_operand,None,len(quadruples))
 
 def p_loop(p):
     '''
@@ -443,11 +443,41 @@ def p_for(p):
 
 def p_while(p):
     '''
-    while : WHILE startscope_action LEFTPAR expression RIGHTPAR block
+    while : WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
     '''
     new_func = active_scopes.pop() # Get the last function created
     new_func.functiontype =  ""  # Assign a name to the function
     new_func.params = []
+
+    print(go_to_stack)
+
+def p_while_action1(p):
+    '''
+    while_action1 :
+    '''
+    go_to_stack.append(len(quadruples))
+
+def p_while_action2(p):
+    '''
+    while_action2 :
+    '''
+    cond = operand_stack.pop()
+    cond_type = types_stack.pop()
+
+    if cond_type != "b":
+        print("Error, Type Mismatch") 
+    else:
+        quadruples.append(quadruple("GOTO_F", cond,None,None))
+        go_to_stack.append(len(quadruples)-1)
+
+def p_while_action3(p):
+    '''
+    while_action3 :
+    '''
+    falso = go_to_stack.pop() 
+    ref = go_to_stack.pop()
+    quadruples.append(quadruple("GOTO", None, None, ref))
+    quadruples[falso] = quadruple(quadruples[falso].operator, quadruples[falso].left_operand,None, len(quadruples))
 
 def p_function(p):
     '''
@@ -578,7 +608,7 @@ def p_relop_action2(p):
                 print("Type mismatch")
 
 
-def p_login_action1(p):
+def p_logic_action1(p):
     '''
     logic_action1 : 
     '''
@@ -589,7 +619,7 @@ def p_logic_action2(p):
     logic_action2 : 
     '''
     if len(operator_stack) > 0:
-        if  operator_stack[-1] in login_arr:
+        if  operator_stack[-1] in logic_arr:
             right_operand = operand_stack.pop()
             left_operand = operand_stack.pop()
             right_type = types_stack.pop()
