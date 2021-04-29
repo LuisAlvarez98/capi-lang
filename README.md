@@ -55,3 +55,7 @@ main :{
 - Implemented Stack to manage different scopes [✔]
 - Implemented Semantic Cube [✔]
 - Implemented actions to generate quadruples in arithmetic expressions [✔]
+- Implemented actions to generate quadruples in logical and relational expressions [✔]
+- Implemented actions to generate quadruples for print and assignments [✔]
+- Implemented actions to generate quadruples for non linear statements (for,if,while) [✔]
+
