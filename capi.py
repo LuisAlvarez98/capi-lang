@@ -9,7 +9,7 @@
 import ply.lex as lex
 from collections import deque #Para el stack de scopes
 from semantic_cube import *
-from util import get_type, get_type_s
+from util import  get_type_s
 
 # Inits the semantic cube
 s_cube = semantic_cube()
@@ -19,7 +19,7 @@ tokens = (
     'LEFTKEY','RIGHTKEY','LEFTBRACKET','RIGHTBRACKET','EQUAL','SEMICOLON',
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
-    'RUN','START','RETURN', 'LEFTHAT','RIGHTHAT','TRUE','FALSE','BOOL','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE',
+    'RUN','START','RETURN', 'LEFTHAT','RIGHTHAT','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE',
     "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT","SET_DIMENSION",'MAIN'
 )
 
@@ -91,6 +91,38 @@ class function_values():
         return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
     def __repr__(self):
         return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
+
+def get_typeof_id(inc_id):
+    current_active_scopes = active_scopes.copy()
+    current_type = ""
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        if inc_id in current_vars:
+            current_type = current_vars[inc_id].type
+            break
+        current_active_scopes.pop()
+    
+    if(len(current_active_scopes) <= 0):
+        print("Variable does not exist!")
+    else:
+        operand_stack.append(inc_id)
+        types_stack.append(current_type)
+    return current_type
+
+def get_typeof_id_test(inc_id):
+    current_active_scopes = active_scopes.copy()
+    current_type = ""
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        if inc_id in current_vars:
+            current_type = current_vars[inc_id].type
+            break
+        current_active_scopes.pop()
+    
+    if(len(current_active_scopes) <= 0):
+        print("Variable does not exist!")
+   
+    return current_type
 
 
 def get_next_avail():
@@ -168,7 +200,6 @@ t_ignore = " \t\r\n\f\v"
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
-
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -367,20 +398,8 @@ def p_assign_action1(p):
     assign_action1 : 
     '''
     current_id = p[-1] #get current ID
-    current_active_scopes = active_scopes.copy()
-    current_type = ""
-    while len(current_active_scopes) != 0:
-        current_vars = current_active_scopes[-1].vars
-        if current_id in current_vars:
-            current_type = current_vars[current_id].type
-            break
-        current_active_scopes.pop()
-    
-    if(len(current_active_scopes) <= 0):
-        print("Variable does not exist!")
-    else:
-        operand_stack.append(current_id)
-        types_stack.append(get_type_s(current_type))
+    get_typeof_id(current_id)
+
 
 
 def p_assign_action2(p):
@@ -450,8 +469,6 @@ def p_for_action2(p):
     '''
     for_action2 : 
     '''
-    print(operand_stack)
-    print(operator_stack)
     cond = operand_stack.pop()
     cond_type = types_stack.pop()
 
@@ -479,7 +496,6 @@ def p_while(p):
     new_func.functiontype =  ""  # Assign a name to the function
     new_func.params = []
 
-    print(go_to_stack)
 
 def p_while_action1(p):
     '''
@@ -619,7 +635,6 @@ def p_relop_action2(p):
     '''
     relop_action2 : 
     '''
-    print(operand_stack)
     if len(operator_stack) > 0:
         if  operator_stack[-1] in relop_arr:
             right_operand = operand_stack.pop()
@@ -627,11 +642,7 @@ def p_relop_action2(p):
             right_type = types_stack.pop()
             left_type = types_stack.pop()
             operator = operator_stack.pop()
-            print(left_type, right_type)
-
-            
             result_type = s_cube.validate_expression(left_type, right_type, operator)
-            print(result_type)
             if result_type != "ERROR":
                 temp = get_next_avail()
                 quadruples.append(quadruple(operator, left_operand, right_operand, temp))
@@ -659,6 +670,7 @@ def p_logic_action2(p):
             left_operand = operand_stack.pop()
             right_type = types_stack.pop()
             left_type = types_stack.pop()
+
             operator = operator_stack.pop()
             result_type = s_cube.validate_expression(left_type, right_type, operator)
             if result_type != "ERROR":
@@ -688,6 +700,7 @@ def p_exp_action(p):
             right_type = types_stack.pop()
             left_type = types_stack.pop()
             operator = operator_stack.pop()
+          
             result_type = s_cube.validate_expression(left_type, right_type, operator)
             if result_type != "ERROR":
                 temp = get_next_avail()
@@ -753,12 +766,12 @@ def p_factor(p):
     '''
     rule_len = len(p) - 1
     if rule_len == 2:
-       operand_stack.append(p[2])
+       operand_stack.append(p[2][0])
        operator_stack.append(p[1])
-       types_stack.append(get_type(p[2]))
+       types_stack.append(p[2][1])
     elif rule_len == 1:
-       operand_stack.append(p[1])
-       types_stack.append(get_type(p[1]))
+       operand_stack.append(p[1][0])
+       types_stack.append(p[1][1])
     p[0] = p[1]  
 
 def p_type(p):
@@ -776,8 +789,8 @@ def p_primitivetype(p):
                   | TBOOL
                   | TOBJECT
     '''
-    p[0] = p[1]
-
+    p[0] = p[1][0].lower()
+        
 def p_listaccess(p):
     '''
     listaccess : ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
@@ -795,17 +808,48 @@ def p_nestedassign(p):
 
 def p_cte(p):
     '''
-    cte : STRING 
-        | ID
-        | INT
-        | FLOAT
-        | BOOL
+    cte : string 
+        | id
+        | int
+        | float
+        | bool
         | nestedvalue
         | functioncall
         | listaccess
         | specialfunction
     '''
     p[0] = p[1]
+
+def p_id(p):
+    '''
+    id : ID
+    '''
+    p[0] = (p[1], get_typeof_id_test(p[1]))
+
+def p_string(p):
+    '''
+    string : STRING
+    '''
+    p[0] = (p[1], 's')
+
+def p_int(p):
+    '''
+    int : INT
+    '''
+    p[0] = (p[1], 'i')
+    
+def p_float(p):
+    '''
+    float : FLOAT
+    '''
+    p[0] = (p[1], 'f')
+
+def p_bool(p):
+    '''
+    bool : TRUE 
+         | FALSE
+    '''
+    p[0] = (p[1], 'b')
 
 def p_error(p):
     print("ERROR {}".format(p))
