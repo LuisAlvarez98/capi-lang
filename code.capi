@@ -11,6 +11,13 @@ void func test(pepe:string):{
     for(id = 0; id < 3; id = id + 1;):{
         print("hello");
     };
+    while(id > 2):{
+        id = 5;
+        print("hola", 5 + 5, true && true);
+    };
+    if(5 > 2):{
+        print("hola2");
+    };
     print("for worked");
 };
 

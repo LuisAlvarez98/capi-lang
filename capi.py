@@ -226,6 +226,7 @@ def p_capi(p):
          | MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
     '''
     print(quadruples)
+    print(func_dir)
 
 def p_global(p):
     '''
