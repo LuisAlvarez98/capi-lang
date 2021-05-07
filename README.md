@@ -58,4 +58,6 @@ main :{
 - Implemented actions to generate quadruples in logical and relational expressions [✔]
 - Implemented actions to generate quadruples for print and assignments [✔]
 - Implemented actions to generate quadruples for non linear statements (for,if,while) [✔]
+- Implemented actions to generate quadruples for return statement [✔]
+- Implemented actions to add the parameter order to the functions, quadruple count and temporal count in the function definition [✔]
 

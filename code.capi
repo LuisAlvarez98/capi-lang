@@ -5,20 +5,10 @@ global : {
     var papa: string;
 };
 
-@ Definition of functions
-void func test(pepe:string):{
-    @ Comment: var id: int = 5; TODO
-    for(id = 0; id < 3; id = id + 1;):{
-        print("hello");
-    };
-    while(id > 2):{
-        id = 5;
-        print("hola", 5 + 5, true && true);
-    };
-    if(5 > 2):{
-        print("hola2");
-    };
-    print("for worked");
+void func pelos(pepe:string, jaja:int):{
+    var id: int;
+    id = 5 + 5;
+    return id;
 };
 
 
@@ -26,10 +16,14 @@ void func test(pepe:string):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-   
+       var id: int;
+       id = 5 + 5;
+       pelos(id, 4);
     };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
+       var id: int;
+       id = 5 + 5;
     };
 };

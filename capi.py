@@ -60,6 +60,7 @@ reserved = {
 temporals = 0
 
 
+
 class quadruple():
     def __init__(self, operator, left_operand, right_operand, temp):
         self.id = -1
@@ -82,15 +83,17 @@ class variable():
         return f'Id: {self.id}, Type: {self.type}'
 
 class function_values():
-    def __init__(self, functiontype='', params=[], scopevars={}):
+    def __init__(self, functiontype='', params=[], scopevars={}, params_order=[]):
         self.functiontype = functiontype
         self.params = params.copy()
         self.vars = scopevars.copy()
-
+        self.params_order = params_order.copy()
+        self.temp_count = 0
+        self.cont = -1
     def __str__(self):
-        return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
+        return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}, Params_Order: {self.params_order}, CONT: {self.cont}, TEMP_COUNT: {self.temp_count}\n'
     def __repr__(self):
-        return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}\n'
+        return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}, Params_Order: {self.params_order}, CONT: {self.cont}, TEMP_COUNT: {self.temp_count}\n'
 
 def get_typeof_id(inc_id):
     current_active_scopes = active_scopes.copy()
@@ -239,21 +242,29 @@ def p_global(p):
     
 def p_start(p):
     '''
-    start : VOID FUNC START startscope_action LEFTPAR RIGHTPAR block 
+    start : VOID FUNC START startscope_action LEFTPAR RIGHTPAR function_action3 block 
     '''
+    global temporals
     new_func = active_scopes.pop()
+    new_func.temp_count = temporals
+    temporals = 0
     new_func.functiontype =  'void'
     new_func.params = []
+    new_func.params_order = []
     
     func_dir[p[3]] = new_func
     
 def p_run(p):
     '''
-    run : VOID FUNC RUN  startscope_action LEFTPAR RIGHTPAR block
+    run : VOID FUNC RUN  startscope_action LEFTPAR RIGHTPAR function_action3 block
     '''
+    global temporals
     new_func = active_scopes.pop()
+    new_func.temp_count = temporals
+    temporals = 0
     new_func.functiontype =  'void'
     new_func.params = []
+    new_func.params_order = []
     
     func_dir[p[3]] = new_func
 
@@ -392,7 +403,6 @@ def p_assign(p):
         expression_type = s_cube.validate_expression(type_result, left_operand_type, operator)
         if expression_type != "ERROR":
             quadruples.append(quadruple(operator, result, None, left_operand))
-            
 
 def p_assign_action1(p):
     '''
@@ -528,46 +538,61 @@ def p_while_action3(p):
 
 def p_function(p):
     '''
-    function : type FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-             | type FUNC ID startscope_action LEFTPAR RIGHTPAR block
-             | VOID FUNC ID startscope_action LEFTPAR recparams RIGHTPAR block
-             | VOID FUNC ID startscope_action LEFTPAR RIGHTPAR block
+    function : type FUNC ID startscope_action LEFTPAR recparams function_action1 RIGHTPAR function_action2 function_action3 block
+             | type FUNC ID startscope_action LEFTPAR RIGHTPAR function_action3 block
+             | VOID FUNC ID startscope_action LEFTPAR recparams function_action1 RIGHTPAR function_action2 function_action3 block
+             | VOID FUNC ID startscope_action LEFTPAR RIGHTPAR function_action3 block
     '''
-    rule_len = len(p) - 1
-    params = [] # array used for funciton params
-
-
-    if rule_len == 8:
-        params = p[6]
-    elif rule_len == 7:
-        params = []  
-   
-    if p[3] in func_dir.keys():
-       print("Function name already exists.") 
-    else:
-        new_func = active_scopes.pop()
-        new_func.functiontype =  p[1]
-        new_func.params = params
-        func_dir[p[3]] = new_func
+    global temporals
+    new_func = active_scopes.pop()
+    new_func.temp_count = temporals
+    temporals = 0
+    func_dir[p[3]] = new_func
 
 def p_startscope_action(p):
     '''
     startscope_action : 
     '''
-    new_function = function_values()
-    active_scopes.append(new_function)
+    if p[-1] in func_dir.keys():
+       print("Function name already exists.")
+    else:
+        new_function = function_values()
+        active_scopes.append(new_function)
 
+def p_function_action1(p):
+    '''
+    function_action1 :
+    '''
+    active_scopes[-1].params = p[-1]
+    
+def p_function_action2(p):
+    '''
+    function_action2 :
+    '''
+    params_order = []
+    current_params = active_scopes[-1].params
+    for current_p in current_params:
+         params_order.append(current_p.type)
+    
+    active_scopes[-1].params_order = params_order
+
+def p_function_action3(p):
+    '''
+    function_action3 :
+    '''
+    active_scopes[-1].cont = len(quadruples)
 
 def p_recparams(p):
     '''
     recparams : ID COLON type
               | ID COLON type COMMA recparams
     '''
+
     rule_len = len(p) - 1
     if rule_len == 3:
-        p[0] = [variable(p[1],p[3])]
+        p[0] = [(variable(p[1],p[3]))]
     elif rule_len  == 5:
-        p[0] = [variable(p[1],p[3])] + p[5]
+        p[0] = [(variable(p[1],p[3]))] + p[5]
 
 
 def p_recfunc(p):
@@ -606,19 +631,46 @@ def p_return(p):
     '''
      return : RETURN expression
     '''
+    types_stack.pop()
+    quadruples.append(quadruple('return', None, None, operand_stack.pop()))
 
 def p_functioncall(p):
     '''
-    functioncall : ID LEFTPAR recfuncexp RIGHTPAR 
-                 | ID LEFTPAR RIGHTPAR 
+    functioncall : ID function_call_action1 LEFTPAR recfuncexp RIGHTPAR 
+                 | ID function_call_action1 LEFTPAR RIGHTPAR 
     '''
+    print(p[4])
+
+def p_function_call_action1(p):
+    '''
+    function_call_action1 : 
+    '''
+    id = p[-1]
+    if id not in func_dir.keys():
+       print("Function does not exist.")
 
 def p_recfuncexp(p):
     '''
     recfuncexp : expression COMMA recfuncexp
-               | expression 
+               | expression recfunc_action1
     '''
+    rule_len = len(p) -1
+    if rule_len == 2:
+        p[0] = p[2]
+    else:
+        p[0] = p[3]
 
+
+def p_recfunc_action1(p):
+    '''
+    recfunc_action1 :
+    '''
+    params_order = []
+    for ty in types_stack:
+        operand_stack.pop()
+        params_order.append(ty)
+    p[0] = params_order
+    
 def p_expression(p):
     '''
     expression : exp RELOP relop_action1 exp relop_action2
