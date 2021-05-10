@@ -6,9 +6,8 @@ global : {
 };
 
 void func pelos(pepe:string, jaja:int):{
-    var id: int;
-    id = 5 + 5;
-    return id;
+    var id: float;
+    id = 1 + 1.0;
 };
 
 
@@ -18,7 +17,7 @@ main :{
     void func start():{
        var id: int;
        id = 5 + 5;
-       pelos(id, 4);
+       peloss(id, 4);
     };
 
     @ Definition of run function - this function is the game infinite loop

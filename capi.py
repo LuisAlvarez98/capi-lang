@@ -223,13 +223,25 @@ lex = lex.lex()
 #Program
 def p_capi(p):
     ''' 
-    capi : global recfunc MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
-         | recfunc MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
-         | global MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
-         | MAIN COLON LEFTKEY start run RIGHTKEY SEMICOLON
+    capi : capi_action1 global recfunc MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
+         | capi_action1 recfunc MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
+         | capi_action1 global MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
+         | capi_action1 MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
     '''
     print(quadruples)
-    print(func_dir)
+
+def p_capi_action1(p):
+    '''
+    capi_action1 :
+    '''
+    # This goto is created to be used later in the start function
+    quadruples.append(quadruple("GOTO",None,None,None))
+
+def p_capi_action2(p):
+    '''
+    capi_action2 :
+    '''
+    quadruples[0] = quadruple("GOTO",None,None,func_dir['start'].cont)
 
 def p_global(p):
     '''
@@ -277,7 +289,6 @@ def p_vars(p):
             | VAR recids COLON type SEMICOLON
     '''
     rule_len = len(p) - 1
-    #print(active_scopes)
     current_function = active_scopes.pop()
 
     for l in p[2]:
@@ -546,6 +557,7 @@ def p_function(p):
     global temporals
     new_func = active_scopes.pop()
     new_func.temp_count = temporals
+    quadruples.append(quadruple("ENDFUNC",None,None,None))
     temporals = 0
     func_dir[p[3]] = new_func
 
@@ -557,6 +569,7 @@ def p_startscope_action(p):
        print("Function name already exists.")
     else:
         new_function = function_values()
+        new_function.functiontype = p[-3]
         active_scopes.append(new_function)
 
 def p_function_action1(p):
@@ -631,15 +644,23 @@ def p_return(p):
     '''
      return : RETURN expression
     '''
-    types_stack.pop()
-    quadruples.append(quadruple('return', None, None, operand_stack.pop()))
+    func_type = active_scopes[-1].functiontype
+    operand_type = types_stack.pop()
+    operand_value = operand_stack.pop()
+    if func_type != "void":
+        if func_type == operand_type:
+            quadruples.append(quadruple('return', None, None, operand_value))
+        else:
+            print("Type mismatch")
+    else:
+        print("Error, cannot return value in void func.")
+
 
 def p_functioncall(p):
     '''
     functioncall : ID function_call_action1 LEFTPAR recfuncexp RIGHTPAR 
                  | ID function_call_action1 LEFTPAR RIGHTPAR 
     '''
-    print(p[4])
 
 def p_function_call_action1(p):
     '''
