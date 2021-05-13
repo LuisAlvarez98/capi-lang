@@ -5,9 +5,10 @@ global : {
     var papa: string;
 };
 
-void func pelos(pepe:string, jaja:int):{
+int func pelos(pepe:string, jaja:int):{
     var id: float;
     id = 1 + 1.0;
+    return 5;
 };
 
 
@@ -16,13 +17,12 @@ main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
        var id: int;
-       id = 5 + 5;
-       peloss(id, 4);
+       pelos("Pepe", 2 + 3);
+       pelos("Pepe", 3 * 2 + 2 / 3);
     };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
        var id: int;
-       id = 5 + 5;
     };
 };

@@ -59,8 +59,6 @@ reserved = {
 
 temporals = 0
 
-
-
 class quadruple():
     def __init__(self, operator, left_operand, right_operand, temp):
         self.id = -1
@@ -106,7 +104,7 @@ def get_typeof_id(inc_id):
         current_active_scopes.pop()
     
     if(len(current_active_scopes) <= 0):
-        print("Variable does not exist!")
+        raise Exception("Variable does not exist")
     else:
         operand_stack.append(inc_id)
         types_stack.append(current_type)
@@ -123,7 +121,7 @@ def get_typeof_id_test(inc_id):
         current_active_scopes.pop()
     
     if(len(current_active_scopes) <= 0):
-        print("Variable does not exist!")
+        raise Exception("Variable does not exist.")
    
     return current_type
 
@@ -134,6 +132,7 @@ def get_next_avail():
     return "t" + str(temporals)
 
 quadruples = [] #Lista de cuadruplos
+current_callId = '' #Id para la llamada de función
 operator_stack = deque() # Stack de operadores + - * /
 operand_stack = deque() # Stack de operandos variables 
 types_stack = deque() #Stack de tipos int, float
@@ -229,7 +228,6 @@ def p_capi(p):
          | capi_action1 MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
     '''
     print(quadruples)
-
 def p_capi_action1(p):
     '''
     capi_action1 :
@@ -445,7 +443,7 @@ def p_condition_action1(p):
     '''
     exp_type = types_stack.pop()
     if exp_type != "b":
-        print("Error, Type Mismatch") 
+        raise Exception("Type mismatch.")
     else:
         result = operand_stack.pop()
         quadruples.append(quadruple("GOTO_F", result,None,None))
@@ -495,7 +493,7 @@ def p_for_action2(p):
     cond_type = types_stack.pop()
 
     if cond_type != "b":
-        print("Error, Type Mismatch") 
+        raise Exception("Type mismatch.")
     else:
         quadruples.append(quadruple("GOTO_F", cond,None,None))
         go_to_stack.append(len(quadruples)-1)
@@ -533,7 +531,7 @@ def p_while_action2(p):
     cond_type = types_stack.pop()
 
     if cond_type != "b":
-        print("Error, Type Mismatch") 
+        raise Exception("Type mismatch.")
     else:
         quadruples.append(quadruple("GOTO_F", cond,None,None))
         go_to_stack.append(len(quadruples)-1)
@@ -566,7 +564,8 @@ def p_startscope_action(p):
     startscope_action : 
     '''
     if p[-1] in func_dir.keys():
-       print("Function name already exists.")
+        raise Exception("Function name already exists.")
+    
     else:
         new_function = function_values()
         new_function.functiontype = p[-3]
@@ -651,25 +650,38 @@ def p_return(p):
         if func_type == operand_type:
             quadruples.append(quadruple('return', None, None, operand_value))
         else:
-            print("Type mismatch")
+            raise Exception("Type mismatch")
     else:
-        print("Error, cannot return value in void func.")
+        raise Exception("Cannot return value in void function.")
 
 
 def p_functioncall(p):
     '''
-    functioncall : ID function_call_action1 LEFTPAR recfuncexp RIGHTPAR 
-                 | ID function_call_action1 LEFTPAR RIGHTPAR 
+    functioncall : ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR 
+                 | ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR 
     '''
-
+    global current_callId
+    quadruples.append(quadruple("GOSUB", current_callId, None, None))
+    current_callId = ''
 def p_function_call_action1(p):
     '''
     function_call_action1 : 
     '''
     id = p[-1]
+    
     if id not in func_dir.keys():
-       print("Function does not exist.")
+       raise Exception("Function does not exist.")
+    else:
+        global current_callId
+        current_callId = id
+       
+def p_function_call_action2(p):
+    '''
+    function_call_action2 : 
+    '''
+    quadruples.append(quadruple("ERA",p[-3],None,None))
 
+  
 def p_recfuncexp(p):
     '''
     recfuncexp : expression COMMA recfuncexp
@@ -686,10 +698,34 @@ def p_recfunc_action1(p):
     '''
     recfunc_action1 :
     '''
+    global current_callId
+    param_order = func_dir[current_callId].params_order
     params_order = []
-    for ty in types_stack:
-        operand_stack.pop()
+
+    copy_types = types_stack.copy()
+    copy_operands = operand_stack.copy()
+
+    k = len(param_order) - 1
+
+    for ty in copy_types:
+        copy_operands.pop()
         params_order.append(ty)
+    
+    counter = 0
+
+    q_operand_stack = operand_stack.copy()
+    q_operand_stack.reverse()
+    while counter <= k:
+        if param_order[counter] == params_order[counter]:
+            quadruples.append(quadruple("PARAM", q_operand_stack.pop(), None, "Param " + str(counter + 1)))
+            operand_stack.pop()
+            types_stack.pop()
+        else:
+            raise Exception("Param type mismatch")
+        counter+=1
+   # verify that all parameters where processed 
+    if counter - 1 == k:
+        print("All parameters where processed")
     p[0] = params_order
     
 def p_expression(p):
@@ -725,7 +761,7 @@ def p_relop_action2(p):
                 types_stack.append(real_type)
                 # return to avail if operand were a temp
             else:
-                print("Type mismatch")
+                raise Exception("Type mismatch.")
 
 
 def p_logic_action1(p):
@@ -755,7 +791,7 @@ def p_logic_action2(p):
                 types_stack.append(real_type)
                 # return to avail if operand were a temp
             else:
-                print("Type mismatch")
+                raise Exception("Type mismatch.")
 
 def p_exp(p):
     ''' 
@@ -784,7 +820,7 @@ def p_exp_action(p):
                 types_stack.append(real_type)
                 # return to avail if operand were a temp
             else:
-                print("Type mismatch")
+                raise Exception("Type mismatch.")
 
 
 def p_recexp(p):
@@ -819,7 +855,7 @@ def p_term_action(p):
                 types_stack.append(real_type)
                 # return to avail if operand were a temp
             else:
-                print("Type mismatch")
+                raise Exception("Type mismatch")
 
 def p_recterm(p):
     ''' 
