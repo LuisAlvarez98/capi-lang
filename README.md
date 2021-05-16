@@ -60,4 +60,6 @@ main :{
 - Implemented actions to generate quadruples for non linear statements (for,if,while) [✔]
 - Implemented actions to generate quadruples for return statement [✔]
 - Implemented actions to add the parameter order to the functions, quadruple count and temporal count in the function definition [✔]
+- Implemented actions to generate quadruples in function calls.[✔]
+- Implemented a memory handler for variable declaration and constants[✔]
 
