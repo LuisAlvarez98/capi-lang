@@ -10,6 +10,7 @@ import ply.lex as lex
 from collections import deque #Para el stack de scopes
 from semantic_cube import *
 from util import  get_type_s
+from memory import get_next_global, get_next_local, get_next_temporal, get_const_address
 
 # Inits the semantic cube
 s_cube = semantic_cube()
@@ -72,13 +73,14 @@ class quadruple():
         return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}\n'
 
 class variable():
-    def __init__(self, varid, vartype):
+    def __init__(self, varid, vartype, address):
         self.id = varid
         self.type = vartype
+        self.address = address
     def __str__(self):
-        return f'Id: {self.id}, Type: {self.type}'
+        return f'Id: {self.id}, Type: {self.type}, Addr: {self.address}'
     def __repr__(self):
-        return f'Id: {self.id}, Type: {self.type}'
+        return f'Id: {self.id}, Type: {self.type}, Addr: {self.address}'
 
 class function_values():
     def __init__(self, functiontype='', params=[], scopevars={}, params_order=[]):
@@ -126,10 +128,8 @@ def get_typeof_id_test(inc_id):
     return current_type
 
 
-def get_next_avail():
-    global temporals
-    temporals = temporals + 1
-    return "t" + str(temporals)
+def get_next_avail(tp):
+    return get_next_temporal(get_type_s(tp))
 
 quadruples = [] #Lista de cuadruplos
 current_callId = '' #Id para la llamada de función
@@ -168,7 +168,6 @@ logic_arr = ["||","&&"]
 def t_FLOAT(t):
     r'\d+\.\d+'
     t.value = float(t.value)
-    print(t)
     return t 
 
 def t_INT(t):
@@ -288,9 +287,15 @@ def p_vars(p):
     '''
     rule_len = len(p) - 1
     current_function = active_scopes.pop()
-
+    address = 0
     for l in p[2]:
-        current_function.vars[l] = variable(l,p[4])
+        if(current_function.functiontype == 'global'):
+            #we create global addresses
+            address = get_next_global(p[4])
+        else:
+            address = get_next_local(p[4])
+
+        current_function.vars[l] = variable(l,p[4], address)
     
     active_scopes.append(current_function)
 def p_recids(p):  
@@ -411,7 +416,21 @@ def p_assign(p):
 
         expression_type = s_cube.validate_expression(type_result, left_operand_type, operator)
         if expression_type != "ERROR":
-            quadruples.append(quadruple(operator, result, None, left_operand))
+            address = ""
+            current_active_scopes = active_scopes.copy()
+            while len(current_active_scopes) != 0:
+                current_vars = current_active_scopes[-1].vars
+                if left_operand in current_vars:
+                    address = current_vars[left_operand].address
+                    break
+                current_active_scopes.pop()
+                
+            if(len(current_active_scopes) <= 0):
+                raise Exception("Variable does not exist")
+            else:
+                quadruples.append(quadruple(operator, result, None, address))
+        else:
+            raise Exception("Type mismatch at assignation")
 
 def p_assign_action1(p):
     '''
@@ -602,9 +621,9 @@ def p_recparams(p):
 
     rule_len = len(p) - 1
     if rule_len == 3:
-        p[0] = [(variable(p[1],p[3]))]
+        p[0] = [(variable(p[1],p[3],0))]
     elif rule_len  == 5:
-        p[0] = [(variable(p[1],p[3]))] + p[5]
+        p[0] = [(variable(p[1],p[3],0))] + p[5]
 
 
 def p_recfunc(p):
@@ -715,6 +734,8 @@ def p_recfunc_action1(p):
 
     q_operand_stack = operand_stack.copy()
     q_operand_stack.reverse()
+    if len(params_order) != len(param_order):
+        raise Exception("Param length does not match")
     while counter <= k:
         if param_order[counter] == params_order[counter]:
             quadruples.append(quadruple("PARAM", q_operand_stack.pop(), None, "Param " + str(counter + 1)))
@@ -754,7 +775,7 @@ def p_relop_action2(p):
             operator = operator_stack.pop()
             result_type = s_cube.validate_expression(left_type, right_type, operator)
             if result_type != "ERROR":
-                temp = get_next_avail()
+                temp = get_next_avail(result_type)
                 quadruples.append(quadruple(operator, left_operand, right_operand, temp))
                 operand_stack.append(temp)
                 real_type = get_type_s(result_type)
@@ -784,7 +805,7 @@ def p_logic_action2(p):
             operator = operator_stack.pop()
             result_type = s_cube.validate_expression(left_type, right_type, operator)
             if result_type != "ERROR":
-                temp = get_next_avail()
+                temp = get_next_avail(result_type)
                 quadruples.append(quadruple(operator, left_operand, right_operand, temp))
                 operand_stack.append(temp)
                 real_type = get_type_s(result_type)
@@ -813,7 +834,7 @@ def p_exp_action(p):
           
             result_type = s_cube.validate_expression(left_type, right_type, operator)
             if result_type != "ERROR":
-                temp = get_next_avail()
+                temp = get_next_avail(result_type)
                 quadruples.append(quadruple(operator, left_operand, right_operand, temp))
                 operand_stack.append(temp)
                 real_type = get_type_s(result_type)
@@ -848,7 +869,7 @@ def p_term_action(p):
             result_type = s_cube.validate_expression(left_type, right_type, operator)
 
             if result_type != "ERROR":
-                temp = get_next_avail()
+                temp = get_next_avail(result_type)
                 quadruples.append(quadruple(operator, left_operand, right_operand, temp))
                 operand_stack.append(temp)
                 real_type = get_type_s(result_type)
@@ -918,7 +939,7 @@ def p_nestedassign(p):
 
 def p_cte(p):
     '''
-    cte : string 
+    cte :    
         | id
         | int
         | float
@@ -940,19 +961,22 @@ def p_string(p):
     '''
     string : STRING
     '''
-    p[0] = (p[1], 's')
+    addr = get_const_address(p[1],'s')
+    p[0] = (addr, 's')
 
 def p_int(p):
     '''
     int : INT
     '''
-    p[0] = (p[1], 'i')
+    addr = get_const_address(p[1],'i')
+    p[0] = (addr, 'i')
     
 def p_float(p):
     '''
     float : FLOAT
     '''
-    p[0] = (p[1], 'f')
+    addr = get_const_address(p[1],'f')
+    p[0] = (addr, 'f')
 
 def p_bool(p):
     '''
