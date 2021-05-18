@@ -16,12 +16,9 @@ temporal_string = 60000
 temporal_bool = 65000
 temporal_object = 70000
 
-address_thresh = 999
 
 
-
-
-class const_value():
+class memory():
     def __init__(self, value='', address=''):
         self.value = value
         self.address= address
@@ -31,12 +28,13 @@ class const_value():
         return f'Value: {self.value}, Addr: {self.address}\n'
 
 constant_table = {}
+memory_table = {}
 
 def get_const_address(value, type):
     if value in constant_table.keys():
         return constant_table[value].address
     address = get_next_local(type)
-    new_value = const_value(value, address)
+    new_value = memory(value, address)
     constant_table[value] =  new_value
     return address
 
@@ -105,3 +103,6 @@ def get_next_temporal(t):
         global temporal_object
         temporal_object = temporal_object + 1 
         return temporal_object
+
+def print_const_table():
+    print(constant_table)

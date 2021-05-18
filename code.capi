@@ -1,16 +1,14 @@
 @ Global Definition of Variables
 
 global : {
-    var id: int;
+    var id: string;
     var papa: string;
 };
 
-int func pelos():{
-    id = 5;
+int func pelos(a:int):{
     print(5 + 5);
-    if(5 > 2):{
-        id = 5;
-    };
+    id = "hello";
+    return 5;
 };
 
 
@@ -18,6 +16,7 @@ int func pelos():{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
+        pelos(7);
     };
 
     @ Definition of run function - this function is the game infinite loop

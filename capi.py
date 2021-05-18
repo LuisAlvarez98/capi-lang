@@ -10,8 +10,8 @@ import ply.lex as lex
 from collections import deque #Para el stack de scopes
 from semantic_cube import *
 from util import  get_type_s
-from memory import get_next_global, get_next_local, get_next_temporal, get_const_address
-
+from memory import get_next_global, get_next_local, get_next_temporal, get_const_address, print_const_table
+from virtual import init_virtual
 # Inits the semantic cube
 s_cube = semantic_cube()
 
@@ -226,7 +226,6 @@ def p_capi(p):
          | capi_action1 global MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
          | capi_action1 MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
     '''
-    print(quadruples)
 def p_capi_action1(p):
     '''
     capi_action1 :
@@ -407,6 +406,7 @@ def p_assign(p):
     assign : ID assign_action1 EQUAL assign_action2 expression 
     '''
     # we need to do the same for var i :int = 5;
+
     result = operand_stack.pop()
     type_result = types_stack.pop()
     if len(operand_stack) > 0:
@@ -431,7 +431,7 @@ def p_assign(p):
                 quadruples.append(quadruple(operator, result, None, address))
         else:
             raise Exception("Type mismatch at assignation")
-
+   
 def p_assign_action1(p):
     '''
     assign_action1 : 
@@ -620,10 +620,11 @@ def p_recparams(p):
     '''
 
     rule_len = len(p) - 1
+    address = get_next_local(p[3])
     if rule_len == 3:
-        p[0] = [(variable(p[1],p[3],0))]
+        p[0] = [(variable(p[1],p[3],address))]
     elif rule_len  == 5:
-        p[0] = [(variable(p[1],p[3],0))] + p[5]
+        p[0] = [(variable(p[1],p[3],address))] + p[5]
 
 
 def p_recfunc(p):
@@ -650,6 +651,7 @@ def p_action_recwrite_exp(p):
     '''
     # We need to validate the ID. Check if it exists.
     result = operand_stack.pop()
+    types_stack.pop()
     quadruples.append(quadruple("print", None, None, result))
 
 def p_action_recwrite_cte(p):
@@ -682,6 +684,7 @@ def p_functioncall(p):
     global current_callId
     quadruples.append(quadruple("GOSUB", current_callId, None, None))
     current_callId = ''
+
 def p_function_call_action1(p):
     '''
     function_call_action1 : 
@@ -706,6 +709,7 @@ def p_recfuncexp(p):
     recfuncexp : expression COMMA recfuncexp
                | expression recfunc_action1
     '''
+
     rule_len = len(p) -1
     if rule_len == 2:
         p[0] = p[2]
@@ -717,10 +721,12 @@ def p_recfunc_action1(p):
     '''
     recfunc_action1 :
     '''
+    print(quadruples)
+    
     global current_callId
     param_order = func_dir[current_callId].params_order
     params_order = []
-
+    
     copy_types = types_stack.copy()
     copy_operands = operand_stack.copy()
 
@@ -944,6 +950,7 @@ def p_cte(p):
         | int
         | float
         | bool
+        | string
         | nestedvalue
         | functioncall
         | listaccess
@@ -999,5 +1006,5 @@ f.close()
 
 yacc.parse(s)
 
-
 print('Code is okay.')
+init_virtual(quadruples)
