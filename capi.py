@@ -297,6 +297,7 @@ def p_vars(p):
         current_function.vars[l] = variable(l,p[4], address)
     
     active_scopes.append(current_function)
+
 def p_recids(p):  
     ''' 
     recids : ID 
@@ -406,7 +407,6 @@ def p_assign(p):
     assign : ID assign_action1 EQUAL assign_action2 expression 
     '''
     # we need to do the same for var i :int = 5;
-
     result = operand_stack.pop()
     type_result = types_stack.pop()
     if len(operand_stack) > 0:
@@ -721,7 +721,6 @@ def p_recfunc_action1(p):
     '''
     recfunc_action1 :
     '''
-    print(quadruples)
     
     global current_callId
     param_order = func_dir[current_callId].params_order
@@ -962,7 +961,21 @@ def p_id(p):
     '''
     id : ID
     '''
-    p[0] = (p[1], get_typeof_id_test(p[1]))
+    current_active_scopes = active_scopes.copy()
+    id_address = ""
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        current_params = current_active_scopes[-1].params
+        if p[1] in current_params:
+            id_address = current_params[p[1]].address
+            break
+
+        if p[1] in current_vars:
+            id_address = current_vars[p[1]].address
+            break
+        current_active_scopes.pop()
+    # we will need to validate for param and local variable.
+    p[0] = (id_address, get_typeof_id_test(p[1]))
 
 def p_string(p):
     '''
