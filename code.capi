@@ -6,7 +6,7 @@ global : {
 };
 
 int func pelos(a:int):{
-    print(5 + 5);
+    print(5 + 3);
     id = "hello";
     return 5;
 };

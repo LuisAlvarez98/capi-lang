@@ -876,7 +876,7 @@ def p_term_action(p):
 
             if result_type != "ERROR":
                 temp = get_next_avail(result_type)
-                quadruples.append(quadruple(operator, left_operand, right_operand, temp))
+                quadruples.append(quadruple(symbol_table[operator], left_operand, right_operand, temp))
                 operand_stack.append(temp)
                 real_type = get_type_s(result_type)
                 types_stack.append(real_type)

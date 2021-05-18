@@ -7,4 +7,3 @@ def get_type_s(cte):
         return "s"
     elif cte == "Bool" or cte == "bool":
         return "b"
-
