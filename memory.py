@@ -1,3 +1,5 @@
+from collections import deque #Para el stack de scopes
+
 global_int = 0
 global_float = 5000
 global_string = 10000
@@ -22,6 +24,12 @@ constant_string = 85000
 constant_bool = 90000
 constant_object = 95000
 
+GLOBAL_START = 0
+LOCAL_START = 25000
+TEMPORAL_START = 50000
+CONSTANT_START = 75000
+
+
 
 class memory():
     def __init__(self, value='', address=''):
@@ -32,8 +40,53 @@ class memory():
     def __repr__(self):
         return f'Value: {self.value}, Addr: {self.address}\n'
 
+
+call_stack = deque()
+
+class func_memory():
+    def __init__(self, function_name='', cont=-1, memory_list={}):
+        self.function_name = function_name
+        self.cont= cont
+        self.prev = 0
+        self.memory_list = memory_list.copy()
+    def __str__(self):
+        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list} \n'
+    def __repr__(self):
+        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}\n'
+
+function_list = {}
 memory_table = {}
 constant_table= {}
+
+def init_memory(func_dir):
+    global call_stack
+    
+    for func_key in func_dir:
+        func = func_dir[func_key]
+        memory_list = {}
+        current_vars = func.vars
+        current_params = func.params
+        for v in current_vars.values():
+            memory_list[v.address] = memory( get_default_value(v.type),v.address)
+        for p in current_params:
+            memory_list[p.address] = memory(get_default_value(p.type),p.address)
+
+        function_list[func_key] = func_memory(func_key,func.cont, memory_list)     
+        if func_key == "global":
+            call_stack.append(func_memory(func_key,func.cont, memory_list))
+        
+    
+def get_default_value(t):
+    if t == 'i':
+        return 0
+    elif t == 's':
+        return ""
+    elif t == 'f':
+        return 0
+    elif t == 'b':
+        return False
+    elif t == 'o':
+        return None
 
 def get_const_address(value, type):
     if value in constant_table.keys():

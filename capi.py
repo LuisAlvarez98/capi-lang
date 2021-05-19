@@ -129,6 +129,8 @@ def get_typeof_id_test(inc_id):
 
 
 def get_next_avail(tp):
+    global temporals
+    temporals +=1
     return get_next_temporal(get_type_s(tp))
 
 quadruples = [] #Lista de cuadruplos
@@ -250,7 +252,7 @@ def p_global(p):
     
 def p_start(p):
     '''
-    start : VOID FUNC START startscope_action LEFTPAR RIGHTPAR function_action3 block 
+    start : VOID FUNC start_action1 START startscope_action LEFTPAR RIGHTPAR main_cont block
     '''
     global temporals
     new_func = active_scopes.pop()
@@ -260,11 +262,20 @@ def p_start(p):
     new_func.params = []
     new_func.params_order = []
     
-    func_dir[p[3]] = new_func
-    
+    func_dir[p[4]] = new_func
+    print(func_dir)
+    quadruples.append(quadruple("ENDFUNC", None,None, None))
+
+
+def p_start_action1(p):
+    '''
+    start_action1 :
+    '''
+    quadruples.append(quadruple("ERA","start" ,None, None))
+
 def p_run(p):
     '''
-    run : VOID FUNC RUN  startscope_action LEFTPAR RIGHTPAR function_action3 block
+    run : VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block
     '''
     global temporals
     new_func = active_scopes.pop()
@@ -274,8 +285,20 @@ def p_run(p):
     new_func.params = []
     new_func.params_order = []
     
-    func_dir[p[3]] = new_func
+    func_dir[p[4]] = new_func
+    quadruples.append(quadruple("ENDFUNC", None,None, None))
 
+def p_run_action1(p):
+    '''
+    run_action1 :
+    '''
+    quadruples.append(quadruple("ERA", "run",None, None))
+
+def p_main_cont(p):
+    '''
+    main_cont :
+    '''
+    active_scopes[-1].cont = len(quadruples) - 1
 
 def p_vars(p): 
     ''' 
@@ -875,7 +898,7 @@ def p_term_action(p):
 
             if result_type != "ERROR":
                 temp = get_next_avail(result_type)
-                quadruples.append(quadruple(symbol_table[operator], left_operand, right_operand, temp))
+                quadruples.append(quadruple(operator, left_operand, right_operand, temp))
                 operand_stack.append(temp)
                 real_type = get_type_s(result_type)
                 types_stack.append(real_type)
@@ -974,7 +997,7 @@ def p_id(p):
             id_address = current_vars[p[1]].address
             break
         current_active_scopes.pop()
-    # we will need to validate for param and local variable.
+    # TODO we will need to validate for param and local variable.
     p[0] = (id_address, get_typeof_id_test(p[1]))
 
 def p_string(p):
@@ -1003,7 +1026,8 @@ def p_bool(p):
     bool : TRUE 
          | FALSE
     '''
-    p[0] = (p[1], 'b')
+    addr = get_const_address(p[1],'b')
+    p[0] = (addr, 'b')
 
 def p_error(p):
     print("ERROR {}".format(p))
@@ -1020,4 +1044,4 @@ f.close()
 yacc.parse(s)
 
 print('Code is okay.')
-init_virtual(quadruples)
+init_virtual(quadruples, func_dir)
