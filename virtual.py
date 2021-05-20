@@ -14,7 +14,7 @@ def init_virtual(quadruples, func_dir):
 
 def action(quadruple):
     global cont, param_pointer, current_context
-    #print("Running quadruple: ", cont, " ", quadruple)
+    print(quadruple)
     if quadruple.operator == '+':
         temp = get_value(quadruple.left_operand).value + get_value(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
@@ -72,7 +72,7 @@ def action(quadruple):
         current_context.prev = cont 
         cont = current_context.cont - 1
     elif quadruple.operator == 'return':
-        print(get_value(quadruple.temp))
+        print(quadruple)
 
 
 # function used to get value from different scopes

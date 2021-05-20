@@ -139,6 +139,7 @@ def get_next_avail(tp):
 
 quadruples = [] #Lista de cuadruplos
 current_callId = '' #Id para la llamada de función
+current_returnAddress = '' #Address de return
 current_functionId = '' # Id for function
 operator_stack = deque() # Stack de operadores + - * /
 operand_stack = deque() # Stack de operandos variables 
@@ -598,22 +599,25 @@ def p_function(p):
              | VOID FUNC ID startscope_action LEFTPAR recparams function_action1 RIGHTPAR function_action2 function_action3 block
              | VOID FUNC ID startscope_action LEFTPAR RIGHTPAR function_action3 block
     '''
-    global temporals, current_functionId
+    global temporals, current_functionId,current_returnAddress
     new_func = active_scopes.pop()
     new_func.temp_count = temporals
     quadruples.append(quadruple("ENDFUNC",None,None,None))
     temporals = 0
     func_dir[p[3]] = new_func
-    add = func_dir['global'].vars[current_functionId].address
-    for quad in quadruples:
-        if quad.operator != 'ERA' and quad.operator != 'GOSUB':
-            if quad.left_operand == current_functionId:
-                quad.left_operand = add
-            if quad.right_operand == current_functionId:
-                quad.right_operand = add
-            if quad.temp == current_functionId:
-                quad.temp = add
+    print(p[1])
+    if p[1] != "void":
+        add = func_dir['global'].vars[current_functionId].address
+        for quad in quadruples:
+            if quad.operator != 'ERA' and quad.operator != 'GOSUB':
+                if quad.left_operand == current_functionId:
+                    quad.left_operand = add
+                if quad.right_operand == current_functionId:
+                    quad.right_operand = add
+                if quad.temp == current_functionId:
+                    quad.temp = add
     current_functionId = ""
+    current_returnAddress = ""
     
 
 
@@ -706,20 +710,23 @@ def p_return(p):
     '''
      return : RETURN expression
     '''
-    global current_functionId
+    global current_functionId,current_returnAddress
     #print(active_scopes)
     func_type = active_scopes[-1].functiontype
     operand_type = types_stack.pop()
     operand_value = operand_stack.pop()
 
 
-    return_address = get_next_global(operand_type)
-    func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, return_address)
+    if current_returnAddress == "":
+        return_address = get_next_global(operand_type)
+        current_returnAddress = return_address
+        func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, current_returnAddress)
+
     if func_type != "void":
         #print(func_type, operand_type)
         if func_type == operand_type:
-            quadruples.append(quadruple('=',operand_value,None,return_address))
-            quadruples.append(quadruple('return', None, None, return_address))
+            quadruples.append(quadruple('=',operand_value,None,current_returnAddress))
+            quadruples.append(quadruple('return', None, None, current_returnAddress))
         else:
             raise Exception("Type mismatch")
     else:
@@ -733,7 +740,7 @@ def p_functioncall(p):
     '''
    
     global current_callId
-    
+    print(active_scopes[-1].functiontype)
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
         t = func_dir["global"].vars[current_callId].type
@@ -742,6 +749,7 @@ def p_functioncall(p):
         t = active_scopes[-1].functiontype
     else: 
         raise Exception('Function does not exists.')
+
     quadruples.append(quadruple("GOSUB", current_callId, None, None))
     p[0] = (operand,t)
     current_callId = ''
