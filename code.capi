@@ -8,13 +8,12 @@ global : {
     var j: int;
 };
 
-int func fact(n:int):{
+void func fact(n:int):{
     if(5 < 2):{
         print("b");
     };else:{
         print("a");
     };
-    return 5;
 };
 
 @ Definition of main module

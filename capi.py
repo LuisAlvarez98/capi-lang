@@ -740,13 +740,16 @@ def p_functioncall(p):
     '''
    
     global current_callId
-    print(active_scopes[-1].functiontype)
+    print(func_dir)
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
         t = func_dir["global"].vars[current_callId].type
     elif current_callId == current_functionId:
         operand = current_callId
         t = active_scopes[-1].functiontype
+    elif current_callId in func_dir.keys():
+        operand = ''
+        t = ''
     else: 
         raise Exception('Function does not exists.')
 
