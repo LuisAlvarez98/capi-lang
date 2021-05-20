@@ -698,9 +698,12 @@ def p_return(p):
     func_type = active_scopes[-1].functiontype
     operand_type = types_stack.pop()
     operand_value = operand_stack.pop()
-    return_address = get_next_local(operand_type)
+
+
+    return_address = get_next_global(operand_type)
     func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, return_address)
     if func_type != "void":
+        print(func_type, operand_type)
         if func_type == operand_type:
             quadruples.append(quadruple('=',operand_value,None,return_address))
             quadruples.append(quadruple('return', None, None, return_address))
@@ -715,16 +718,20 @@ def p_functioncall(p):
     functioncall : ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR 
                  | ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR 
     '''
+   
     global current_callId
     quadruples.append(quadruple("GOSUB", current_callId, None, None))
+    operand = func_dir["global"].vars[current_callId].address
+    t = func_dir["global"].vars[current_callId].type
+    p[0] = (operand,t)
     current_callId = ''
-    
 
 def p_function_call_action1(p):
     '''
     function_call_action1 : 
     '''
     id = p[-1]
+    print(func_dir)
     if id not in func_dir.keys():
        raise Exception("Function does not exist.")
     else:
@@ -769,9 +776,8 @@ def p_recfunc_action1(p):
         params_order.append(ty)
     
     counter = 0
-
     q_operand_stack = operand_stack.copy()
-    if len(params_order) != len(param_order):
+    if len(params_order)  != len(param_order):
         raise Exception("Param length does not match")
     while counter <= k:
         if param_order[counter] == params_order[counter]:
@@ -782,6 +788,7 @@ def p_recfunc_action1(p):
             raise Exception("Param type mismatch")
         counter+=1
    # verify that all parameters where processed 
+ 
     if counter - 1 == k:
         print("All parameters where processed")
     p[0] = params_order

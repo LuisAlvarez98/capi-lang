@@ -8,8 +8,7 @@ global : {
     var j: int;
 };
 
-int func pelos(n:int, x:int, z:int):{
-    print(n,x,z);
+int func fact(n:int):{
     return 5;
 };
 
@@ -18,14 +17,11 @@ int func pelos(n:int, x:int, z:int):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        var l : int;
-        l = 3;
-        pelos(l, 2 ,4);
+        fact(2);
     };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
-        print("jaja");
-        pelos(0,0,0);
+
     };
 };
