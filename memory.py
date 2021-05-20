@@ -44,37 +44,39 @@ class memory():
 call_stack = deque()
 
 class func_memory():
-    def __init__(self, function_name='', cont=-1, memory_list={}):
+    def __init__(self, function_name='', cont=-1, memory_list={}, params={}):
         self.function_name = function_name
         self.cont= cont
         self.prev = 0
         self.memory_list = memory_list.copy()
+        self.params = params.copy()
     def __str__(self):
-        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list} \n'
+        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}, Params: {self.params}\n'
     def __repr__(self):
-        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}\n'
+        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}, Params: {self.params}\n'
 
 function_list = {}
 memory_table = {}
 constant_table= {}
 
+
 def init_memory(func_dir):
-    global call_stack
-    
+    global call_stack, param_counter
     for func_key in func_dir:
         func = func_dir[func_key]
         memory_list = {}
+        params = {}
         current_vars = func.vars
         current_params = func.params
+        param_counter = len(current_params) - 1
         for v in current_vars.values():
             memory_list[v.address] = memory( get_default_value(v.type),v.address)
         for p in current_params:
-            memory_list[p.address] = memory(get_default_value(p.type),p.address)
-
-        function_list[func_key] = func_memory(func_key,func.cont, memory_list)     
+            params[param_counter] = memory(get_default_value(p.type),p.address)
+            param_counter-=1
+        function_list[func_key] = func_memory(func_key,func.cont, memory_list,params)     
         if func_key == "global":
-            call_stack.append(func_memory(func_key,func.cont, memory_list))
-        
+            call_stack.append(func_memory(func_key,func.cont, memory_list,params))
     
 def get_default_value(t):
     if t == 'i':

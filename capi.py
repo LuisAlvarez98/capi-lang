@@ -126,7 +126,6 @@ def get_typeof_id_test(inc_id):
             current_type = current_vars[inc_id].type
             break
         current_active_scopes.pop()
-    print(current_type)
     if(len(current_active_scopes) <= 0 and current_type == ""):
         raise Exception("Variable does not exist.")
    
@@ -140,6 +139,7 @@ def get_next_avail(tp):
 
 quadruples = [] #Lista de cuadruplos
 current_callId = '' #Id para la llamada de función
+current_functionId = '' # Id for function
 operator_stack = deque() # Stack de operadores + - * /
 operand_stack = deque() # Stack de operandos variables 
 types_stack = deque() #Stack de tipos int, float
@@ -598,21 +598,23 @@ def p_function(p):
              | VOID FUNC ID startscope_action LEFTPAR recparams function_action1 RIGHTPAR function_action2 function_action3 block
              | VOID FUNC ID startscope_action LEFTPAR RIGHTPAR function_action3 block
     '''
-    global temporals
+    global temporals, current_functionId
     new_func = active_scopes.pop()
     new_func.temp_count = temporals
     quadruples.append(quadruple("ENDFUNC",None,None,None))
     temporals = 0
     func_dir[p[3]] = new_func
-
+    current_functionId = ""
 def p_startscope_action(p):
     '''
     startscope_action : 
     '''
+    global current_functionId
     if p[-1] in func_dir.keys():
         raise Exception("Function name already exists.")
     
     else:
+        current_functionId = p[-1]
         new_function = function_values()
         new_function.functiontype = p[-3]
         active_scopes.append(new_function)
@@ -692,12 +694,16 @@ def p_return(p):
     '''
      return : RETURN expression
     '''
+    global current_functionId
     func_type = active_scopes[-1].functiontype
     operand_type = types_stack.pop()
     operand_value = operand_stack.pop()
+    return_address = get_next_local(operand_type)
+    func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, return_address)
     if func_type != "void":
         if func_type == operand_type:
-            quadruples.append(quadruple('return', None, None, operand_value))
+            quadruples.append(quadruple('=',operand_value,None,return_address))
+            quadruples.append(quadruple('return', None, None, return_address))
         else:
             raise Exception("Type mismatch")
     else:
@@ -712,13 +718,13 @@ def p_functioncall(p):
     global current_callId
     quadruples.append(quadruple("GOSUB", current_callId, None, None))
     current_callId = ''
+    
 
 def p_function_call_action1(p):
     '''
     function_call_action1 : 
     '''
     id = p[-1]
-    
     if id not in func_dir.keys():
        raise Exception("Function does not exist.")
     else:
@@ -749,7 +755,6 @@ def p_recfunc_action1(p):
     '''
     recfunc_action1 :
     '''
-    
     global current_callId
     param_order = func_dir[current_callId].params_order
     params_order = []
@@ -766,7 +771,6 @@ def p_recfunc_action1(p):
     counter = 0
 
     q_operand_stack = operand_stack.copy()
-    q_operand_stack.reverse()
     if len(params_order) != len(param_order):
         raise Exception("Param length does not match")
     while counter <= k:
@@ -999,11 +1003,10 @@ def p_id(p):
                 id_address = param.address
                 break
         if p[1] in current_vars:
-            id_address = current_vars[p[-1]].address
+            id_address = current_vars[p[1]].address
             break
         current_active_scopes.pop()
     # TODO we will need to validate for param and local variable. CHECK PARAMS
-    print("jaja", id_address)
     p[0] = (id_address, get_typeof_id_test(p[1]))
 
 def p_string(p):
@@ -1011,7 +1014,6 @@ def p_string(p):
     string : STRING
     '''
     addr = get_const_address(p[1],'s')
-    print(p[1])
     p[0] = (addr, 's')
 
 def p_int(p):
