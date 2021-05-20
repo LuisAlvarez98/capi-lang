@@ -9,15 +9,17 @@ global : {
 };
 
 int func fact(n:int):{
-    return 5;
+    if(n > 0):{
+        print("Valor actual", n);
+        return fact(n-1);
+    };
 };
-
 
 @ Definition of main module
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        fact(2);
+        print(fact(10));
     };
 
     @ Definition of run function - this function is the game infinite loop

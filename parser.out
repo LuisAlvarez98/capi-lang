@@ -63,8 +63,8 @@ Rule 51    create_text -> CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
 Rule 52    assign -> ID assign_action1 EQUAL assign_action2 expression
 Rule 53    assign_action1 -> <empty>
 Rule 54    assign_action2 -> <empty>
-Rule 55    condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
-Rule 56    condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
+Rule 55    condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
+Rule 56    condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
 Rule 57    condition_action1 -> <empty>
 Rule 58    condition_action2 -> <empty>
 Rule 59    condition_action3 -> <empty>
@@ -281,7 +281,7 @@ size                 : 33
 specialfunction      : 31 135
 start                : 1 2 3 4
 start_action1        : 8
-startscope_action    : 8 10 55 56 62 66 70 71 72 73
+startscope_action    : 8 10 62 66 70 71 72 73
 statement            : 21 22
 string               : 131
 tail                 : 35
@@ -2163,8 +2163,8 @@ state 145
     (30) statement -> . nestedassign SEMICOLON
     (31) statement -> . specialfunction SEMICOLON
     (52) assign -> . ID assign_action1 EQUAL assign_action2 expression
-    (55) condition -> . IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
-    (56) condition -> . IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
+    (55) condition -> . IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
+    (56) condition -> . IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
     (13) vars -> . VAR recids COLON type EQUAL expression SEMICOLON vars
     (14) vars -> . VAR recids COLON type EQUAL expression SEMICOLON
     (15) vars -> . VAR recids COLON type SEMICOLON vars
@@ -3262,8 +3262,8 @@ state 174
     (30) statement -> . nestedassign SEMICOLON
     (31) statement -> . specialfunction SEMICOLON
     (52) assign -> . ID assign_action1 EQUAL assign_action2 expression
-    (55) condition -> . IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
-    (56) condition -> . IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
+    (55) condition -> . IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
+    (56) condition -> . IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
     (13) vars -> . VAR recids COLON type EQUAL expression SEMICOLON vars
     (14) vars -> . VAR recids COLON type EQUAL expression SEMICOLON
     (15) vars -> . VAR recids COLON type SEMICOLON vars
@@ -3475,13 +3475,11 @@ state 184
 
 state 185
 
-    (55) condition -> IF . startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
-    (56) condition -> IF . startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
-    (74) startscope_action -> .
+    (55) condition -> IF . LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
+    (56) condition -> IF . LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
 
-    LEFTPAR         reduce using rule 74 (startscope_action -> .)
+    LEFTPAR         shift and go to state 229
 
-    startscope_action              shift and go to state 229
 
 state 186
 
@@ -4405,11 +4403,109 @@ state 228
 
 state 229
 
-    (55) condition -> IF startscope_action . LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
-    (56) condition -> IF startscope_action . LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
+    (55) condition -> IF LEFTPAR . expression condition_action1 RIGHTPAR block condition_action2
+    (56) condition -> IF LEFTPAR . expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
+    (97) expression -> . exp RELOP relop_action1 exp relop_action2
+    (98) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (99) expression -> . exp
+    (104) exp -> . term exp_action recexp
+    (105) exp -> . term exp_action
+    (108) term -> . factor term_action recterm
+    (109) term -> . factor term_action
+    (113) factor -> . LEFTPAR expression RIGHTPAR
+    (114) factor -> . EX cte
+    (115) factor -> . cte
+    (126) cte -> .
+    (127) cte -> . id
+    (128) cte -> . int
+    (129) cte -> . float
+    (130) cte -> . bool
+    (131) cte -> . string
+    (132) cte -> . nestedvalue
+    (133) cte -> . functioncall
+    (134) cte -> . listaccess
+    (135) cte -> . specialfunction
+    (136) id -> . ID
+    (138) int -> . INT
+    (139) float -> . FLOAT
+    (140) bool -> . TRUE
+    (141) bool -> . FALSE
+    (137) string -> . STRING
+    (124) nestedvalue -> . ID DOT ID
+    (90) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
+    (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
+    (123) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    (32) specialfunction -> . draw
+    (33) specialfunction -> . size
+    (34) specialfunction -> . head
+    (35) specialfunction -> . tail
+    (36) specialfunction -> . last
+    (37) specialfunction -> . set_title
+    (38) specialfunction -> . set_dimension
+    (39) specialfunction -> . set_color
+    (40) specialfunction -> . create_object
+    (41) specialfunction -> . create_text
+    (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
+    (43) size -> . SIZE LEFTPAR RIGHTPAR
+    (44) head -> . HEAD LEFTPAR RIGHTPAR
+    (45) tail -> . TAIL LEFTPAR RIGHTPAR
+    (46) last -> . LAST LEFTPAR RIGHTPAR
+    (47) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
+    (48) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
+    (49) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
+    (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
+    (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
 
-    LEFTPAR         shift and go to state 254
+  ! shift/reduce conflict for EX resolved as shift
+    LEFTPAR         shift and go to state 104
+    EX              shift and go to state 105
+    TERMS           reduce using rule 126 (cte -> .)
+    RELOP           reduce using rule 126 (cte -> .)
+    LOGIC           reduce using rule 126 (cte -> .)
+    RIGHTPAR        reduce using rule 126 (cte -> .)
+    ID              shift and go to state 116
+    INT             shift and go to state 117
+    FLOAT           shift and go to state 118
+    TRUE            shift and go to state 119
+    FALSE           shift and go to state 120
+    STRING          shift and go to state 121
+    DRAW            shift and go to state 132
+    SIZE            shift and go to state 133
+    HEAD            shift and go to state 134
+    TAIL            shift and go to state 135
+    LAST            shift and go to state 136
+    SET_TITLE       shift and go to state 137
+    SET_DIMENSION   shift and go to state 138
+    SET_COLOR       shift and go to state 139
+    CREATE_OBJECT   shift and go to state 140
+    CREATE_TEXT     shift and go to state 141
 
+  ! EX              [ reduce using rule 126 (cte -> .) ]
+
+    expression                     shift and go to state 254
+    exp                            shift and go to state 101
+    term                           shift and go to state 102
+    factor                         shift and go to state 103
+    cte                            shift and go to state 106
+    id                             shift and go to state 107
+    int                            shift and go to state 108
+    float                          shift and go to state 109
+    bool                           shift and go to state 110
+    string                         shift and go to state 111
+    nestedvalue                    shift and go to state 112
+    functioncall                   shift and go to state 113
+    listaccess                     shift and go to state 114
+    specialfunction                shift and go to state 115
+    draw                           shift and go to state 122
+    size                           shift and go to state 123
+    head                           shift and go to state 124
+    tail                           shift and go to state 125
+    last                           shift and go to state 126
+    set_title                      shift and go to state 127
+    set_dimension                  shift and go to state 128
+    set_color                      shift and go to state 129
+    create_object                  shift and go to state 130
+    create_text                    shift and go to state 131
 
 state 230
 
@@ -5475,109 +5571,13 @@ state 253
 
 state 254
 
-    (55) condition -> IF startscope_action LEFTPAR . expression condition_action1 RIGHTPAR block condition_action2
-    (56) condition -> IF startscope_action LEFTPAR . expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
-    (97) expression -> . exp RELOP relop_action1 exp relop_action2
-    (98) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (99) expression -> . exp
-    (104) exp -> . term exp_action recexp
-    (105) exp -> . term exp_action
-    (108) term -> . factor term_action recterm
-    (109) term -> . factor term_action
-    (113) factor -> . LEFTPAR expression RIGHTPAR
-    (114) factor -> . EX cte
-    (115) factor -> . cte
-    (126) cte -> .
-    (127) cte -> . id
-    (128) cte -> . int
-    (129) cte -> . float
-    (130) cte -> . bool
-    (131) cte -> . string
-    (132) cte -> . nestedvalue
-    (133) cte -> . functioncall
-    (134) cte -> . listaccess
-    (135) cte -> . specialfunction
-    (136) id -> . ID
-    (138) int -> . INT
-    (139) float -> . FLOAT
-    (140) bool -> . TRUE
-    (141) bool -> . FALSE
-    (137) string -> . STRING
-    (124) nestedvalue -> . ID DOT ID
-    (90) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
-    (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (123) listaccess -> . ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
-    (32) specialfunction -> . draw
-    (33) specialfunction -> . size
-    (34) specialfunction -> . head
-    (35) specialfunction -> . tail
-    (36) specialfunction -> . last
-    (37) specialfunction -> . set_title
-    (38) specialfunction -> . set_dimension
-    (39) specialfunction -> . set_color
-    (40) specialfunction -> . create_object
-    (41) specialfunction -> . create_text
-    (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
-    (43) size -> . SIZE LEFTPAR RIGHTPAR
-    (44) head -> . HEAD LEFTPAR RIGHTPAR
-    (45) tail -> . TAIL LEFTPAR RIGHTPAR
-    (46) last -> . LAST LEFTPAR RIGHTPAR
-    (47) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
-    (48) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
-    (49) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
-    (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
-    (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
+    (55) condition -> IF LEFTPAR expression . condition_action1 RIGHTPAR block condition_action2
+    (56) condition -> IF LEFTPAR expression . condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
+    (57) condition_action1 -> .
 
-  ! shift/reduce conflict for EX resolved as shift
-    LEFTPAR         shift and go to state 104
-    EX              shift and go to state 105
-    TERMS           reduce using rule 126 (cte -> .)
-    RELOP           reduce using rule 126 (cte -> .)
-    LOGIC           reduce using rule 126 (cte -> .)
-    RIGHTPAR        reduce using rule 126 (cte -> .)
-    ID              shift and go to state 116
-    INT             shift and go to state 117
-    FLOAT           shift and go to state 118
-    TRUE            shift and go to state 119
-    FALSE           shift and go to state 120
-    STRING          shift and go to state 121
-    DRAW            shift and go to state 132
-    SIZE            shift and go to state 133
-    HEAD            shift and go to state 134
-    TAIL            shift and go to state 135
-    LAST            shift and go to state 136
-    SET_TITLE       shift and go to state 137
-    SET_DIMENSION   shift and go to state 138
-    SET_COLOR       shift and go to state 139
-    CREATE_OBJECT   shift and go to state 140
-    CREATE_TEXT     shift and go to state 141
+    RIGHTPAR        reduce using rule 57 (condition_action1 -> .)
 
-  ! EX              [ reduce using rule 126 (cte -> .) ]
-
-    expression                     shift and go to state 273
-    exp                            shift and go to state 101
-    term                           shift and go to state 102
-    factor                         shift and go to state 103
-    cte                            shift and go to state 106
-    id                             shift and go to state 107
-    int                            shift and go to state 108
-    float                          shift and go to state 109
-    bool                           shift and go to state 110
-    string                         shift and go to state 111
-    nestedvalue                    shift and go to state 112
-    functioncall                   shift and go to state 113
-    listaccess                     shift and go to state 114
-    specialfunction                shift and go to state 115
-    draw                           shift and go to state 122
-    size                           shift and go to state 123
-    head                           shift and go to state 124
-    tail                           shift and go to state 125
-    last                           shift and go to state 126
-    set_title                      shift and go to state 127
-    set_dimension                  shift and go to state 128
-    set_color                      shift and go to state 129
-    create_object                  shift and go to state 130
-    create_text                    shift and go to state 131
+    condition_action1              shift and go to state 273
 
 state 255
 
@@ -5859,13 +5859,11 @@ state 272
 
 state 273
 
-    (55) condition -> IF startscope_action LEFTPAR expression . condition_action1 RIGHTPAR block condition_action2
-    (56) condition -> IF startscope_action LEFTPAR expression . condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
-    (57) condition_action1 -> .
+    (55) condition -> IF LEFTPAR expression condition_action1 . RIGHTPAR block condition_action2
+    (56) condition -> IF LEFTPAR expression condition_action1 . RIGHTPAR block condition_action3 ELSE block condition_action2
 
-    RIGHTPAR        reduce using rule 57 (condition_action1 -> .)
+    RIGHTPAR        shift and go to state 285
 
-    condition_action1              shift and go to state 285
 
 state 274
 
@@ -6162,11 +6160,14 @@ state 284
 
 state 285
 
-    (55) condition -> IF startscope_action LEFTPAR expression condition_action1 . RIGHTPAR block condition_action2
-    (56) condition -> IF startscope_action LEFTPAR expression condition_action1 . RIGHTPAR block condition_action3 ELSE block condition_action2
+    (55) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR . block condition_action2
+    (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR . block condition_action3 ELSE block condition_action2
+    (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
+    (20) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
 
-    RIGHTPAR        shift and go to state 291
+    COLON           shift and go to state 92
 
+    block                          shift and go to state 291
 
 state 286
 
@@ -6438,14 +6439,33 @@ state 290
 
 state 291
 
-    (55) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR . block condition_action2
-    (56) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR . block condition_action3 ELSE block condition_action2
-    (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
-    (20) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
+    (55) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block . condition_action2
+    (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block . condition_action3 ELSE block condition_action2
+    (58) condition_action2 -> .
+    (59) condition_action3 -> .
 
-    COLON           shift and go to state 92
+    ID              reduce using rule 58 (condition_action2 -> .)
+    IF              reduce using rule 58 (condition_action2 -> .)
+    VAR             reduce using rule 58 (condition_action2 -> .)
+    PRINT           reduce using rule 58 (condition_action2 -> .)
+    RETURN          reduce using rule 58 (condition_action2 -> .)
+    FOR             reduce using rule 58 (condition_action2 -> .)
+    WHILE           reduce using rule 58 (condition_action2 -> .)
+    DRAW            reduce using rule 58 (condition_action2 -> .)
+    SIZE            reduce using rule 58 (condition_action2 -> .)
+    HEAD            reduce using rule 58 (condition_action2 -> .)
+    TAIL            reduce using rule 58 (condition_action2 -> .)
+    LAST            reduce using rule 58 (condition_action2 -> .)
+    SET_TITLE       reduce using rule 58 (condition_action2 -> .)
+    SET_DIMENSION   reduce using rule 58 (condition_action2 -> .)
+    SET_COLOR       reduce using rule 58 (condition_action2 -> .)
+    CREATE_OBJECT   reduce using rule 58 (condition_action2 -> .)
+    CREATE_TEXT     reduce using rule 58 (condition_action2 -> .)
+    RIGHTKEY        reduce using rule 58 (condition_action2 -> .)
+    ELSE            reduce using rule 59 (condition_action3 -> .)
 
-    block                          shift and go to state 297
+    condition_action2              shift and go to state 297
+    condition_action3              shift and go to state 298
 
 state 292
 
@@ -6541,7 +6561,7 @@ state 294
 
   ! EX              [ reduce using rule 126 (cte -> .) ]
 
-    expression                     shift and go to state 298
+    expression                     shift and go to state 299
     exp                            shift and go to state 101
     term                           shift and go to state 102
     factor                         shift and go to state 103
@@ -6570,7 +6590,7 @@ state 295
 
     (66) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 . RIGHTPAR block while_action3
 
-    RIGHTPAR        shift and go to state 299
+    RIGHTPAR        shift and go to state 300
 
 
 state 296
@@ -6589,35 +6609,36 @@ state 296
 
 state 297
 
-    (55) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block . condition_action2
-    (56) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block . condition_action3 ELSE block condition_action2
-    (58) condition_action2 -> .
-    (59) condition_action3 -> .
+    (55) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .
 
-    ID              reduce using rule 58 (condition_action2 -> .)
-    IF              reduce using rule 58 (condition_action2 -> .)
-    VAR             reduce using rule 58 (condition_action2 -> .)
-    PRINT           reduce using rule 58 (condition_action2 -> .)
-    RETURN          reduce using rule 58 (condition_action2 -> .)
-    FOR             reduce using rule 58 (condition_action2 -> .)
-    WHILE           reduce using rule 58 (condition_action2 -> .)
-    DRAW            reduce using rule 58 (condition_action2 -> .)
-    SIZE            reduce using rule 58 (condition_action2 -> .)
-    HEAD            reduce using rule 58 (condition_action2 -> .)
-    TAIL            reduce using rule 58 (condition_action2 -> .)
-    LAST            reduce using rule 58 (condition_action2 -> .)
-    SET_TITLE       reduce using rule 58 (condition_action2 -> .)
-    SET_DIMENSION   reduce using rule 58 (condition_action2 -> .)
-    SET_COLOR       reduce using rule 58 (condition_action2 -> .)
-    CREATE_OBJECT   reduce using rule 58 (condition_action2 -> .)
-    CREATE_TEXT     reduce using rule 58 (condition_action2 -> .)
-    RIGHTKEY        reduce using rule 58 (condition_action2 -> .)
-    ELSE            reduce using rule 59 (condition_action3 -> .)
+    ID              reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    IF              reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    VAR             reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    PRINT           reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    RETURN          reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    FOR             reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    WHILE           reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    DRAW            reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    SIZE            reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    HEAD            reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    TAIL            reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    LAST            reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    SET_TITLE       reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    SET_DIMENSION   reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    SET_COLOR       reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    CREATE_OBJECT   reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    CREATE_TEXT     reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
+    RIGHTKEY        reduce using rule 55 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
 
-    condition_action2              shift and go to state 300
-    condition_action3              shift and go to state 301
 
 state 298
+
+    (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 . ELSE block condition_action2
+
+    ELSE            shift and go to state 301
+
+
+state 299
 
     (62) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression . for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     (64) for_action2 -> .
@@ -6626,7 +6647,7 @@ state 298
 
     for_action2                    shift and go to state 302
 
-state 299
+state 300
 
     (66) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR . block while_action3
     (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
@@ -6636,36 +6657,15 @@ state 299
 
     block                          shift and go to state 303
 
-state 300
-
-    (55) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .
-
-    ID              reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    IF              reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    VAR             reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    PRINT           reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    RETURN          reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    FOR             reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    WHILE           reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    DRAW            reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    SIZE            reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    HEAD            reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    TAIL            reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    LAST            reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    SET_TITLE       reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    SET_DIMENSION   reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    SET_COLOR       reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    CREATE_OBJECT   reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    CREATE_TEXT     reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-    RIGHTKEY        reduce using rule 55 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
-
-
 state 301
 
-    (56) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 . ELSE block condition_action2
+    (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE . block condition_action2
+    (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
+    (20) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
 
-    ELSE            shift and go to state 304
+    COLON           shift and go to state 92
 
+    block                          shift and go to state 304
 
 state 302
 
@@ -6702,13 +6702,29 @@ state 303
 
 state 304
 
-    (56) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE . block condition_action2
-    (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
-    (20) block -> . COLON LEFTKEY RIGHTKEY SEMICOLON
+    (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block . condition_action2
+    (58) condition_action2 -> .
 
-    COLON           shift and go to state 92
+    ID              reduce using rule 58 (condition_action2 -> .)
+    IF              reduce using rule 58 (condition_action2 -> .)
+    VAR             reduce using rule 58 (condition_action2 -> .)
+    PRINT           reduce using rule 58 (condition_action2 -> .)
+    RETURN          reduce using rule 58 (condition_action2 -> .)
+    FOR             reduce using rule 58 (condition_action2 -> .)
+    WHILE           reduce using rule 58 (condition_action2 -> .)
+    DRAW            reduce using rule 58 (condition_action2 -> .)
+    SIZE            reduce using rule 58 (condition_action2 -> .)
+    HEAD            reduce using rule 58 (condition_action2 -> .)
+    TAIL            reduce using rule 58 (condition_action2 -> .)
+    LAST            reduce using rule 58 (condition_action2 -> .)
+    SET_TITLE       reduce using rule 58 (condition_action2 -> .)
+    SET_DIMENSION   reduce using rule 58 (condition_action2 -> .)
+    SET_COLOR       reduce using rule 58 (condition_action2 -> .)
+    CREATE_OBJECT   reduce using rule 58 (condition_action2 -> .)
+    CREATE_TEXT     reduce using rule 58 (condition_action2 -> .)
+    RIGHTKEY        reduce using rule 58 (condition_action2 -> .)
 
-    block                          shift and go to state 307
+    condition_action2              shift and go to state 307
 
 state 305
 
@@ -6745,69 +6761,43 @@ state 306
 
 state 307
 
-    (56) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block . condition_action2
-    (58) condition_action2 -> .
+    (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .
 
-    ID              reduce using rule 58 (condition_action2 -> .)
-    IF              reduce using rule 58 (condition_action2 -> .)
-    VAR             reduce using rule 58 (condition_action2 -> .)
-    PRINT           reduce using rule 58 (condition_action2 -> .)
-    RETURN          reduce using rule 58 (condition_action2 -> .)
-    FOR             reduce using rule 58 (condition_action2 -> .)
-    WHILE           reduce using rule 58 (condition_action2 -> .)
-    DRAW            reduce using rule 58 (condition_action2 -> .)
-    SIZE            reduce using rule 58 (condition_action2 -> .)
-    HEAD            reduce using rule 58 (condition_action2 -> .)
-    TAIL            reduce using rule 58 (condition_action2 -> .)
-    LAST            reduce using rule 58 (condition_action2 -> .)
-    SET_TITLE       reduce using rule 58 (condition_action2 -> .)
-    SET_DIMENSION   reduce using rule 58 (condition_action2 -> .)
-    SET_COLOR       reduce using rule 58 (condition_action2 -> .)
-    CREATE_OBJECT   reduce using rule 58 (condition_action2 -> .)
-    CREATE_TEXT     reduce using rule 58 (condition_action2 -> .)
-    RIGHTKEY        reduce using rule 58 (condition_action2 -> .)
+    ID              reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    IF              reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    VAR             reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    PRINT           reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    RETURN          reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    FOR             reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    WHILE           reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    DRAW            reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    SIZE            reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    HEAD            reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    TAIL            reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    LAST            reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    SET_TITLE       reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    SET_DIMENSION   reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    SET_COLOR       reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    CREATE_OBJECT   reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    CREATE_TEXT     reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    RIGHTKEY        reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
 
-    condition_action2              shift and go to state 309
 
 state 308
 
     (62) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign . SEMICOLON RIGHTPAR block for_action3
 
-    SEMICOLON       shift and go to state 310
+    SEMICOLON       shift and go to state 309
 
 
 state 309
 
-    (56) condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .
+    (62) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON . RIGHTPAR block for_action3
 
-    ID              reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    IF              reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    VAR             reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    PRINT           reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    RETURN          reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    FOR             reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    WHILE           reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    DRAW            reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    SIZE            reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    HEAD            reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    TAIL            reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    LAST            reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    SET_TITLE       reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    SET_DIMENSION   reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    SET_COLOR       reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    CREATE_OBJECT   reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    CREATE_TEXT     reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
-    RIGHTKEY        reduce using rule 56 (condition -> IF startscope_action LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
+    RIGHTPAR        shift and go to state 310
 
 
 state 310
-
-    (62) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON . RIGHTPAR block for_action3
-
-    RIGHTPAR        shift and go to state 311
-
-
-state 311
 
     (62) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR . block for_action3
     (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
@@ -6815,9 +6805,9 @@ state 311
 
     COLON           shift and go to state 92
 
-    block                          shift and go to state 312
+    block                          shift and go to state 311
 
-state 312
+state 311
 
     (62) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block . for_action3
     (65) for_action3 -> .
@@ -6841,9 +6831,9 @@ state 312
     CREATE_TEXT     reduce using rule 65 (for_action3 -> .)
     RIGHTKEY        reduce using rule 65 (for_action3 -> .)
 
-    for_action3                    shift and go to state 313
+    for_action3                    shift and go to state 312
 
-state 313
+state 312
 
     (62) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .
 
@@ -6883,6 +6873,7 @@ WARNING: shift/reduce conflict for EX in state 169 resolved as shift
 WARNING: shift/reduce conflict for EX in state 189 resolved as shift
 WARNING: shift/reduce conflict for EX in state 197 resolved as shift
 WARNING: shift/reduce conflict for EX in state 198 resolved as shift
+WARNING: shift/reduce conflict for EX in state 229 resolved as shift
 WARNING: shift/reduce conflict for EX in state 230 resolved as shift
 WARNING: shift/reduce conflict for EX in state 232 resolved as shift
 WARNING: shift/reduce conflict for EX in state 240 resolved as shift
@@ -6892,7 +6883,6 @@ WARNING: shift/reduce conflict for RIGHTPAR in state 242 resolved as shift
 WARNING: shift/reduce conflict for EX in state 245 resolved as shift
 WARNING: shift/reduce conflict for EX in state 248 resolved as shift
 WARNING: shift/reduce conflict for EX in state 249 resolved as shift
-WARNING: shift/reduce conflict for EX in state 254 resolved as shift
 WARNING: shift/reduce conflict for EX in state 272 resolved as shift
 WARNING: shift/reduce conflict for EX in state 279 resolved as shift
 WARNING: shift/reduce conflict for EX in state 283 resolved as shift
