@@ -4,17 +4,16 @@ from memory import  memory_table,print_const_table, memory,constant_table, init_
 cont = 0
 
 def init_virtual(quadruples, func_dir):
-
     init_memory(func_dir)
+    print(function_list)
     global cont
     while cont < len(quadruples):
+        print(quadruples[cont])
         action(quadruples[cont])
         cont+=1
-    print(call_stack)
 
 def action(quadruple):
     global cont
-    print("Running quadruple: ", cont, quadruple)
     if quadruple.operator == '+':
         temp = get_value(quadruple.left_operand).value + get_value(quadruple.right_operand).value
         call_stack[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
@@ -27,15 +26,37 @@ def action(quadruple):
     elif quadruple.operator == '/':
         temp = get_value(quadruple.left_operand).value / get_value(quadruple.right_operand).value
         call_stack[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+    elif quadruple.operator == '>':
+        temp = get_value(quadruple.left_operand).value > get_value(quadruple.right_operand).value
+        call_stack[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+    elif quadruple.operator == '>=':
+        temp = get_value(quadruple.left_operand).value >= get_value(quadruple.right_operand).value
+        call_stack[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+    elif quadruple.operator == '<=':
+        temp = get_value(quadruple.left_operand).value <= get_value(quadruple.right_operand).value
+        call_stack[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+    elif quadruple.operator == '<':
+        temp = get_value(quadruple.left_operand).value < get_value(quadruple.right_operand).value
+        call_stack[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+    elif quadruple.operator == '==':
+        temp = get_value(quadruple.left_operand).value == get_value(quadruple.right_operand).value
+        call_stack[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '=':
         if quadruple.temp not in call_stack[-1].memory_list:
             set_global_var(quadruple.temp, get_value(quadruple.left_operand).value)
         else:
             call_stack[-1].memory_list[quadruple.temp].value = get_value(quadruple.left_operand).value
     elif quadruple.operator == 'print':
+        print(quadruple)
         print(get_value(quadruple.temp).value)
     elif quadruple.operator == 'GOTO':
         cont = quadruple.temp - 1
+    elif quadruple.operator == 'GOTO_F':
+        if not get_value(quadruple.left_operand).value:
+            cont = quadruple.temp - 1
+    elif quadruple.operator == 'PARAM':
+        print(quadruple)
+        print(call_stack[-1].memory_list[quadruple.left_operand])
     elif quadruple.operator == 'ERA':
         # We push the context into the call_stack
         call_stack.append(function_list[quadruple.left_operand])

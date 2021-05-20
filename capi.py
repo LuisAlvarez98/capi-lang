@@ -117,12 +117,17 @@ def get_typeof_id_test(inc_id):
     current_type = ""
     while len(current_active_scopes) != 0:
         current_vars = current_active_scopes[-1].vars
+        current_params = current_active_scopes[-1].params
+        for param in current_params:# check this later TODO
+            if inc_id == param.id:
+                current_type = param.type
+                break
         if inc_id in current_vars:
             current_type = current_vars[inc_id].type
             break
         current_active_scopes.pop()
-    
-    if(len(current_active_scopes) <= 0):
+    print(current_type)
+    if(len(current_active_scopes) <= 0 and current_type == ""):
         raise Exception("Variable does not exist.")
    
     return current_type
@@ -263,7 +268,6 @@ def p_start(p):
     new_func.params_order = []
     
     func_dir[p[4]] = new_func
-    print(func_dir)
     quadruples.append(quadruple("ENDFUNC", None,None, None))
 
 
@@ -681,7 +685,8 @@ def p_action_recwrite_cte(p):
     '''
     action_recwrite_cte : 
     '''
-    quadruples.append(quadruple("print",None, None, p[-1]))
+    address = get_const_address(p[-1], 's')
+    quadruples.append(quadruple("print",None, None, address))
 
 def p_return(p):
     '''
@@ -989,15 +994,16 @@ def p_id(p):
     while len(current_active_scopes) != 0:
         current_vars = current_active_scopes[-1].vars
         current_params = current_active_scopes[-1].params
-        if p[1] in current_params:
-            id_address = current_params[p[1]].address
-            break
-
+        for param in current_params:
+            if p[1] == param.id:
+                id_address = param.address
+                break
         if p[1] in current_vars:
-            id_address = current_vars[p[1]].address
+            id_address = current_vars[p[-1]].address
             break
         current_active_scopes.pop()
-    # TODO we will need to validate for param and local variable.
+    # TODO we will need to validate for param and local variable. CHECK PARAMS
+    print("jaja", id_address)
     p[0] = (id_address, get_typeof_id_test(p[1]))
 
 def p_string(p):
@@ -1005,6 +1011,7 @@ def p_string(p):
     string : STRING
     '''
     addr = get_const_address(p[1],'s')
+    print(p[1])
     p[0] = (addr, 's')
 
 def p_int(p):

@@ -3,15 +3,13 @@
 global : {
     var id: string;
     var papa: string;
+    var p: bool;
+    var i: int;
+    var j: int;
 };
 
-int func pelos(a:int):{
-    var a: int;
-    var b: int;
-    b = 2;
-    a = 1;
-    print(a * b);
-    return 5;
+int func pelos(n:int):{
+    print(n);
 };
 
 
@@ -20,11 +18,9 @@ main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
         pelos(5);
-        print(3 + 2);
     };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
-        print(10 + 3);
     };
 };
