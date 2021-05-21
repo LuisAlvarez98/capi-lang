@@ -51,9 +51,9 @@ class func_memory():
         self.memory_list = memory_list.copy()
         self.params = params.copy()
     def __str__(self):
-        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}, Params: {self.params}\n'
+        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}, Params: {self.params}, Prev: {self.prev}\n'
     def __repr__(self):
-        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}, Params: {self.params}\n'
+        return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}, Params: {self.params}, Prev: {self.prev}\n'
 
 function_list = {}
 memory_table = {}

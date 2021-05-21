@@ -1,20 +1,24 @@
 
 from memory import  memory_table,print_const_table, memory,constant_table, init_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
-
+from time import sleep
 cont = 0
 param_pointer = 0
 current_context = func_memory()
 def init_virtual(quadruples, func_dir):
     global current_context,cont
+    for i, q in enumerate(quadruples):
+        print(i, " ", q)
+
     init_memory(func_dir)
     current_context = call_stack[-1]
     while cont < len(quadruples):
+        sleep(0.5)
         action(quadruples[cont])
         cont+=1
 
 def action(quadruple):
     global cont, param_pointer, current_context
-    print(quadruple)
+    print("Running: ", cont)
     if quadruple.operator == '+':
         temp = get_value(quadruple.left_operand).value + get_value(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
@@ -40,8 +44,11 @@ def action(quadruple):
         temp = get_value(quadruple.left_operand).value < get_value(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '==':
+        print("jsadjasjd")
         temp = get_value(quadruple.left_operand).value == get_value(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        print("-----------------------------")
+        print("a", current_context)
     elif quadruple.operator == '=':
         if quadruple.temp not in current_context.memory_list:
             set_global_var(quadruple.temp, get_value(quadruple.left_operand).value)
@@ -62,22 +69,28 @@ def action(quadruple):
         call_stack.append(function_list[quadruple.left_operand])
     elif quadruple.operator == 'ENDFUNC':
         # It checks if the function is not run and start so that the cont does not reset.
-        current_context = call_stack[-1]
-        if current_context.function_name != "run" and current_context.function_name != "start" :
-            cont = current_context.prev
+        return_address = current_context.prev
+        print(call_stack)
         call_stack.pop()
-    elif quadruple.operator == 'GOSUB':
         current_context = call_stack[-1]
-        #we store the previous position
-        current_context.prev = cont 
-        cont = current_context.cont - 1
-    elif quadruple.operator == 'return':
-        print(quadruple)
+        cont = return_address
+        print("ENDFUNC!!!!", cont)
 
+    elif quadruple.operator == 'GOSUB':
+        #we store the previous position
+        if(call_stack[-1].function_name != "global"):
+            start = call_stack[-1].cont
+            current_context.prev = cont
+            current_context = call_stack[-1]
+            cont = start
+
+    elif quadruple.operator == 'return':
+        pass
 
 # function used to get value from different scopes
 def get_value(address):
     global param_pointer, current_context
+    print(address)
     if address >= CONSTANT_START:
         return memory_table[address]
     elif address >= LOCAL_START and address <= CONSTANT_START - 1:

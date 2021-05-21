@@ -245,7 +245,7 @@ def p_capi_action2(p):
     '''
     capi_action2 :
     '''
-    quadruples[0] = quadruple("GOTO",None,None,func_dir['start'].cont)
+    quadruples[0] = quadruple("GOTO",None,None,func_dir['start'].cont - 1)
 
 def p_global(p):
     '''
@@ -258,7 +258,7 @@ def p_global(p):
     
 def p_start(p):
     '''
-    start : VOID FUNC start_action1 START startscope_action LEFTPAR RIGHTPAR main_cont block
+    start : VOID FUNC start_action1 START startscope_action LEFTPAR RIGHTPAR main_cont block 
     '''
     global temporals
     new_func = active_scopes.pop()
@@ -277,10 +277,11 @@ def p_start_action1(p):
     start_action1 :
     '''
     quadruples.append(quadruple("ERA","start" ,None, None))
+    quadruples.append(quadruple("GOSUB","start",None,None))
 
 def p_run(p):
     '''
-    run : VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block
+    run : VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block  
     '''
     global temporals
     new_func = active_scopes.pop()
@@ -726,7 +727,7 @@ def p_return(p):
         #print(func_type, operand_type)
         if func_type == operand_type:
             quadruples.append(quadruple('=',operand_value,None,current_returnAddress))
-            quadruples.append(quadruple('return', None, None, current_returnAddress))
+            quadruples.append(quadruple('ENDFUNC', None, None, None))
         else:
             raise Exception("Type mismatch")
     else:
@@ -740,7 +741,6 @@ def p_functioncall(p):
     '''
    
     global current_callId
-    print(func_dir)
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
         t = func_dir["global"].vars[current_callId].type
