@@ -1,5 +1,5 @@
 
-from memory import  memory_table,print_const_table, memory,constant_table, init_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
+from memory import  memory_table,print_const_table, memory,constant_table, init_memory,create_func_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
 from time import sleep
 cont = 0
 param_pointer = 0
@@ -62,8 +62,7 @@ def action(quadruple):
         call_stack[-1].params[param_index].value = get_value(quadruple.left_operand).value
     elif quadruple.operator == 'ERA':
         # We push the context into the call_stack
-        temp = function_list[quadruple.left_operand]
-        new_func = func_memory(temp.function_name, temp.cont, temp.memory_list, temp.params)
+        new_func = create_func_memory(quadruple.left_operand)
         call_stack.append(new_func)
     elif quadruple.operator == 'ENDFUNC':
         # It checks if the function is not run and start so that the cont does not reset.

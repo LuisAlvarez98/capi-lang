@@ -78,6 +78,26 @@ def init_memory(func_dir):
         if func_key == "global":
             call_stack.append(func_memory(func_key,func.cont, memory_list,params))
     
+
+def create_func_memory(id):
+    temp = function_list[id]
+    temp_mem = temp.memory_list.copy()
+    temp_params = temp.params.copy()
+    print(function_list[id])
+    copy_mem = {}
+    copy_params = {}
+    param_counter = len(temp_params)-1
+    for v in temp_mem.values():
+        copy_mem[v.address] = memory(v.value,v.address)
+    for p in temp_params.values():
+        copy_params[param_counter] = memory(p.value,p.address)
+        param_counter-=1
+
+    print("memory: ",copy_mem)
+    print("params: ", copy_params)
+    fm = func_memory(temp.function_name, temp.cont,temp_mem ,copy_params )
+    return fm
+
 def get_default_value(t):
     if t == 'i':
         return 0
