@@ -281,7 +281,7 @@ def p_start_action1(p):
 
 def p_run(p):
     '''
-    run : VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block  
+    run : VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block 
     '''
     global temporals
     new_func = active_scopes.pop()
