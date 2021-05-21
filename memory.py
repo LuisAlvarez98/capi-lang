@@ -83,7 +83,6 @@ def create_func_memory(id):
     temp = function_list[id]
     temp_mem = temp.memory_list.copy()
     temp_params = temp.params.copy()
-    print(function_list[id])
     copy_mem = {}
     copy_params = {}
     param_counter = len(temp_params)-1

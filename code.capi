@@ -5,13 +5,11 @@ global : {
 };
 
 
-
+int func pa(n:int):{
+    return n - 1;
+};
 int func fact(n:int):{
-    if(n == 1):{
-        return n;
-    };else:{
-      return fact(n - 1);
-    };
+    return n * pa(2);
 };
 
 @ Definition of main module

@@ -12,7 +12,7 @@ def init_virtual(quadruples, func_dir):
     init_memory(func_dir)
     current_context = call_stack[-1]
     while cont < len(quadruples):
-        sleep(0.5)
+        sleep(1)
         action(quadruples[cont])
         cont+=1
 def action(quadruple):
@@ -71,11 +71,9 @@ def action(quadruple):
             cont = current_context.prev
         call_stack.pop()
     elif quadruple.operator == 'GOSUB':
-        print("current", call_stack)
         current_context = call_stack[-1]
         current_context.prev = cont 
         cont = current_context.cont 
-        print(call_stack)
 
 
 
