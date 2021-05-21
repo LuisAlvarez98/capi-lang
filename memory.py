@@ -93,8 +93,6 @@ def create_func_memory(id):
         copy_params[param_counter] = memory(p.value,p.address)
         param_counter-=1
 
-    print("memory: ",copy_mem)
-    print("params: ", copy_params)
     fm = func_memory(temp.function_name, temp.cont,temp_mem ,copy_params )
     return fm
 
