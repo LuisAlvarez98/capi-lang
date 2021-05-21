@@ -657,7 +657,7 @@ def p_function_action3(p):
     '''
     function_action3 :
     '''
-    active_scopes[-1].cont = len(quadruples)
+    active_scopes[-1].cont = len(quadruples) - 1
 
 def p_recparams(p):
     '''

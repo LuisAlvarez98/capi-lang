@@ -4,11 +4,13 @@ global : {
     var j: int;
 };
 
+
+
 int func fact(n:int):{
-    if(n==0):{
-        return 0;
+    if(n == 1):{
+        return n;
     };else:{
-        return fact(n - 1);
+      return n * fact(n - 1);
     };
 };
 
@@ -16,7 +18,7 @@ int func fact(n:int):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-       print(fact(2));
+       print(fact(1));
     };
 
     @ Definition of run function - this function is the game infinite loop

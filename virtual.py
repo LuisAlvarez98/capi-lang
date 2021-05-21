@@ -61,30 +61,24 @@ def action(quadruple):
         param_index = int(quadruple.temp.split(" ")[1]) - 1
         call_stack[-1].params[param_index].value = get_value(quadruple.left_operand).value
     elif quadruple.operator == 'ERA':
-        print("Call: ", quadruple.left_operand)
         # We push the context into the call_stack
-        call_stack.append(function_list[quadruple.left_operand])
+        temp = function_list[quadruple.left_operand]
+        new_func = func_memory(temp.function_name, temp.cont, temp.memory_list, temp.params)
+        call_stack.append(new_func)
     elif quadruple.operator == 'ENDFUNC':
         # It checks if the function is not run and start so that the cont does not reset.
-        return_address = current_context.prev
         current_context = call_stack[-1]
-        print("pop")
-        print(call_stack)
+        if current_context.function_name != "run" and current_context.function_name != "start" :
+            cont = current_context.prev
         call_stack.pop()
-        cont = return_address
-
-
     elif quadruple.operator == 'GOSUB':
-        #we store the previous position
-        if(call_stack[-1].function_name != "global" and call_stack[-1].function_name != "start"):
-            start = call_stack[-1].cont - 1
-            current_context.prev = cont 
-            current_context = call_stack[-1]
-            cont = start
-            
+        print("current", call_stack)
+        current_context = call_stack[-1]
+        current_context.prev = cont 
+        cont = current_context.cont 
+        print(call_stack)
 
-    elif quadruple.operator == 'return':
-        pass
+
 
 
 # function used to get value from different scopes
