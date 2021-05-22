@@ -16,7 +16,7 @@ def init_virtual(quadruples, func_dir):
         cont+=1
 def action(quadruple):
     global cont, param_pointer, current_context
-    print("Running ", cont, " ", quadruple)
+    #print("Running ", cont, " ", quadruple)
     if quadruple.operator == '+':
         temp = get_value(quadruple.left_operand).value + get_value(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
@@ -64,13 +64,13 @@ def action(quadruple):
         new_func = create_func_memory(quadruple.left_operand)
         call_stack.append(new_func)
     elif quadruple.operator == 'ENDFUNC':
+        print(call_stack[-1])
+        print("ENDFUNC")
         # It checks if the function is not run and start so that the cont does not reset.
         current_context = call_stack[-1]
-        print("antes ", current_context)
         if current_context.function_name != "run" and current_context.function_name != "start" :
             cont = current_context.prev
         call_stack.pop()
-        print("despues ", call_stack)
     elif quadruple.operator == 'GOSUB':
         current_context = call_stack[-1]
         current_context.prev = cont 
