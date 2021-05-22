@@ -606,7 +606,7 @@ def p_function(p):
     quadruples.append(quadruple("ENDFUNC",None,None,None))
     temporals = 0
     func_dir[p[3]] = new_func
-    print(p[1])
+    #print(p[1])
     if p[1] != "void":
         add = func_dir['global'].vars[current_functionId].address
         for quad in quadruples:
@@ -780,13 +780,12 @@ def p_recfuncexp(p):
     recfuncexp : expression COMMA recfuncexp
                | expression recfunc_action1
     '''
-
     rule_len = len(p) -1
     if rule_len == 2:
         p[0] = p[2]
     else:
         p[0] = p[3]
-
+    
 
 def p_recfunc_action1(p):
     '''
@@ -799,7 +798,6 @@ def p_recfunc_action1(p):
         param_order = active_scopes[-1].params_order
 
     params_order = []
-    
     copy_types = types_stack.copy()
     copy_operands = operand_stack.copy()
 
@@ -808,6 +806,10 @@ def p_recfunc_action1(p):
     for ty in copy_types:
         copy_operands.pop()
         params_order.append(ty)
+
+    if operator_stack:
+        if operator_stack[-1] == '=':
+            params_order.pop()
     
     counter = 0
     q_operand_stack = operand_stack.copy()

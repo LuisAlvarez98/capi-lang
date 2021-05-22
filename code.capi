@@ -9,13 +9,14 @@ int func pa(n:int):{
     return n - 1;
 };
 int func fact(n:int):{
-    return n * pa(2);
+    return n *5;
 };
 
 @ Definition of main module
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
+       @j =  (5)+fact(5);
        print(fact(5));
     };
 
