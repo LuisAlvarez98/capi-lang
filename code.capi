@@ -5,19 +5,29 @@ global : {
 };
 
 
-int func pa(n:int):{
-    return n - 1;
-};
 int func fact(n:int):{
-    return n *5;
+    print(n);
+    if(n == 1):{
+        return n;
+    };else:{
+        return n * fact(n - 1);
+    };
 };
+
+int func fib(n:int):{
+    if(n <= 1):{
+        return n;
+    };else:{
+        return fib(n-1) + fib(n-2);
+    };
+};
+
 
 @ Definition of main module
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-       @j =  (5)+fact(5);
-       print(fact(5));
+       print(fact(2),"result");
     };
 
     @ Definition of run function - this function is the game infinite loop

@@ -12,7 +12,6 @@ def init_virtual(quadruples, func_dir):
     init_memory(func_dir)
     current_context = call_stack[-1]
     while cont < len(quadruples):
-        sleep(1)
         action(quadruples[cont])
         cont+=1
 def action(quadruple):
@@ -67,16 +66,15 @@ def action(quadruple):
     elif quadruple.operator == 'ENDFUNC':
         # It checks if the function is not run and start so that the cont does not reset.
         current_context = call_stack[-1]
+        print("antes ", current_context)
         if current_context.function_name != "run" and current_context.function_name != "start" :
             cont = current_context.prev
         call_stack.pop()
+        print("despues ", call_stack)
     elif quadruple.operator == 'GOSUB':
         current_context = call_stack[-1]
         current_context.prev = cont 
         cont = current_context.cont 
-
-
-
 
 # function used to get value from different scopes
 def get_value(address):

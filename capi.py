@@ -772,7 +772,9 @@ def p_function_call_action2(p):
     '''
     function_call_action2 : 
     '''
+    operator_stack.append("|WALL|")
     quadruples.append(quadruple("ERA",p[-3],None,None))
+
     
   
 def p_recfuncexp(p):
@@ -800,9 +802,7 @@ def p_recfunc_action1(p):
     params_order = []
     copy_types = types_stack.copy()
     copy_operands = operand_stack.copy()
-
     k = len(param_order) - 1
-
     for ty in copy_types:
         copy_operands.pop()
         params_order.append(ty)
@@ -813,8 +813,8 @@ def p_recfunc_action1(p):
     
     counter = 0
     q_operand_stack = operand_stack.copy()
-    if len(params_order)  != len(param_order):
-        raise Exception("Param length does not match")
+
+
     while counter <= k:
         if param_order[counter] == params_order[counter]:
             quadruples.append(quadruple("PARAM", q_operand_stack.pop(), None, "Param " + str(counter + 1)))
@@ -827,6 +827,7 @@ def p_recfunc_action1(p):
  
     if counter - 1 == k:
         print("All parameters where processed")
+        operator_stack.pop()
     p[0] = params_order
     
 def p_expression(p):
