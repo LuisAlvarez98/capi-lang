@@ -1,0 +1,28 @@
+@ Global Definition of Variables
+
+global : {
+    var a,b,c,d,e,f,g,res: int;
+};
+
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+        a = 3;
+        b = 2;
+        c = 1;
+        d = 0;
+        e = 32;
+        f = 10;
+        g = 6;
+
+        res = (a + b + (c * d * (e - f * (g - 2)) + 3) * 2);
+        print("Result",res);
+    };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+
+    };
+};

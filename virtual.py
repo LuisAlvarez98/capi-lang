@@ -9,10 +9,11 @@ quad = []
 visitedFuncs = deque()
 def init_virtual(quadruples, func_dir):
     global current_context,cont
-    for i, q in enumerate(quadruples):
-        print(i, " ", q)
+    # for i, q in enumerate(quadruples):
+    #     print(i, " ", q)
 
     init_memory(func_dir)
+    print(func_dir)
     current_context = call_stack[-1]
     while cont < len(quadruples):
         action(quadruples[cont])
@@ -32,17 +33,27 @@ def action(quadruple):
     elif quadruple.operator == '/':
         temp = get_value_visited_func(quadruple.left_operand).value / get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
-    elif quadruple.operator == '>':
-        temp = get_value_visited_func(quadruple.left_operand).value > get_value_visited_func(quadruple.right_operand).value
+    elif quadruple.operator == '&&':
+        temp = get_value_visited_func(quadruple.left_operand).value and get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+    elif quadruple.operator == '||':
+        temp = get_value_visited_func(quadruple.left_operand).value or get_value_visited_func(quadruple.right_operand).value
+        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+
     elif quadruple.operator == '>=':
         temp = get_value_visited_func(quadruple.left_operand).value >= get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '<=':
         temp = get_value_visited_func(quadruple.left_operand).value <= get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+    elif quadruple.operator == '>':
+        temp = get_value_visited_func(quadruple.left_operand).value > get_value_visited_func(quadruple.right_operand).value
+        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '<':
         temp = get_value_visited_func(quadruple.left_operand).value < get_value_visited_func(quadruple.right_operand).value
+        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+    elif quadruple.operator == '!=':
+        temp = get_value_visited_func(quadruple.left_operand).value != get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '==':
         temp = get_value_visited_func(quadruple.left_operand).value == get_value_visited_func(quadruple.right_operand).value

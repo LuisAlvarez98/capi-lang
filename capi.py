@@ -325,7 +325,6 @@ def p_vars(p):
             address = get_next_global(p[4])
         else:
             address = get_next_local(p[4])
-
         current_function.vars[l] = variable(l,p[4], address)
     
     active_scopes.append(current_function)
@@ -339,7 +338,7 @@ def p_recids(p):
     if rule_len == 1:
         p[0] = [p[1]]
     elif rule_len == 3:
-        p[0] = [p[1]] + [p[3]]
+        p[0] = [p[1]] + p[3]
 
 def p_block(p):
     '''
@@ -986,7 +985,7 @@ def p_add_operator(p):
 
 # add action
 def p_factor(p): 
-    ''' factor : LEFTPAR expression RIGHTPAR 
+    ''' factor : factor_action1 LEFTPAR expression RIGHTPAR factor_action2 
                | EX cte 
                | cte 
     '''
@@ -999,6 +998,18 @@ def p_factor(p):
        operand_stack.append(p[1][0])
        types_stack.append(p[1][1])
     p[0] = p[1]  
+
+def p_factor_action1(p):
+    '''
+    factor_action1 :
+    '''
+    # We use this so that the expression respects the order of operations.
+    operator_stack.append("|WALL|")
+def p_factor_action2(p):
+    '''
+    factor_action2 :
+    '''
+    operator_stack.pop()
 
 def p_type(p):
     '''
