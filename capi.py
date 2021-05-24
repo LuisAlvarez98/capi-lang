@@ -132,10 +132,12 @@ def get_typeof_id_test(inc_id):
     return current_type
 
 
-def get_next_avail(tp):
+def get_next_avail(tp, convert = True):
     global temporals
     temporals +=1
-    return get_next_temporal(get_type_s(tp))
+    if convert:
+        return get_next_temporal(get_type_s(tp))
+    return get_next_temporal(tp)
 
 quadruples = [] #Lista de cuadruplos
 current_callId = '' #Id para la llamada de función
@@ -234,6 +236,7 @@ def p_capi(p):
          | capi_action1 global MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
          | capi_action1 MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
     '''
+
 def p_capi_action1(p):
     '''
     capi_action1 :
@@ -724,7 +727,7 @@ def p_return(p):
         func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, current_returnAddress)
 
     if func_type != "void":
-        #print(func_type, operand_type)
+
         if func_type == operand_type:
             quadruples.append(quadruple('=',operand_value,None,current_returnAddress))
             quadruples.append(quadruple('ENDFUNC', None, None, None))
@@ -740,7 +743,18 @@ def p_functioncall(p):
                  | ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR 
     '''
    
-    global current_callId
+    global current_callId,func_dir
+    # TODO
+    if current_callId in func_dir:
+        func_type = func_dir[current_callId].functiontype 
+        # function call operations
+        if func_type != 'void':
+            temp = get_next_avail(func_type, False)
+            current_returnAddress = func_dir["global"].vars[current_callId].address
+            operand_stack.append(temp)
+            types_stack.append(func_type)
+            quadruples.append(quadruple('=',current_returnAddress,None,temp))
+
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
         t = func_dir["global"].vars[current_callId].type

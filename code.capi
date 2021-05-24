@@ -6,7 +6,6 @@ global : {
 
 
 int func fact(n:int):{
-    print(n);
     if(n == 1):{
         return n;
     };else:{
@@ -14,11 +13,23 @@ int func fact(n:int):{
     };
 };
 
+int func fib(n:int):{
+    if(n <= 1):{
+      return n;
+    };else:{
+        return fib(n-1) + fib(n-2);
+    };
+};
+
+void func test():{
+    print(fact(2) * fact(3)); @bug :)
+};
 @ Definition of main module
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-       print(fact(2));
+       j = 10;
+       print(fact(2) + fact(3));
     };
 
     @ Definition of run function - this function is the game infinite loop
