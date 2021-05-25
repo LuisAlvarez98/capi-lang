@@ -24,7 +24,6 @@ def action(quadruple):
         if quadruple.isptr:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
             value_from_pointer = get_value_visited_func(temp + 1).value 
-            print("a",temp)
             current_context.memory_list[quadruple.temp] = memory(value_from_pointer, quadruple.temp)
         else:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
