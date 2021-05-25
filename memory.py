@@ -73,7 +73,7 @@ def init_memory(func_dir):
         for v in current_vars.values():
             if v.type == 'list':
                 addr = v.address #we store the base address
-                memory_list[v.address] = memory(get_default_value(v.type),v.address, v.array_block)
+                memory_list[v.address] = memory(v.address,v.address, v.array_block)
                 for i in range(0,memory_table[v.array_block.right].value):
                     # we generate the memory of the array with the default value
                     addr = addr + 1

@@ -4,8 +4,9 @@ global : {
     var l:list|int|[5];
 };
 
-void func test(n:int):{
-  print(l[2]);
+void func test(n:int):{ 
+    var i:int;
+    l[4] = 5;
 };
 
 @ Definition of main module

@@ -61,16 +61,17 @@ reserved = {
 temporals = 0
 
 class quadruple():
-    def __init__(self, operator, left_operand, right_operand, temp):
+    def __init__(self, operator, left_operand, right_operand, temp, isptr = False):
         self.id = -1
         self.operator = operator
         self.left_operand = left_operand
         self.right_operand = right_operand
         self.temp = temp
+        self.isptr = isptr
     def __str__(self):
-        return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}\n'
+        return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}, isptr:{self.isptr}\n'
     def __repr__(self):
-        return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}\n'
+        return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}, isptr:{self.isptr}\n'
 
 class variable():
     def __init__(self, varid, vartype, address, dim, array_block = None):
@@ -465,6 +466,7 @@ def p_create_text(p):
 def p_assign(p):
     '''
     assign : ID assign_action1 EQUAL assign_action2 expression 
+           | listaccess EQUAL assign_action2 expression
     '''
     # we need to do the same for var i :int = 5;
     result = operand_stack.pop()
@@ -473,22 +475,26 @@ def p_assign(p):
         left_operand = operand_stack.pop()
         left_operand_type = types_stack.pop()
         operator = operator_stack.pop()
-
         expression_type = s_cube.validate_expression(type_result, left_operand_type, operator)
         if expression_type != "ERROR":
             address = ""
+            var_type = ""
             current_active_scopes = active_scopes.copy()
             while len(current_active_scopes) != 0:
                 current_vars = current_active_scopes[-1].vars
                 if left_operand in current_vars:
                     address = current_vars[left_operand].address
+                    var_type = current_vars[left_operand].type
                     break
                 current_active_scopes.pop()
                 
             if(len(current_active_scopes) <= 0):
                 raise Exception("Variable does not exist")
             else:
-                quadruples.append(quadruple(operator, result, None, address))
+                if var_type == "list":
+                    quadruples.append(quadruple(operator, result, None, address, True))
+                else:
+                    quadruples.append(quadruple(operator, result, None, address))
         else:
             raise Exception("Type mismatch at assignation")
    
@@ -727,6 +733,7 @@ def p_action_recwrite_exp(p):
     action_recwrite_exp :
     '''
     # We need to validate the ID. Check if it exists.
+    print("j", operand_stack)
     result = operand_stack.pop()
     types_stack.pop()
     quadruples.append(quadruple("print", None, None, result))
@@ -796,6 +803,7 @@ def p_functioncall(p):
         raise Exception('Function does not exists.')
 
     quadruples.append(quadruple("GOSUB", current_callId, None, None))
+    print(operand,t)
     p[0] = (operand,t)
     current_callId = ''
 
@@ -1073,32 +1081,25 @@ def p_listaccess(p):
     '''
     listaccess : ID list_action1 LEFTBRACKET expression  list_action_3 RIGHTBRACKET 
     '''
-    #remove
-    p[0] = (1,'i')
+    aux1 = operand_stack.pop()
+    aux1_type = types_stack.pop()
+    list_obj = get_list_obj(p[1])
+    temp = get_next_avail(aux1_type, False)
+    quadruples.append(quadruple("+", aux1,list_obj.address,temp, True))
+    p[0] = (temp,aux1_type)
 def p_list_action1(p):
     '''
     list_action1 :
     '''
     list_obj = get_list_obj(p[-1])
-    operand_stack.append(list_obj.address)
+    operand_stack.append(list_obj.id)
     types_stack.append(list_obj.array_block.array_type)
-
-# def p_list_action2(p):
-#     '''
-#     list_action_2 :
-#     '''
-#     list_obj = get_list_obj(p[-3])
-#     id = operand_stack.pop()
-#     list_type = types_stack.pop()
-#     if list_obj.dim == 0:
-#         raise Exception("Variable does not contain dimension.")
 
 def p_list_action_3(p):
     '''
     list_action_3 :
     '''
     list_obj = get_list_obj(p[-4])
-    print(list_obj)
     quadruples.append(quadruple("VERIFY", operand_stack[-1],list_obj.array_block.left, list_obj.array_block.right))
 
 def get_list_obj(id):

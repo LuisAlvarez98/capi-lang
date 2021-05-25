@@ -21,8 +21,14 @@ def action(quadruple):
     global cont, param_pointer, current_context, quad
     # print("Running ", cont, " ", quadruple)
     if quadruple.operator == '+':
-        temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        if quadruple.isptr:
+            temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
+            value_from_pointer = get_value_visited_func(temp + 1).value 
+            print("a",temp)
+            current_context.memory_list[quadruple.temp] = memory(value_from_pointer, quadruple.temp)
+        else:
+            temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
+            current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '-':
         temp = get_value_visited_func(quadruple.left_operand).value - get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
@@ -58,13 +64,21 @@ def action(quadruple):
         temp = get_value_visited_func(quadruple.left_operand).value == get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == 'VERIFY':
-        print(memory_table)
-        print(get_value_visited_func(quadruple.temp).value, get_value_visited_func(quadruple.right_operand).value)
+        index = get_value_visited_func(quadruple.left_operand).value
+        lower_bound = get_value_visited_func(quadruple.right_operand).value
+        upper_bound = get_value_visited_func(quadruple.temp).value 
+        if index >= upper_bound or index < lower_bound:
+            raise Exception("Index out of bounds.")
+
     elif quadruple.operator == '=':
-        if quadruple.temp not in current_context.memory_list:
-            set_global_var(quadruple.temp, get_value(quadruple.left_operand).value)
+        if quadruple.isptr:
+            print(memory_table)
+            print(quadruple)
         else:
-            current_context.memory_list[quadruple.temp].value = get_value(quadruple.left_operand).value
+            if quadruple.temp not in current_context.memory_list:
+                set_global_var(quadruple.temp, get_value(quadruple.left_operand).value)
+            else:
+                current_context.memory_list[quadruple.temp].value = get_value(quadruple.left_operand).value
     elif quadruple.operator == 'print':
         print(get_value(quadruple.temp).value)
     elif quadruple.operator == 'GOTO':
