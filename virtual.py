@@ -43,7 +43,6 @@ def action(quadruple):
     elif quadruple.operator == '||':
         temp = get_value_visited_func(quadruple.left_operand).value or get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
-
     elif quadruple.operator == '>=':
         temp = get_value_visited_func(quadruple.left_operand).value >= get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
@@ -51,6 +50,7 @@ def action(quadruple):
         temp = get_value_visited_func(quadruple.left_operand).value <= get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '>':
+        quadruple
         temp = get_value_visited_func(quadruple.left_operand).value > get_value_visited_func(quadruple.right_operand).value
         current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '<':
@@ -68,11 +68,16 @@ def action(quadruple):
         upper_bound = get_value_visited_func(quadruple.temp).value 
         if index >= upper_bound or index < lower_bound:
             raise Exception("Index out of bounds.")
-
     elif quadruple.operator == '=':
         if quadruple.isptr:
-            print(memory_table)
-            print(quadruple)
+            # We obtain the list address
+            list_address = quadruple.temp
+            # We get the value of the list addres and that is our address of our list.
+            index = get_value(list_address).value + 1 # we add up one to get into the correct address.
+            if index not in current_context.memory_list:
+                set_global_var(index, get_value(quadruple.left_operand).value)
+            else:
+                current_context.memory_list[index].value = get_value(quadruple.left_operand).value
         else:
             if quadruple.temp not in current_context.memory_list:
                 set_global_var(quadruple.temp, get_value(quadruple.left_operand).value)

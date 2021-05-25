@@ -345,7 +345,6 @@ def p_vars(p):
             #we create global addresses
             # validate repeated ids
             if p[4][0] == 'list':
-                print(current_list_addr)
                 address = get_next_global_list(p[4][1], current_list_addr)
             else:
                 address = get_next_global(p[4])
@@ -471,32 +470,52 @@ def p_assign(p):
     # we need to do the same for var i :int = 5;
     result = operand_stack.pop()
     type_result = types_stack.pop()
+
     if len(operand_stack) > 0:
         left_operand = operand_stack.pop()
         left_operand_type = types_stack.pop()
         operator = operator_stack.pop()
-        expression_type = s_cube.validate_expression(type_result, left_operand_type, operator)
-        if expression_type != "ERROR":
-            address = ""
-            var_type = ""
-            current_active_scopes = active_scopes.copy()
-            while len(current_active_scopes) != 0:
-                current_vars = current_active_scopes[-1].vars
-                if left_operand in current_vars:
-                    address = current_vars[left_operand].address
-                    var_type = current_vars[left_operand].type
-                    break
-                current_active_scopes.pop()
-                
-            if(len(current_active_scopes) <= 0):
-                raise Exception("Variable does not exist")
+        ## We use this to distinguish list assign
+        if type(left_operand) is tuple:
+            expression_type = s_cube.validate_expression(type_result, left_operand_type, operator)
+            if expression_type != "ERROR":
+                address = ""
+                var_type = ""
+                current_active_scopes = active_scopes.copy()
+                while len(current_active_scopes) != 0:
+                    current_vars = current_active_scopes[-1].vars
+                    if left_operand[0] in current_vars:
+                        address = current_vars[left_operand[0]].address
+                        var_type = current_vars[left_operand[0]].type
+                        break
+                    current_active_scopes.pop()
+                    
+                if(len(current_active_scopes) <= 0):
+                    raise Exception("Variable does not exist")
+                else:
+                    quadruples.append(quadruple(operator, result, None, left_operand[1], True))
             else:
-                if var_type == "list":
-                    quadruples.append(quadruple(operator, result, None, address, True))
+                raise Exception("Type mismatch at assignation")
+        else:
+            expression_type = s_cube.validate_expression(type_result, left_operand_type, operator)
+            if expression_type != "ERROR":
+                address = ""
+                var_type = ""
+                current_active_scopes = active_scopes.copy()
+                while len(current_active_scopes) != 0:
+                    current_vars = current_active_scopes[-1].vars
+                    if left_operand in current_vars:
+                        address = current_vars[left_operand].address
+                        var_type = current_vars[left_operand].type
+                        break
+                    current_active_scopes.pop()
+                    
+                if(len(current_active_scopes) <= 0):
+                    raise Exception("Variable does not exist")
                 else:
                     quadruples.append(quadruple(operator, result, None, address))
-        else:
-            raise Exception("Type mismatch at assignation")
+            else:
+                raise Exception("Type mismatch at assignation")
    
 def p_assign_action1(p):
     '''
@@ -643,7 +662,6 @@ def p_function(p):
     quadruples.append(quadruple("ENDFUNC",None,None,None))
     temporals = 0
     func_dir[p[3]] = new_func
-    #print(p[1])
     if p[1] != "void":
         add = func_dir['global'].vars[current_functionId].address
         for quad in quadruples:
@@ -733,7 +751,6 @@ def p_action_recwrite_exp(p):
     action_recwrite_exp :
     '''
     # We need to validate the ID. Check if it exists.
-    print("j", operand_stack)
     result = operand_stack.pop()
     types_stack.pop()
     quadruples.append(quadruple("print", None, None, result))
@@ -803,7 +820,6 @@ def p_functioncall(p):
         raise Exception('Function does not exists.')
 
     quadruples.append(quadruple("GOSUB", current_callId, None, None))
-    print(operand,t)
     p[0] = (operand,t)
     current_callId = ''
 
@@ -1087,6 +1103,7 @@ def p_assign_list(p):
     list_obj = get_list_obj(p[1])
     temp = get_next_avail(aux1_type, False)
     quadruples.append(quadruple("+", aux1,list_obj.address,temp, False))
+    operand_stack.append((operand_stack.pop(),temp)) # This is used when assigning elements to a list
     p[0] = (temp,aux1_type)
         
 def p_listaccess(p):
@@ -1098,6 +1115,9 @@ def p_listaccess(p):
     list_obj = get_list_obj(p[1])
     temp = get_next_avail(aux1_type, False)
     quadruples.append(quadruple("+", aux1,list_obj.address,temp, True))
+    operand_stack.pop() # we pop the id because we don't need it
+    types_stack.pop()
+    operator_stack.pop() # pop our |WALL|
     p[0] = (temp,aux1_type)
 def p_list_action1(p):
     '''
@@ -1106,6 +1126,7 @@ def p_list_action1(p):
     list_obj = get_list_obj(p[-1])
     operand_stack.append(list_obj.id)
     types_stack.append(list_obj.array_block.array_type)
+    operator_stack.append("|WALL|")
 
 def p_list_action_3(p):
     '''
@@ -1202,7 +1223,6 @@ def p_bool(p):
     p[0] = (addr, 'b')
 
 def p_error(p):
-    print(p)
     print("ERROR {}".format(p))
     print(f"Syntax error at {p.value!r}")
     exit()
