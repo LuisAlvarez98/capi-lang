@@ -10,7 +10,7 @@ import ply.lex as lex
 from collections import deque #Para el stack de scopes
 from semantic_cube import *
 from util import  get_type_s
-from memory import get_next_global, get_next_local, get_next_temporal, get_const_address, print_const_table
+from memory import get_next_global, get_next_local, get_next_temporal, get_const_address, print_const_table, get_next_local_list, get_next_global_list
 from virtual import init_virtual
 # Inits the semantic cube
 s_cube = semantic_cube()
@@ -20,8 +20,8 @@ tokens = (
     'LEFTKEY','RIGHTKEY','LEFTBRACKET','RIGHTBRACKET','EQUAL','SEMICOLON',
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
-    'RUN','START','RETURN', 'LEFTHAT','RIGHTHAT','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE',
-    "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT","SET_DIMENSION",'MAIN'
+    'RUN','START','RETURN','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE',
+    "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT","SET_DIMENSION",'MAIN',"BAR"
 )
 
 reserved = {
@@ -73,14 +73,27 @@ class quadruple():
         return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}\n'
 
 class variable():
-    def __init__(self, varid, vartype, address):
+    def __init__(self, varid, vartype, address, dim, array_block = None):
         self.id = varid
         self.type = vartype
         self.address = address
+        self.dim = dim
+        self.array_block = array_block
     def __str__(self):
-        return f'Id: {self.id}, Type: {self.type}, Addr: {self.address}'
+        return f'Id: {self.id}, Type: {self.type}, Addr: {self.address}, Dim: {self.dim}, ArrayBlock:{self.array_block}'
     def __repr__(self):
-        return f'Id: {self.id}, Type: {self.type}, Addr: {self.address}'
+        return f'Id: {self.id}, Type: {self.type}, Addr: {self.address}, Dim: {self.dim}, ArrayBlock:{self.array_block}'
+
+class array_block():
+    def __init__(self, array_type ,left, right, k):
+        self.array_type = array_type
+        self.left = left
+        self.right = right
+        self.k = k
+    def __str__(self):
+        return f'array_type: {self.array_type}, left: {self.left}, right: {self.right}, k: {self.k}'
+    def __repr__(self):
+        return f'array_type: {self.array_type}, left: {self.left}, right: {self.right}, k: {self.k}'
 
 class function_values():
     def __init__(self, functiontype='', params=[], scopevars={}, params_order=[]):
@@ -147,6 +160,7 @@ operator_stack = deque() # Stack de operadores + - * /
 operand_stack = deque() # Stack de operandos variables 
 types_stack = deque() #Stack de tipos int, float
 go_to_stack = deque() #Stack de saltos
+dimension_stack = deque() #Used to store the current dimension of the array
 
 # Function Directory
 func_dir = {}
@@ -169,8 +183,7 @@ t_SEMICOLON = r';'
 t_COLON = r':'
 t_COMMA = r','
 t_DOT = r'\.'
-t_LEFTHAT = r'\<'
-t_RIGHTHAT = r'\>'
+t_BAR = r'\|'
 
 relop_arr = ['<=',">=",">","<","!=","=="]
 logic_arr = ["||","&&"]
@@ -316,19 +329,35 @@ def p_vars(p):
             | VAR recids COLON type SEMICOLON vars
             | VAR recids COLON type SEMICOLON
     '''
+    global dimension_stack
     rule_len = len(p) - 1
     current_function = active_scopes.pop()
     address = 0
+    current_list_addr = 0 #We use this to handle multiple declarations with same dimension
+    addr_popped = False #We use this to handle multiple declarations with same dimension
     for l in p[2]:
+        if p[4][0] == 'list':
+            if not addr_popped:
+                current_list_addr = dimension_stack.pop()
+                addr_popped = True
         if(current_function.functiontype == 'global'):
             #we create global addresses
-            address = get_next_global(p[4])
+            # validate repeated ids
+            if p[4][0] == 'list':
+                print(current_list_addr)
+                address = get_next_global_list(p[4][1], current_list_addr)
+            else:
+                address = get_next_global(p[4])
         else:
-            address = get_next_local(p[4])
-        current_function.vars[l] = variable(l,p[4], address)
-    
+            if p[4][0] == 'list':
+                address = get_next_local_list(p[4][1], current_list_addr)
+            else:
+                address = get_next_local(p[4])
+        if p[4][0] == 'list':
+            current_function.vars[l] = variable(l,p[4][0], address,1, array_block(p[4][1],get_const_address(0,'i'),current_list_addr,get_const_address(0,'i')))
+        else:   
+            current_function.vars[l] = variable(l,p[4], address,get_const_address(0,'i'))
     active_scopes.append(current_function)
-
 def p_recids(p):  
     ''' 
     recids : ID 
@@ -670,9 +699,9 @@ def p_recparams(p):
     rule_len = len(p) - 1
     address = get_next_local(p[3])
     if rule_len == 3:
-        p[0] = [(variable(p[1],p[3],address))]
+        p[0] = [(variable(p[1],p[3],address,get_const_address(0,'i')))]
     elif rule_len  == 5:
-        p[0] = [(variable(p[1],p[3],address))] + p[5]
+        p[0] = [(variable(p[1],p[3],address,get_const_address(0,'i')))] + p[5]
 
 
 def p_recfunc(p):
@@ -723,7 +752,7 @@ def p_return(p):
     if current_returnAddress == "":
         return_address = get_next_global(operand_type)
         current_returnAddress = return_address
-        func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, current_returnAddress)
+        func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, current_returnAddress,0)
 
     if func_type != "void":
 
@@ -1014,10 +1043,22 @@ def p_factor_action2(p):
 def p_type(p):
     '''
     type : primitivetype
-        | LIST LEFTHAT primitivetype RIGHTHAT
+        | TLIST BAR primitivetype BAR LEFTBRACKET cte RIGHTBRACKET action_list1
     '''
-    p[0] = p[1]
-
+    rule_len = len(p) - 1
+    if rule_len == 1:
+        p[0] = p[1]
+    else:
+        p[0] = (p[1],p[3])
+def p_action_list1(p):
+    '''
+    action_list1 :
+    '''
+    global dimension_stack
+    size = p[-2]
+    if size[1] != 'i':
+        raise Exception("Type mismatch in list.")
+    dimension_stack.append(size[0])
 def p_primitivetype(p):
     '''
     primitivetype : TINT
@@ -1030,9 +1071,49 @@ def p_primitivetype(p):
         
 def p_listaccess(p):
     '''
-    listaccess : ID LEFTBRACKET expression RIGHTBRACKET SEMICOLON
+    listaccess : ID list_action1 LEFTBRACKET expression  list_action_3 RIGHTBRACKET 
     '''
+    #remove
+    p[0] = (1,'i')
+def p_list_action1(p):
+    '''
+    list_action1 :
+    '''
+    list_obj = get_list_obj(p[-1])
+    operand_stack.append(list_obj.address)
+    types_stack.append(list_obj.array_block.array_type)
 
+# def p_list_action2(p):
+#     '''
+#     list_action_2 :
+#     '''
+#     list_obj = get_list_obj(p[-3])
+#     id = operand_stack.pop()
+#     list_type = types_stack.pop()
+#     if list_obj.dim == 0:
+#         raise Exception("Variable does not contain dimension.")
+
+def p_list_action_3(p):
+    '''
+    list_action_3 :
+    '''
+    list_obj = get_list_obj(p[-4])
+    print(list_obj)
+    quadruples.append(quadruple("VERIFY", operand_stack[-1],list_obj.array_block.left, list_obj.array_block.right))
+
+def get_list_obj(id):
+    current_active_scopes = active_scopes.copy()
+    list_obj = None
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        # TODO Params
+        if id in current_vars:
+            list_obj = current_vars[id]
+            break
+        current_active_scopes.pop()
+    if list_obj == None:
+        raise Exception("List does not exist")
+    return list_obj
 def p_nestedvalue(p):
     '''
     nestedvalue : ID DOT ID
@@ -1108,6 +1189,7 @@ def p_bool(p):
     p[0] = (addr, 'b')
 
 def p_error(p):
+    print(p)
     print("ERROR {}".format(p))
     print(f"Syntax error at {p.value!r}")
     exit()

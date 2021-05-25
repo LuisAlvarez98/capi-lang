@@ -1,36 +1,18 @@
 @ Global Definition of Variables
 
 global : {
-    var j: int;
+    var l:list|int|[5];
 };
 
-
-int func fact(n:int):{
-    if(n == 1):{
-        return n;
-    };else:{
-        return n * fact(n - 1);
-    };
+void func test(n:int):{
+  print(l[2]);
 };
 
-int func fib(n:int):{
-    if(n <= 1):{
-      print(n);
-      return n;
-    };else:{
-        return fib(n-1) + fib(n-2);
-    };
-};
-
-void func test():{
-    print(fact(2) * fact(3)); @bug :)
-};
 @ Definition of main module
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-       j = 10;
-       print(fact(2) * fact(2));
+        test();
     };
 
     @ Definition of run function - this function is the game infinite loop

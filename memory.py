@@ -32,9 +32,10 @@ CONSTANT_START = 75000
 
 
 class memory():
-    def __init__(self, value='', address=''):
+    def __init__(self, value='', address='', array_block=None):
         self.value = value
         self.address= address
+        self.array_block = array_block
     def __str__(self):
         return f'Value: {self.value}, Addr: {self.address}\n'
     def __repr__(self):
@@ -70,15 +71,22 @@ def init_memory(func_dir):
         current_params = func.params
         param_counter = len(current_params) - 1
         for v in current_vars.values():
-            memory_list[v.address] = memory( get_default_value(v.type),v.address)
+            if v.type == 'list':
+                addr = v.address #we store the base address
+                memory_list[v.address] = memory(get_default_value(v.type),v.address, v.array_block)
+                for i in range(0,memory_table[v.array_block.right].value):
+                    # we generate the memory of the array with the default value
+                    addr = addr + 1
+                    memory_list[addr] = memory(get_default_value(v.array_block.array_type), addr)
+            else:
+                memory_list[v.address] = memory(get_default_value(v.type),v.address)
         for p in current_params:
+            # TODO arrays in params
             params[param_counter] = memory(get_default_value(p.type),p.address)
             param_counter-=1
         function_list[func_key] = func_memory(func_key,func.cont, memory_list,params)     
         if func_key == "global":
             call_stack.append(func_memory(func_key,func.cont, memory_list,params))
-    
-
 def create_func_memory(id):
     temp = function_list[id]
     temp_mem = temp.memory_list.copy()
@@ -160,6 +168,64 @@ def get_next_local(t):
         local_object = local_object + 1 
         return local_object
 
+def get_next_local_list(t, dim):
+    print(t, memory_table[dim].value)
+    dimension = memory_table[dim].value
+    if(t == "i"):
+        global local_int
+        local_int_aux = local_int + 1
+        local_int = local_int + (dimension + 1)
+        return local_int_aux
+    elif (t == "f"):
+        global local_float
+        local_float_aux = local_float + 1
+        local_float = local_float + (dimension + 1)
+        return local_float
+    elif (t == "b"):
+        global local_bool
+        local_bool_aux = local_bool + 1
+        local_bool = local_bool + (dimension + 1)
+        return local_bool_aux
+    elif (t == "s"):
+        global local_string
+        local_string_aux = local_string + 1
+        local_string = local_string + (dimension + 1)
+        return local_string_aux
+    elif (t == "o"):   
+        global local_object
+        local_object_aux = local_object + 1
+        local_object = local_object + (dimension + 1)
+        return local_object_aux
+
+def get_next_global_list(t, dim):
+    print(t, memory_table[dim].value)
+    dimension = memory_table[dim].value
+    if(t == "i"):
+        global global_int
+        global_int_aux = global_int + 1
+        global_int = global_int + (dimension + 1)
+        return global_int_aux
+    elif (t == "f"):
+        global global_float
+        global_float_aux = global_float + 1
+        global_float = global_float + (dimension + 1)
+        return global_float_aux
+    elif (t == "b"):
+        global global_bool
+        global_bool_aux = global_bool + 1
+        global_bool = global_bool + (dimension + 1)
+        return global_bool_aux
+    elif (t == "s"):
+        global global_string
+        global_string_aux = global_string + 1
+        global_string = global_string + (dimension + 1)
+        return global_string_aux
+    elif (t == "o"):   
+        global global_object
+        global_object_aux = global_object + 1
+        global_object = global_object + (dimension + 1)
+        return global_object_aux
+    
 def get_next_temporal(t):
     if(t == "i"):
         global temporal_int
