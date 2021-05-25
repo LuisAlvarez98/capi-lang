@@ -61,7 +61,7 @@ Rule 49    set_color -> SET_COLOR LEFTPAR expression COMMA expression COMMA expr
 Rule 50    create_object -> CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
 Rule 51    create_text -> CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
 Rule 52    assign -> ID assign_action1 EQUAL assign_action2 expression
-Rule 53    assign -> listaccess EQUAL assign_action2 expression
+Rule 53    assign -> assign_list EQUAL assign_action2 expression
 Rule 54    assign_action1 -> <empty>
 Rule 55    assign_action2 -> <empty>
 Rule 56    condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
@@ -135,27 +135,28 @@ Rule 123   primitivetype -> TFLOAT
 Rule 124   primitivetype -> TSTRING
 Rule 125   primitivetype -> TBOOL
 Rule 126   primitivetype -> TOBJECT
-Rule 127   listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
-Rule 128   list_action1 -> <empty>
-Rule 129   list_action_3 -> <empty>
-Rule 130   nestedvalue -> ID DOT ID
-Rule 131   nestedassign -> nestedvalue EQUAL expression
-Rule 132   cte -> <empty>
-Rule 133   cte -> id
-Rule 134   cte -> int
-Rule 135   cte -> float
-Rule 136   cte -> bool
-Rule 137   cte -> string
-Rule 138   cte -> nestedvalue
-Rule 139   cte -> functioncall
-Rule 140   cte -> listaccess
-Rule 141   cte -> specialfunction
-Rule 142   id -> ID
-Rule 143   string -> STRING
-Rule 144   int -> INT
-Rule 145   float -> FLOAT
-Rule 146   bool -> TRUE
-Rule 147   bool -> FALSE
+Rule 127   assign_list -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+Rule 128   listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+Rule 129   list_action1 -> <empty>
+Rule 130   list_action_3 -> <empty>
+Rule 131   nestedvalue -> ID DOT ID
+Rule 132   nestedassign -> nestedvalue EQUAL expression
+Rule 133   cte -> <empty>
+Rule 134   cte -> id
+Rule 135   cte -> int
+Rule 136   cte -> float
+Rule 137   cte -> bool
+Rule 138   cte -> string
+Rule 139   cte -> nestedvalue
+Rule 140   cte -> functioncall
+Rule 141   cte -> listaccess
+Rule 142   cte -> specialfunction
+Rule 143   id -> ID
+Rule 144   string -> STRING
+Rule 145   int -> INT
+Rule 146   float -> FLOAT
+Rule 147   bool -> TRUE
+Rule 148   bool -> FALSE
 
 Terminals, with rules where they appear
 
@@ -165,22 +166,22 @@ COMMA                : 18 48 49 49 80 84 85 95
 COMMENT              : 
 CREATE_OBJECT        : 50
 CREATE_TEXT          : 51
-DOT                  : 130
+DOT                  : 131
 DRAW                 : 42
 ELSE                 : 57
-EQUAL                : 13 14 52 53 131
+EQUAL                : 13 14 52 53 132
 EX                   : 108 115
-FALSE                : 147
-FLOAT                : 145
+FALSE                : 148
+FLOAT                : 146
 FOR                  : 63
 FUNC                 : 8 10 71 72 73 74
 GLOBAL               : 7
 HEAD                 : 44
-ID                   : 17 18 52 71 72 73 74 79 80 91 92 127 130 130 142
+ID                   : 17 18 52 71 72 73 74 79 80 91 92 127 128 131 131 143
 IF                   : 56 57
-INT                  : 144
+INT                  : 145
 LAST                 : 46
-LEFTBRACKET          : 120 127
+LEFTBRACKET          : 120 127 128
 LEFTKEY              : 1 2 3 4 7 19 20
 LEFTPAR              : 8 10 42 43 44 45 46 47 48 49 50 51 56 57 63 67 71 72 73 74 83 91 92 114
 LIST                 : 
@@ -190,7 +191,7 @@ OBJECT               :
 PRINT                : 83
 RELOP                : 98
 RETURN               : 90
-RIGHTBRACKET         : 120 127
+RIGHTBRACKET         : 120 127 128
 RIGHTKEY             : 1 2 3 4 7 19 20
 RIGHTPAR             : 8 10 42 43 44 45 46 47 48 49 50 51 56 57 63 67 71 72 73 74 83 91 92 114
 RUN                  : 10
@@ -200,7 +201,7 @@ SET_DIMENSION        : 48
 SET_TITLE            : 47
 SIZE                 : 43
 START                : 8
-STRING               : 85 87 143
+STRING               : 85 87 144
 TAIL                 : 45
 TBOOL                : 125
 TERMS                : 112
@@ -208,7 +209,7 @@ TFLOAT               : 123
 TINT                 : 122
 TLIST                : 120
 TOBJECT              : 126
-TRUE                 : 146
+TRUE                 : 147
 TSTRING              : 124
 VAR                  : 13 14 15 16
 VOID                 : 8 10 73 74
@@ -224,8 +225,9 @@ add_operator         : 108 112
 assign               : 23 63 63
 assign_action1       : 52
 assign_action2       : 52 53
+assign_list          : 53
 block                : 8 10 56 57 57 63 67 71 72 73 74
-bool                 : 136
+bool                 : 137
 capi                 : 0
 capi_action1         : 1 2 3 4
 capi_action2         : 1 2 3 4
@@ -239,11 +241,11 @@ cte                  : 115 116 120
 draw                 : 32
 exp                  : 98 98 99 99 100 108
 exp_action           : 105 106
-expression           : 13 14 47 48 48 49 49 49 52 53 56 57 63 67 84 86 90 95 96 114 127 131
+expression           : 13 14 47 48 48 49 49 49 52 53 56 57 63 67 84 86 90 95 96 114 127 128 132
 factor               : 109 110
 factor_action1       : 114
 factor_action2       : 114
-float                : 135
+float                : 136
 for                  : 61
 for_action1          : 63
 for_action2          : 63
@@ -254,21 +256,21 @@ function_action2     : 71 73
 function_action3     : 71 72 73 74
 function_call_action1 : 91 92
 function_call_action2 : 91 92
-functioncall         : 29 139
+functioncall         : 29 140
 global               : 1 3
 head                 : 34
-id                   : 133
-int                  : 134
+id                   : 134
+int                  : 135
 last                 : 36
-list_action1         : 127
-list_action_3        : 127
-listaccess           : 53 140
+list_action1         : 127 128
+list_action_3        : 127 128
+listaccess           : 141
 logic_action1        : 99
 logic_action2        : 99
 loop                 : 26
 main_cont            : 8 10
 nestedassign         : 30
-nestedvalue          : 131 138
+nestedvalue          : 132 139
 primitivetype        : 119 120
 recexp               : 105
 recfunc              : 1 2 81
@@ -288,12 +290,12 @@ set_color            : 39
 set_dimension        : 38
 set_title            : 37
 size                 : 33
-specialfunction      : 31 141
+specialfunction      : 31 142
 start                : 1 2 3 4
 start_action1        : 8
 startscope_action    : 8 10 63 67 71 72 73 74
 statement            : 21 22
-string               : 137
+string               : 138
 tail                 : 35
 term                 : 105 106 112
 term_action          : 109 110
@@ -877,26 +879,26 @@ state 53
 state 54
 
     (120) type -> TLIST BAR primitivetype BAR LEFTBRACKET . cte RIGHTBRACKET action_list1
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -918,7 +920,7 @@ state 54
     (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
     (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
 
-    RIGHTBRACKET    reduce using rule 132 (cte -> .)
+    RIGHTBRACKET    reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -1106,223 +1108,223 @@ state 69
 
 state 70
 
-    (133) cte -> id .
+    (134) cte -> id .
 
-    RIGHTBRACKET    reduce using rule 133 (cte -> id .)
-    TERMS           reduce using rule 133 (cte -> id .)
-    EX              reduce using rule 133 (cte -> id .)
-    RELOP           reduce using rule 133 (cte -> id .)
-    LOGIC           reduce using rule 133 (cte -> id .)
-    COMMA           reduce using rule 133 (cte -> id .)
-    RIGHTPAR        reduce using rule 133 (cte -> id .)
-    SEMICOLON       reduce using rule 133 (cte -> id .)
+    RIGHTBRACKET    reduce using rule 134 (cte -> id .)
+    TERMS           reduce using rule 134 (cte -> id .)
+    EX              reduce using rule 134 (cte -> id .)
+    RELOP           reduce using rule 134 (cte -> id .)
+    LOGIC           reduce using rule 134 (cte -> id .)
+    COMMA           reduce using rule 134 (cte -> id .)
+    RIGHTPAR        reduce using rule 134 (cte -> id .)
+    SEMICOLON       reduce using rule 134 (cte -> id .)
 
 
 state 71
 
-    (134) cte -> int .
+    (135) cte -> int .
 
-    RIGHTBRACKET    reduce using rule 134 (cte -> int .)
-    TERMS           reduce using rule 134 (cte -> int .)
-    EX              reduce using rule 134 (cte -> int .)
-    RELOP           reduce using rule 134 (cte -> int .)
-    LOGIC           reduce using rule 134 (cte -> int .)
-    COMMA           reduce using rule 134 (cte -> int .)
-    RIGHTPAR        reduce using rule 134 (cte -> int .)
-    SEMICOLON       reduce using rule 134 (cte -> int .)
+    RIGHTBRACKET    reduce using rule 135 (cte -> int .)
+    TERMS           reduce using rule 135 (cte -> int .)
+    EX              reduce using rule 135 (cte -> int .)
+    RELOP           reduce using rule 135 (cte -> int .)
+    LOGIC           reduce using rule 135 (cte -> int .)
+    COMMA           reduce using rule 135 (cte -> int .)
+    RIGHTPAR        reduce using rule 135 (cte -> int .)
+    SEMICOLON       reduce using rule 135 (cte -> int .)
 
 
 state 72
 
-    (135) cte -> float .
+    (136) cte -> float .
 
-    RIGHTBRACKET    reduce using rule 135 (cte -> float .)
-    TERMS           reduce using rule 135 (cte -> float .)
-    EX              reduce using rule 135 (cte -> float .)
-    RELOP           reduce using rule 135 (cte -> float .)
-    LOGIC           reduce using rule 135 (cte -> float .)
-    COMMA           reduce using rule 135 (cte -> float .)
-    RIGHTPAR        reduce using rule 135 (cte -> float .)
-    SEMICOLON       reduce using rule 135 (cte -> float .)
+    RIGHTBRACKET    reduce using rule 136 (cte -> float .)
+    TERMS           reduce using rule 136 (cte -> float .)
+    EX              reduce using rule 136 (cte -> float .)
+    RELOP           reduce using rule 136 (cte -> float .)
+    LOGIC           reduce using rule 136 (cte -> float .)
+    COMMA           reduce using rule 136 (cte -> float .)
+    RIGHTPAR        reduce using rule 136 (cte -> float .)
+    SEMICOLON       reduce using rule 136 (cte -> float .)
 
 
 state 73
 
-    (136) cte -> bool .
+    (137) cte -> bool .
 
-    RIGHTBRACKET    reduce using rule 136 (cte -> bool .)
-    TERMS           reduce using rule 136 (cte -> bool .)
-    EX              reduce using rule 136 (cte -> bool .)
-    RELOP           reduce using rule 136 (cte -> bool .)
-    LOGIC           reduce using rule 136 (cte -> bool .)
-    COMMA           reduce using rule 136 (cte -> bool .)
-    RIGHTPAR        reduce using rule 136 (cte -> bool .)
-    SEMICOLON       reduce using rule 136 (cte -> bool .)
+    RIGHTBRACKET    reduce using rule 137 (cte -> bool .)
+    TERMS           reduce using rule 137 (cte -> bool .)
+    EX              reduce using rule 137 (cte -> bool .)
+    RELOP           reduce using rule 137 (cte -> bool .)
+    LOGIC           reduce using rule 137 (cte -> bool .)
+    COMMA           reduce using rule 137 (cte -> bool .)
+    RIGHTPAR        reduce using rule 137 (cte -> bool .)
+    SEMICOLON       reduce using rule 137 (cte -> bool .)
 
 
 state 74
 
-    (137) cte -> string .
+    (138) cte -> string .
 
-    RIGHTBRACKET    reduce using rule 137 (cte -> string .)
-    TERMS           reduce using rule 137 (cte -> string .)
-    EX              reduce using rule 137 (cte -> string .)
-    RELOP           reduce using rule 137 (cte -> string .)
-    LOGIC           reduce using rule 137 (cte -> string .)
-    COMMA           reduce using rule 137 (cte -> string .)
-    RIGHTPAR        reduce using rule 137 (cte -> string .)
-    SEMICOLON       reduce using rule 137 (cte -> string .)
+    RIGHTBRACKET    reduce using rule 138 (cte -> string .)
+    TERMS           reduce using rule 138 (cte -> string .)
+    EX              reduce using rule 138 (cte -> string .)
+    RELOP           reduce using rule 138 (cte -> string .)
+    LOGIC           reduce using rule 138 (cte -> string .)
+    COMMA           reduce using rule 138 (cte -> string .)
+    RIGHTPAR        reduce using rule 138 (cte -> string .)
+    SEMICOLON       reduce using rule 138 (cte -> string .)
 
 
 state 75
 
-    (138) cte -> nestedvalue .
+    (139) cte -> nestedvalue .
 
-    RIGHTBRACKET    reduce using rule 138 (cte -> nestedvalue .)
-    TERMS           reduce using rule 138 (cte -> nestedvalue .)
-    EX              reduce using rule 138 (cte -> nestedvalue .)
-    RELOP           reduce using rule 138 (cte -> nestedvalue .)
-    LOGIC           reduce using rule 138 (cte -> nestedvalue .)
-    COMMA           reduce using rule 138 (cte -> nestedvalue .)
-    RIGHTPAR        reduce using rule 138 (cte -> nestedvalue .)
-    SEMICOLON       reduce using rule 138 (cte -> nestedvalue .)
+    RIGHTBRACKET    reduce using rule 139 (cte -> nestedvalue .)
+    TERMS           reduce using rule 139 (cte -> nestedvalue .)
+    EX              reduce using rule 139 (cte -> nestedvalue .)
+    RELOP           reduce using rule 139 (cte -> nestedvalue .)
+    LOGIC           reduce using rule 139 (cte -> nestedvalue .)
+    COMMA           reduce using rule 139 (cte -> nestedvalue .)
+    RIGHTPAR        reduce using rule 139 (cte -> nestedvalue .)
+    SEMICOLON       reduce using rule 139 (cte -> nestedvalue .)
 
 
 state 76
 
-    (139) cte -> functioncall .
+    (140) cte -> functioncall .
 
-    RIGHTBRACKET    reduce using rule 139 (cte -> functioncall .)
-    TERMS           reduce using rule 139 (cte -> functioncall .)
-    EX              reduce using rule 139 (cte -> functioncall .)
-    RELOP           reduce using rule 139 (cte -> functioncall .)
-    LOGIC           reduce using rule 139 (cte -> functioncall .)
-    COMMA           reduce using rule 139 (cte -> functioncall .)
-    RIGHTPAR        reduce using rule 139 (cte -> functioncall .)
-    SEMICOLON       reduce using rule 139 (cte -> functioncall .)
+    RIGHTBRACKET    reduce using rule 140 (cte -> functioncall .)
+    TERMS           reduce using rule 140 (cte -> functioncall .)
+    EX              reduce using rule 140 (cte -> functioncall .)
+    RELOP           reduce using rule 140 (cte -> functioncall .)
+    LOGIC           reduce using rule 140 (cte -> functioncall .)
+    COMMA           reduce using rule 140 (cte -> functioncall .)
+    RIGHTPAR        reduce using rule 140 (cte -> functioncall .)
+    SEMICOLON       reduce using rule 140 (cte -> functioncall .)
 
 
 state 77
 
-    (140) cte -> listaccess .
+    (141) cte -> listaccess .
 
-    RIGHTBRACKET    reduce using rule 140 (cte -> listaccess .)
-    TERMS           reduce using rule 140 (cte -> listaccess .)
-    EX              reduce using rule 140 (cte -> listaccess .)
-    RELOP           reduce using rule 140 (cte -> listaccess .)
-    LOGIC           reduce using rule 140 (cte -> listaccess .)
-    COMMA           reduce using rule 140 (cte -> listaccess .)
-    RIGHTPAR        reduce using rule 140 (cte -> listaccess .)
-    SEMICOLON       reduce using rule 140 (cte -> listaccess .)
+    RIGHTBRACKET    reduce using rule 141 (cte -> listaccess .)
+    TERMS           reduce using rule 141 (cte -> listaccess .)
+    EX              reduce using rule 141 (cte -> listaccess .)
+    RELOP           reduce using rule 141 (cte -> listaccess .)
+    LOGIC           reduce using rule 141 (cte -> listaccess .)
+    COMMA           reduce using rule 141 (cte -> listaccess .)
+    RIGHTPAR        reduce using rule 141 (cte -> listaccess .)
+    SEMICOLON       reduce using rule 141 (cte -> listaccess .)
 
 
 state 78
 
-    (141) cte -> specialfunction .
+    (142) cte -> specialfunction .
 
-    RIGHTBRACKET    reduce using rule 141 (cte -> specialfunction .)
-    TERMS           reduce using rule 141 (cte -> specialfunction .)
-    EX              reduce using rule 141 (cte -> specialfunction .)
-    RELOP           reduce using rule 141 (cte -> specialfunction .)
-    LOGIC           reduce using rule 141 (cte -> specialfunction .)
-    COMMA           reduce using rule 141 (cte -> specialfunction .)
-    RIGHTPAR        reduce using rule 141 (cte -> specialfunction .)
-    SEMICOLON       reduce using rule 141 (cte -> specialfunction .)
+    RIGHTBRACKET    reduce using rule 142 (cte -> specialfunction .)
+    TERMS           reduce using rule 142 (cte -> specialfunction .)
+    EX              reduce using rule 142 (cte -> specialfunction .)
+    RELOP           reduce using rule 142 (cte -> specialfunction .)
+    LOGIC           reduce using rule 142 (cte -> specialfunction .)
+    COMMA           reduce using rule 142 (cte -> specialfunction .)
+    RIGHTPAR        reduce using rule 142 (cte -> specialfunction .)
+    SEMICOLON       reduce using rule 142 (cte -> specialfunction .)
 
 
 state 79
 
-    (142) id -> ID .
-    (130) nestedvalue -> ID . DOT ID
+    (143) id -> ID .
+    (131) nestedvalue -> ID . DOT ID
     (91) functioncall -> ID . function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> ID . function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> ID . list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> ID . list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (93) function_call_action1 -> .
-    (128) list_action1 -> .
+    (129) list_action1 -> .
 
-    RIGHTBRACKET    reduce using rule 142 (id -> ID .)
-    TERMS           reduce using rule 142 (id -> ID .)
-    EX              reduce using rule 142 (id -> ID .)
-    RELOP           reduce using rule 142 (id -> ID .)
-    LOGIC           reduce using rule 142 (id -> ID .)
-    COMMA           reduce using rule 142 (id -> ID .)
-    RIGHTPAR        reduce using rule 142 (id -> ID .)
-    SEMICOLON       reduce using rule 142 (id -> ID .)
+    RIGHTBRACKET    reduce using rule 143 (id -> ID .)
+    TERMS           reduce using rule 143 (id -> ID .)
+    EX              reduce using rule 143 (id -> ID .)
+    RELOP           reduce using rule 143 (id -> ID .)
+    LOGIC           reduce using rule 143 (id -> ID .)
+    COMMA           reduce using rule 143 (id -> ID .)
+    RIGHTPAR        reduce using rule 143 (id -> ID .)
+    SEMICOLON       reduce using rule 143 (id -> ID .)
     DOT             shift and go to state 119
     LEFTPAR         reduce using rule 93 (function_call_action1 -> .)
-    LEFTBRACKET     reduce using rule 128 (list_action1 -> .)
+    LEFTBRACKET     reduce using rule 129 (list_action1 -> .)
 
     function_call_action1          shift and go to state 120
     list_action1                   shift and go to state 121
 
 state 80
 
-    (144) int -> INT .
+    (145) int -> INT .
 
-    RIGHTBRACKET    reduce using rule 144 (int -> INT .)
-    TERMS           reduce using rule 144 (int -> INT .)
-    EX              reduce using rule 144 (int -> INT .)
-    RELOP           reduce using rule 144 (int -> INT .)
-    LOGIC           reduce using rule 144 (int -> INT .)
-    COMMA           reduce using rule 144 (int -> INT .)
-    RIGHTPAR        reduce using rule 144 (int -> INT .)
-    SEMICOLON       reduce using rule 144 (int -> INT .)
+    RIGHTBRACKET    reduce using rule 145 (int -> INT .)
+    TERMS           reduce using rule 145 (int -> INT .)
+    EX              reduce using rule 145 (int -> INT .)
+    RELOP           reduce using rule 145 (int -> INT .)
+    LOGIC           reduce using rule 145 (int -> INT .)
+    COMMA           reduce using rule 145 (int -> INT .)
+    RIGHTPAR        reduce using rule 145 (int -> INT .)
+    SEMICOLON       reduce using rule 145 (int -> INT .)
 
 
 state 81
 
-    (145) float -> FLOAT .
+    (146) float -> FLOAT .
 
-    RIGHTBRACKET    reduce using rule 145 (float -> FLOAT .)
-    TERMS           reduce using rule 145 (float -> FLOAT .)
-    EX              reduce using rule 145 (float -> FLOAT .)
-    RELOP           reduce using rule 145 (float -> FLOAT .)
-    LOGIC           reduce using rule 145 (float -> FLOAT .)
-    COMMA           reduce using rule 145 (float -> FLOAT .)
-    RIGHTPAR        reduce using rule 145 (float -> FLOAT .)
-    SEMICOLON       reduce using rule 145 (float -> FLOAT .)
+    RIGHTBRACKET    reduce using rule 146 (float -> FLOAT .)
+    TERMS           reduce using rule 146 (float -> FLOAT .)
+    EX              reduce using rule 146 (float -> FLOAT .)
+    RELOP           reduce using rule 146 (float -> FLOAT .)
+    LOGIC           reduce using rule 146 (float -> FLOAT .)
+    COMMA           reduce using rule 146 (float -> FLOAT .)
+    RIGHTPAR        reduce using rule 146 (float -> FLOAT .)
+    SEMICOLON       reduce using rule 146 (float -> FLOAT .)
 
 
 state 82
 
-    (146) bool -> TRUE .
+    (147) bool -> TRUE .
 
-    RIGHTBRACKET    reduce using rule 146 (bool -> TRUE .)
-    TERMS           reduce using rule 146 (bool -> TRUE .)
-    EX              reduce using rule 146 (bool -> TRUE .)
-    RELOP           reduce using rule 146 (bool -> TRUE .)
-    LOGIC           reduce using rule 146 (bool -> TRUE .)
-    COMMA           reduce using rule 146 (bool -> TRUE .)
-    RIGHTPAR        reduce using rule 146 (bool -> TRUE .)
-    SEMICOLON       reduce using rule 146 (bool -> TRUE .)
+    RIGHTBRACKET    reduce using rule 147 (bool -> TRUE .)
+    TERMS           reduce using rule 147 (bool -> TRUE .)
+    EX              reduce using rule 147 (bool -> TRUE .)
+    RELOP           reduce using rule 147 (bool -> TRUE .)
+    LOGIC           reduce using rule 147 (bool -> TRUE .)
+    COMMA           reduce using rule 147 (bool -> TRUE .)
+    RIGHTPAR        reduce using rule 147 (bool -> TRUE .)
+    SEMICOLON       reduce using rule 147 (bool -> TRUE .)
 
 
 state 83
 
-    (147) bool -> FALSE .
+    (148) bool -> FALSE .
 
-    RIGHTBRACKET    reduce using rule 147 (bool -> FALSE .)
-    TERMS           reduce using rule 147 (bool -> FALSE .)
-    EX              reduce using rule 147 (bool -> FALSE .)
-    RELOP           reduce using rule 147 (bool -> FALSE .)
-    LOGIC           reduce using rule 147 (bool -> FALSE .)
-    COMMA           reduce using rule 147 (bool -> FALSE .)
-    RIGHTPAR        reduce using rule 147 (bool -> FALSE .)
-    SEMICOLON       reduce using rule 147 (bool -> FALSE .)
+    RIGHTBRACKET    reduce using rule 148 (bool -> FALSE .)
+    TERMS           reduce using rule 148 (bool -> FALSE .)
+    EX              reduce using rule 148 (bool -> FALSE .)
+    RELOP           reduce using rule 148 (bool -> FALSE .)
+    LOGIC           reduce using rule 148 (bool -> FALSE .)
+    COMMA           reduce using rule 148 (bool -> FALSE .)
+    RIGHTPAR        reduce using rule 148 (bool -> FALSE .)
+    SEMICOLON       reduce using rule 148 (bool -> FALSE .)
 
 
 state 84
 
-    (143) string -> STRING .
+    (144) string -> STRING .
 
-    RIGHTBRACKET    reduce using rule 143 (string -> STRING .)
-    TERMS           reduce using rule 143 (string -> STRING .)
-    EX              reduce using rule 143 (string -> STRING .)
-    RELOP           reduce using rule 143 (string -> STRING .)
-    LOGIC           reduce using rule 143 (string -> STRING .)
-    COMMA           reduce using rule 143 (string -> STRING .)
-    RIGHTPAR        reduce using rule 143 (string -> STRING .)
-    SEMICOLON       reduce using rule 143 (string -> STRING .)
+    RIGHTBRACKET    reduce using rule 144 (string -> STRING .)
+    TERMS           reduce using rule 144 (string -> STRING .)
+    EX              reduce using rule 144 (string -> STRING .)
+    RELOP           reduce using rule 144 (string -> STRING .)
+    LOGIC           reduce using rule 144 (string -> STRING .)
+    COMMA           reduce using rule 144 (string -> STRING .)
+    RIGHTPAR        reduce using rule 144 (string -> STRING .)
+    SEMICOLON       reduce using rule 144 (string -> STRING .)
 
 
 state 85
@@ -1672,7 +1674,7 @@ state 118
 
 state 119
 
-    (130) nestedvalue -> ID DOT . ID
+    (131) nestedvalue -> ID DOT . ID
 
     ID              shift and go to state 147
 
@@ -1687,7 +1689,7 @@ state 120
 
 state 121
 
-    (127) listaccess -> ID list_action1 . LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> ID list_action1 . LEFTBRACKET expression list_action_3 RIGHTBRACKET
 
     LEFTBRACKET     shift and go to state 149
 
@@ -1708,26 +1710,26 @@ state 122
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -1752,11 +1754,11 @@ state 122
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -1774,7 +1776,7 @@ state 122
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     recfuncexp                     shift and go to state 150
     expression                     shift and go to state 151
@@ -1845,26 +1847,26 @@ state 127
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -1889,10 +1891,10 @@ state 127
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -1910,7 +1912,7 @@ state 127
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     expression                     shift and go to state 162
     exp                            shift and go to state 152
@@ -1952,26 +1954,26 @@ state 128
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -1996,10 +1998,10 @@ state 128
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -2017,7 +2019,7 @@ state 128
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     expression                     shift and go to state 163
     exp                            shift and go to state 152
@@ -2059,26 +2061,26 @@ state 129
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -2103,10 +2105,10 @@ state 129
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -2124,7 +2126,7 @@ state 129
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     expression                     shift and go to state 164
     exp                            shift and go to state 152
@@ -2168,26 +2170,26 @@ state 130
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -2212,11 +2214,11 @@ state 130
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -2234,7 +2236,7 @@ state 130
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     recfuncexp                     shift and go to state 165
     expression                     shift and go to state 151
@@ -2279,26 +2281,26 @@ state 131
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -2323,11 +2325,11 @@ state 131
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -2345,7 +2347,7 @@ state 131
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     recfuncexp                     shift and go to state 166
     expression                     shift and go to state 151
@@ -2431,26 +2433,26 @@ state 138
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -2475,10 +2477,10 @@ state 138
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -2496,7 +2498,7 @@ state 138
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     expression                     shift and go to state 172
     exp                            shift and go to state 152
@@ -2633,17 +2635,17 @@ state 146
 
 state 147
 
-    (130) nestedvalue -> ID DOT ID .
+    (131) nestedvalue -> ID DOT ID .
 
-    RIGHTBRACKET    reduce using rule 130 (nestedvalue -> ID DOT ID .)
-    TERMS           reduce using rule 130 (nestedvalue -> ID DOT ID .)
-    EX              reduce using rule 130 (nestedvalue -> ID DOT ID .)
-    RELOP           reduce using rule 130 (nestedvalue -> ID DOT ID .)
-    LOGIC           reduce using rule 130 (nestedvalue -> ID DOT ID .)
-    COMMA           reduce using rule 130 (nestedvalue -> ID DOT ID .)
-    RIGHTPAR        reduce using rule 130 (nestedvalue -> ID DOT ID .)
-    SEMICOLON       reduce using rule 130 (nestedvalue -> ID DOT ID .)
-    EQUAL           reduce using rule 130 (nestedvalue -> ID DOT ID .)
+    RIGHTBRACKET    reduce using rule 131 (nestedvalue -> ID DOT ID .)
+    TERMS           reduce using rule 131 (nestedvalue -> ID DOT ID .)
+    EX              reduce using rule 131 (nestedvalue -> ID DOT ID .)
+    RELOP           reduce using rule 131 (nestedvalue -> ID DOT ID .)
+    LOGIC           reduce using rule 131 (nestedvalue -> ID DOT ID .)
+    COMMA           reduce using rule 131 (nestedvalue -> ID DOT ID .)
+    RIGHTPAR        reduce using rule 131 (nestedvalue -> ID DOT ID .)
+    SEMICOLON       reduce using rule 131 (nestedvalue -> ID DOT ID .)
+    EQUAL           reduce using rule 131 (nestedvalue -> ID DOT ID .)
 
 
 state 148
@@ -2680,7 +2682,7 @@ state 148
 
 state 149
 
-    (127) listaccess -> ID list_action1 LEFTBRACKET . expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> ID list_action1 LEFTBRACKET . expression list_action_3 RIGHTBRACKET
     (98) expression -> . exp RELOP relop_action1 exp relop_action2
     (99) expression -> . exp LOGIC logic_action1 exp logic_action2
     (100) expression -> . exp
@@ -2692,26 +2694,26 @@ state 149
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -2736,10 +2738,10 @@ state 149
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    RIGHTBRACKET    reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    RIGHTBRACKET    reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -2757,7 +2759,7 @@ state 149
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     expression                     shift and go to state 179
     exp                            shift and go to state 152
@@ -2860,26 +2862,26 @@ state 155
 state 156
 
     (115) factor -> EX . cte
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -2901,14 +2903,14 @@ state 156
     (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
     (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
 
-    TERMS           reduce using rule 132 (cte -> .)
-    EX              reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
-    RIGHTBRACKET    reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    EX              reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
+    RIGHTBRACKET    reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -3156,7 +3158,7 @@ state 176
     (30) statement -> . nestedassign SEMICOLON
     (31) statement -> . specialfunction SEMICOLON
     (52) assign -> . ID assign_action1 EQUAL assign_action2 expression
-    (53) assign -> . listaccess EQUAL assign_action2 expression
+    (53) assign -> . assign_list EQUAL assign_action2 expression
     (56) condition -> . IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
     (57) condition -> . IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
     (13) vars -> . VAR recids COLON type EQUAL expression SEMICOLON vars
@@ -3169,7 +3171,7 @@ state 176
     (90) return -> . RETURN expression
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (131) nestedassign -> . nestedvalue EQUAL expression
+    (132) nestedassign -> . nestedvalue EQUAL expression
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -3180,10 +3182,10 @@ state 176
     (39) specialfunction -> . set_color
     (40) specialfunction -> . create_object
     (41) specialfunction -> . create_text
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (127) assign_list -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (63) for -> . FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     (67) while -> . WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
-    (130) nestedvalue -> . ID DOT ID
+    (131) nestedvalue -> . ID DOT ID
     (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
     (43) size -> . SIZE LEFTPAR RIGHTPAR
     (44) head -> . HEAD LEFTPAR RIGHTPAR
@@ -3225,7 +3227,7 @@ state 176
     functioncall                   shift and go to state 209
     nestedassign                   shift and go to state 210
     specialfunction                shift and go to state 211
-    listaccess                     shift and go to state 213
+    assign_list                    shift and go to state 213
     for                            shift and go to state 215
     while                          shift and go to state 216
     nestedvalue                    shift and go to state 219
@@ -3266,26 +3268,26 @@ state 178
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -3312,10 +3314,10 @@ state 178
     RIGHTPAR        shift and go to state 224
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -3333,8 +3335,8 @@ state 178
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
-  ! RIGHTPAR        [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
+  ! RIGHTPAR        [ reduce using rule 133 (cte -> .) ]
 
     recfuncexp                     shift and go to state 223
     expression                     shift and go to state 151
@@ -3365,10 +3367,10 @@ state 178
 
 state 179
 
-    (127) listaccess -> ID list_action1 LEFTBRACKET expression . list_action_3 RIGHTBRACKET
-    (129) list_action_3 -> .
+    (128) listaccess -> ID list_action1 LEFTBRACKET expression . list_action_3 RIGHTBRACKET
+    (130) list_action_3 -> .
 
-    RIGHTBRACKET    reduce using rule 129 (list_action_3 -> .)
+    RIGHTBRACKET    reduce using rule 130 (list_action_3 -> .)
 
     list_action_3                  shift and go to state 225
 
@@ -3402,26 +3404,26 @@ state 181
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -3446,11 +3448,11 @@ state 181
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -3468,7 +3470,7 @@ state 181
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     expression                     shift and go to state 151
     recfuncexp                     shift and go to state 226
@@ -3613,26 +3615,26 @@ state 187
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -3657,10 +3659,10 @@ state 187
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -3678,7 +3680,7 @@ state 187
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     factor_action1                 shift and go to state 155
     expression                     shift and go to state 233
@@ -3748,26 +3750,26 @@ state 190
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -3792,10 +3794,10 @@ state 190
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -3813,7 +3815,7 @@ state 190
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     expression                     shift and go to state 234
     exp                            shift and go to state 152
@@ -3855,26 +3857,26 @@ state 191
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -3899,10 +3901,10 @@ state 191
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -3920,7 +3922,7 @@ state 191
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     expression                     shift and go to state 235
     exp                            shift and go to state 152
@@ -4079,7 +4081,7 @@ state 202
     (30) statement -> . nestedassign SEMICOLON
     (31) statement -> . specialfunction SEMICOLON
     (52) assign -> . ID assign_action1 EQUAL assign_action2 expression
-    (53) assign -> . listaccess EQUAL assign_action2 expression
+    (53) assign -> . assign_list EQUAL assign_action2 expression
     (56) condition -> . IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
     (57) condition -> . IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
     (13) vars -> . VAR recids COLON type EQUAL expression SEMICOLON vars
@@ -4092,7 +4094,7 @@ state 202
     (90) return -> . RETURN expression
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (131) nestedassign -> . nestedvalue EQUAL expression
+    (132) nestedassign -> . nestedvalue EQUAL expression
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -4103,10 +4105,10 @@ state 202
     (39) specialfunction -> . set_color
     (40) specialfunction -> . create_object
     (41) specialfunction -> . create_text
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (127) assign_list -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (63) for -> . FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     (67) while -> . WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
-    (130) nestedvalue -> . ID DOT ID
+    (131) nestedvalue -> . ID DOT ID
     (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
     (43) size -> . SIZE LEFTPAR RIGHTPAR
     (44) head -> . HEAD LEFTPAR RIGHTPAR
@@ -4148,7 +4150,7 @@ state 202
     functioncall                   shift and go to state 209
     nestedassign                   shift and go to state 210
     specialfunction                shift and go to state 211
-    listaccess                     shift and go to state 213
+    assign_list                    shift and go to state 213
     for                            shift and go to state 215
     while                          shift and go to state 216
     nestedvalue                    shift and go to state 219
@@ -4282,26 +4284,26 @@ state 212
     (52) assign -> ID . assign_action1 EQUAL assign_action2 expression
     (91) functioncall -> ID . function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> ID . function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> ID . list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
-    (130) nestedvalue -> ID . DOT ID
+    (127) assign_list -> ID . list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (131) nestedvalue -> ID . DOT ID
     (54) assign_action1 -> .
     (93) function_call_action1 -> .
-    (128) list_action1 -> .
+    (129) list_action1 -> .
 
     DOT             shift and go to state 119
     EQUAL           reduce using rule 54 (assign_action1 -> .)
     LEFTPAR         reduce using rule 93 (function_call_action1 -> .)
-    LEFTBRACKET     reduce using rule 128 (list_action1 -> .)
+    LEFTBRACKET     reduce using rule 129 (list_action1 -> .)
 
     assign_action1                 shift and go to state 249
     function_call_action1          shift and go to state 120
-    list_action1                   shift and go to state 121
+    list_action1                   shift and go to state 250
 
 state 213
 
-    (53) assign -> listaccess . EQUAL assign_action2 expression
+    (53) assign -> assign_list . EQUAL assign_action2 expression
 
-    EQUAL           shift and go to state 250
+    EQUAL           shift and go to state 251
 
 
 state 214
@@ -4309,7 +4311,7 @@ state 214
     (56) condition -> IF . LEFTPAR expression condition_action1 RIGHTPAR block condition_action2
     (57) condition -> IF . LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
 
-    LEFTPAR         shift and go to state 251
+    LEFTPAR         shift and go to state 252
 
 
 state 215
@@ -4364,7 +4366,7 @@ state 217
 
     (83) write -> PRINT . LEFTPAR recwrite RIGHTPAR
 
-    LEFTPAR         shift and go to state 252
+    LEFTPAR         shift and go to state 253
 
 
 state 218
@@ -4381,26 +4383,26 @@ state 218
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -4425,10 +4427,10 @@ state 218
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -4446,9 +4448,9 @@ state 218
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    expression                     shift and go to state 253
+    expression                     shift and go to state 254
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -4476,9 +4478,9 @@ state 218
 
 state 219
 
-    (131) nestedassign -> nestedvalue . EQUAL expression
+    (132) nestedassign -> nestedvalue . EQUAL expression
 
-    EQUAL           shift and go to state 254
+    EQUAL           shift and go to state 255
 
 
 state 220
@@ -4488,7 +4490,7 @@ state 220
 
     LEFTPAR         reduce using rule 75 (startscope_action -> .)
 
-    startscope_action              shift and go to state 255
+    startscope_action              shift and go to state 256
 
 state 221
 
@@ -4497,7 +4499,7 @@ state 221
 
     LEFTPAR         reduce using rule 75 (startscope_action -> .)
 
-    startscope_action              shift and go to state 256
+    startscope_action              shift and go to state 257
 
 state 222
 
@@ -4507,13 +4509,13 @@ state 222
 
     COLON           shift and go to state 143
 
-    block                          shift and go to state 257
+    block                          shift and go to state 258
 
 state 223
 
     (91) functioncall -> ID function_call_action1 LEFTPAR function_call_action2 recfuncexp . RIGHTPAR
 
-    RIGHTPAR        shift and go to state 258
+    RIGHTPAR        shift and go to state 259
 
 
 state 224
@@ -4532,9 +4534,9 @@ state 224
 
 state 225
 
-    (127) listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 . RIGHTBRACKET
+    (128) listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 . RIGHTBRACKET
 
-    RIGHTBRACKET    shift and go to state 259
+    RIGHTBRACKET    shift and go to state 260
 
 
 state 226
@@ -4555,26 +4557,26 @@ state 227
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -4599,11 +4601,11 @@ state 227
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
-    RIGHTBRACKET    reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
+    RIGHTBRACKET    reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -4621,9 +4623,9 @@ state 227
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    exp                            shift and go to state 260
+    exp                            shift and go to state 261
     term                           shift and go to state 153
     factor                         shift and go to state 154
     factor_action1                 shift and go to state 155
@@ -4659,26 +4661,26 @@ state 228
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -4703,11 +4705,11 @@ state 228
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
-    RIGHTBRACKET    reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
+    RIGHTBRACKET    reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -4725,9 +4727,9 @@ state 228
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    exp                            shift and go to state 261
+    exp                            shift and go to state 262
     term                           shift and go to state 153
     factor                         shift and go to state 154
     factor_action1                 shift and go to state 155
@@ -4795,7 +4797,7 @@ state 230
     SEMICOLON       reduce using rule 113 (add_operator -> .)
     RIGHTBRACKET    reduce using rule 113 (add_operator -> .)
 
-    add_operator                   shift and go to state 262
+    add_operator                   shift and go to state 263
 
 state 231
 
@@ -4841,34 +4843,34 @@ state 232
     SEMICOLON       reduce using rule 113 (add_operator -> .)
     RIGHTBRACKET    reduce using rule 113 (add_operator -> .)
 
-    add_operator                   shift and go to state 263
+    add_operator                   shift and go to state 264
 
 state 233
 
     (114) factor -> factor_action1 LEFTPAR expression . RIGHTPAR factor_action2
 
-    RIGHTPAR        shift and go to state 264
+    RIGHTPAR        shift and go to state 265
 
 
 state 234
 
     (48) set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression . RIGHTPAR
 
-    RIGHTPAR        shift and go to state 265
+    RIGHTPAR        shift and go to state 266
 
 
 state 235
 
     (49) set_color -> SET_COLOR LEFTPAR expression COMMA expression . COMMA expression RIGHTPAR
 
-    COMMA           shift and go to state 266
+    COMMA           shift and go to state 267
 
 
 state 236
 
     (10) run -> VOID FUNC run_action1 RUN startscope_action LEFTPAR . RIGHTPAR main_cont block
 
-    RIGHTPAR        shift and go to state 267
+    RIGHTPAR        shift and go to state 268
 
 
 state 237
@@ -4879,7 +4881,7 @@ state 237
 
     COLON           shift and go to state 143
 
-    block                          shift and go to state 268
+    block                          shift and go to state 269
 
 state 238
 
@@ -4923,7 +4925,7 @@ state 240
 
     (19) block -> COLON LEFTKEY recstatement RIGHTKEY . SEMICOLON
 
-    SEMICOLON       shift and go to state 269
+    SEMICOLON       shift and go to state 270
 
 
 state 241
@@ -5114,12 +5116,19 @@ state 249
 
     (52) assign -> ID assign_action1 . EQUAL assign_action2 expression
 
-    EQUAL           shift and go to state 270
+    EQUAL           shift and go to state 271
 
 
 state 250
 
-    (53) assign -> listaccess EQUAL . assign_action2 expression
+    (127) assign_list -> ID list_action1 . LEFTBRACKET expression list_action_3 RIGHTBRACKET
+
+    LEFTBRACKET     shift and go to state 272
+
+
+state 251
+
+    (53) assign -> assign_list EQUAL . assign_action2 expression
     (55) assign_action2 -> .
 
     EX              reduce using rule 55 (assign_action2 -> .)
@@ -5145,9 +5154,9 @@ state 250
     LEFTPAR         reduce using rule 55 (assign_action2 -> .)
     SEMICOLON       reduce using rule 55 (assign_action2 -> .)
 
-    assign_action2                 shift and go to state 271
+    assign_action2                 shift and go to state 273
 
-state 251
+state 252
 
     (56) condition -> IF LEFTPAR . expression condition_action1 RIGHTPAR block condition_action2
     (57) condition -> IF LEFTPAR . expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
@@ -5162,26 +5171,26 @@ state 251
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -5206,10 +5215,10 @@ state 251
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -5227,121 +5236,8 @@ state 251
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    expression                     shift and go to state 272
-    exp                            shift and go to state 152
-    term                           shift and go to state 153
-    factor                         shift and go to state 154
-    factor_action1                 shift and go to state 155
-    cte                            shift and go to state 157
-    id                             shift and go to state 70
-    int                            shift and go to state 71
-    float                          shift and go to state 72
-    bool                           shift and go to state 73
-    string                         shift and go to state 74
-    nestedvalue                    shift and go to state 75
-    functioncall                   shift and go to state 76
-    listaccess                     shift and go to state 77
-    specialfunction                shift and go to state 78
-    draw                           shift and go to state 85
-    size                           shift and go to state 86
-    head                           shift and go to state 87
-    tail                           shift and go to state 88
-    last                           shift and go to state 89
-    set_title                      shift and go to state 90
-    set_dimension                  shift and go to state 91
-    set_color                      shift and go to state 92
-    create_object                  shift and go to state 93
-    create_text                    shift and go to state 94
-
-state 252
-
-    (83) write -> PRINT LEFTPAR . recwrite RIGHTPAR
-    (84) recwrite -> . expression action_recwrite_exp COMMA recwrite
-    (85) recwrite -> . STRING action_recwrite_cte COMMA recwrite
-    (86) recwrite -> . expression action_recwrite_exp
-    (87) recwrite -> . STRING action_recwrite_cte
-    (98) expression -> . exp RELOP relop_action1 exp relop_action2
-    (99) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (100) expression -> . exp
-    (105) exp -> . term exp_action recexp
-    (106) exp -> . term exp_action
-    (109) term -> . factor term_action recterm
-    (110) term -> . factor term_action
-    (114) factor -> . factor_action1 LEFTPAR expression RIGHTPAR factor_action2
-    (115) factor -> . EX cte
-    (116) factor -> . cte
-    (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
-    (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
-    (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
-    (32) specialfunction -> . draw
-    (33) specialfunction -> . size
-    (34) specialfunction -> . head
-    (35) specialfunction -> . tail
-    (36) specialfunction -> . last
-    (37) specialfunction -> . set_title
-    (38) specialfunction -> . set_dimension
-    (39) specialfunction -> . set_color
-    (40) specialfunction -> . create_object
-    (41) specialfunction -> . create_text
-    (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
-    (43) size -> . SIZE LEFTPAR RIGHTPAR
-    (44) head -> . HEAD LEFTPAR RIGHTPAR
-    (45) tail -> . TAIL LEFTPAR RIGHTPAR
-    (46) last -> . LAST LEFTPAR RIGHTPAR
-    (47) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
-    (48) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
-    (49) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
-    (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
-    (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
-
-  ! shift/reduce conflict for EX resolved as shift
-    STRING          shift and go to state 275
-    EX              shift and go to state 156
-    LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
-    ID              shift and go to state 79
-    INT             shift and go to state 80
-    FLOAT           shift and go to state 81
-    TRUE            shift and go to state 82
-    FALSE           shift and go to state 83
-    DRAW            shift and go to state 95
-    SIZE            shift and go to state 96
-    HEAD            shift and go to state 97
-    TAIL            shift and go to state 98
-    LAST            shift and go to state 99
-    SET_TITLE       shift and go to state 100
-    SET_DIMENSION   shift and go to state 101
-    SET_COLOR       shift and go to state 102
-    CREATE_OBJECT   shift and go to state 103
-    CREATE_TEXT     shift and go to state 104
-
-  ! EX              [ reduce using rule 132 (cte -> .) ]
-
-    recwrite                       shift and go to state 273
     expression                     shift and go to state 274
     exp                            shift and go to state 152
     term                           shift and go to state 153
@@ -5370,14 +5266,11 @@ state 252
 
 state 253
 
-    (90) return -> RETURN expression .
-
-    SEMICOLON       reduce using rule 90 (return -> RETURN expression .)
-
-
-state 254
-
-    (131) nestedassign -> nestedvalue EQUAL . expression
+    (83) write -> PRINT LEFTPAR . recwrite RIGHTPAR
+    (84) recwrite -> . expression action_recwrite_exp COMMA recwrite
+    (85) recwrite -> . STRING action_recwrite_cte COMMA recwrite
+    (86) recwrite -> . expression action_recwrite_exp
+    (87) recwrite -> . STRING action_recwrite_cte
     (98) expression -> . exp RELOP relop_action1 exp relop_action2
     (99) expression -> . exp LOGIC logic_action1 exp logic_action2
     (100) expression -> . exp
@@ -5389,26 +5282,142 @@ state 254
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (32) specialfunction -> . draw
+    (33) specialfunction -> . size
+    (34) specialfunction -> . head
+    (35) specialfunction -> . tail
+    (36) specialfunction -> . last
+    (37) specialfunction -> . set_title
+    (38) specialfunction -> . set_dimension
+    (39) specialfunction -> . set_color
+    (40) specialfunction -> . create_object
+    (41) specialfunction -> . create_text
+    (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
+    (43) size -> . SIZE LEFTPAR RIGHTPAR
+    (44) head -> . HEAD LEFTPAR RIGHTPAR
+    (45) tail -> . TAIL LEFTPAR RIGHTPAR
+    (46) last -> . LAST LEFTPAR RIGHTPAR
+    (47) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
+    (48) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
+    (49) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
+    (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
+    (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
+
+  ! shift/reduce conflict for EX resolved as shift
+    STRING          shift and go to state 277
+    EX              shift and go to state 156
+    LEFTPAR         reduce using rule 117 (factor_action1 -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
+    ID              shift and go to state 79
+    INT             shift and go to state 80
+    FLOAT           shift and go to state 81
+    TRUE            shift and go to state 82
+    FALSE           shift and go to state 83
+    DRAW            shift and go to state 95
+    SIZE            shift and go to state 96
+    HEAD            shift and go to state 97
+    TAIL            shift and go to state 98
+    LAST            shift and go to state 99
+    SET_TITLE       shift and go to state 100
+    SET_DIMENSION   shift and go to state 101
+    SET_COLOR       shift and go to state 102
+    CREATE_OBJECT   shift and go to state 103
+    CREATE_TEXT     shift and go to state 104
+
+  ! EX              [ reduce using rule 133 (cte -> .) ]
+
+    recwrite                       shift and go to state 275
+    expression                     shift and go to state 276
+    exp                            shift and go to state 152
+    term                           shift and go to state 153
+    factor                         shift and go to state 154
+    factor_action1                 shift and go to state 155
+    cte                            shift and go to state 157
+    id                             shift and go to state 70
+    int                            shift and go to state 71
+    float                          shift and go to state 72
+    bool                           shift and go to state 73
+    string                         shift and go to state 74
+    nestedvalue                    shift and go to state 75
+    functioncall                   shift and go to state 76
+    listaccess                     shift and go to state 77
+    specialfunction                shift and go to state 78
+    draw                           shift and go to state 85
+    size                           shift and go to state 86
+    head                           shift and go to state 87
+    tail                           shift and go to state 88
+    last                           shift and go to state 89
+    set_title                      shift and go to state 90
+    set_dimension                  shift and go to state 91
+    set_color                      shift and go to state 92
+    create_object                  shift and go to state 93
+    create_text                    shift and go to state 94
+
+state 254
+
+    (90) return -> RETURN expression .
+
+    SEMICOLON       reduce using rule 90 (return -> RETURN expression .)
+
+
+state 255
+
+    (132) nestedassign -> nestedvalue EQUAL . expression
+    (98) expression -> . exp RELOP relop_action1 exp relop_action2
+    (99) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (100) expression -> . exp
+    (105) exp -> . term exp_action recexp
+    (106) exp -> . term exp_action
+    (109) term -> . factor term_action recterm
+    (110) term -> . factor term_action
+    (114) factor -> . factor_action1 LEFTPAR expression RIGHTPAR factor_action2
+    (115) factor -> . EX cte
+    (116) factor -> . cte
+    (117) factor_action1 -> .
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
+    (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
+    (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -5433,10 +5442,10 @@ state 254
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -5454,10 +5463,10 @@ state 254
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
     nestedvalue                    shift and go to state 75
-    expression                     shift and go to state 276
+    expression                     shift and go to state 278
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -5482,23 +5491,23 @@ state 254
     create_object                  shift and go to state 93
     create_text                    shift and go to state 94
 
-state 255
+state 256
 
     (63) for -> FOR startscope_action . LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
 
-    LEFTPAR         shift and go to state 277
+    LEFTPAR         shift and go to state 279
 
 
-state 256
+state 257
 
     (67) while -> WHILE startscope_action . while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
     (68) while_action1 -> .
 
     LEFTPAR         reduce using rule 68 (while_action1 -> .)
 
-    while_action1                  shift and go to state 278
+    while_action1                  shift and go to state 280
 
-state 257
+state 258
 
     (73) function -> VOID FUNC ID startscope_action LEFTPAR recparams function_action1 RIGHTPAR function_action2 function_action3 block .
 
@@ -5512,7 +5521,7 @@ state 257
     MAIN            reduce using rule 73 (function -> VOID FUNC ID startscope_action LEFTPAR recparams function_action1 RIGHTPAR function_action2 function_action3 block .)
 
 
-state 258
+state 259
 
     (91) functioncall -> ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR .
 
@@ -5526,22 +5535,21 @@ state 258
     SEMICOLON       reduce using rule 91 (functioncall -> ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR .)
 
 
-state 259
-
-    (127) listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .
-
-    RIGHTBRACKET    reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-    TERMS           reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-    EX              reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-    RELOP           reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-    LOGIC           reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-    COMMA           reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-    RIGHTPAR        reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-    SEMICOLON       reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-    EQUAL           reduce using rule 127 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
-
-
 state 260
+
+    (128) listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .
+
+    RIGHTBRACKET    reduce using rule 128 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+    TERMS           reduce using rule 128 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+    EX              reduce using rule 128 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+    RELOP           reduce using rule 128 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+    LOGIC           reduce using rule 128 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+    COMMA           reduce using rule 128 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+    RIGHTPAR        reduce using rule 128 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+    SEMICOLON       reduce using rule 128 (listaccess -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+
+
+state 261
 
     (98) expression -> exp RELOP relop_action1 exp . relop_action2
     (102) relop_action2 -> .
@@ -5551,9 +5559,9 @@ state 260
     SEMICOLON       reduce using rule 102 (relop_action2 -> .)
     RIGHTBRACKET    reduce using rule 102 (relop_action2 -> .)
 
-    relop_action2                  shift and go to state 279
+    relop_action2                  shift and go to state 281
 
-state 261
+state 262
 
     (99) expression -> exp LOGIC logic_action1 exp . logic_action2
     (104) logic_action2 -> .
@@ -5563,9 +5571,9 @@ state 261
     SEMICOLON       reduce using rule 104 (logic_action2 -> .)
     RIGHTBRACKET    reduce using rule 104 (logic_action2 -> .)
 
-    logic_action2                  shift and go to state 280
+    logic_action2                  shift and go to state 282
 
-state 262
+state 263
 
     (108) recexp -> EX add_operator . exp
     (105) exp -> . term exp_action recexp
@@ -5576,26 +5584,26 @@ state 262
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -5620,13 +5628,13 @@ state 262
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
-    RIGHTBRACKET    reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
+    RIGHTBRACKET    reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -5644,113 +5652,10 @@ state 262
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    exp                            shift and go to state 281
+    exp                            shift and go to state 283
     term                           shift and go to state 153
-    factor                         shift and go to state 154
-    factor_action1                 shift and go to state 155
-    cte                            shift and go to state 157
-    id                             shift and go to state 70
-    int                            shift and go to state 71
-    float                          shift and go to state 72
-    bool                           shift and go to state 73
-    string                         shift and go to state 74
-    nestedvalue                    shift and go to state 75
-    functioncall                   shift and go to state 76
-    listaccess                     shift and go to state 77
-    specialfunction                shift and go to state 78
-    draw                           shift and go to state 85
-    size                           shift and go to state 86
-    head                           shift and go to state 87
-    tail                           shift and go to state 88
-    last                           shift and go to state 89
-    set_title                      shift and go to state 90
-    set_dimension                  shift and go to state 91
-    set_color                      shift and go to state 92
-    create_object                  shift and go to state 93
-    create_text                    shift and go to state 94
-
-state 263
-
-    (112) recterm -> TERMS add_operator . term
-    (109) term -> . factor term_action recterm
-    (110) term -> . factor term_action
-    (114) factor -> . factor_action1 LEFTPAR expression RIGHTPAR factor_action2
-    (115) factor -> . EX cte
-    (116) factor -> . cte
-    (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
-    (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
-    (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
-    (32) specialfunction -> . draw
-    (33) specialfunction -> . size
-    (34) specialfunction -> . head
-    (35) specialfunction -> . tail
-    (36) specialfunction -> . last
-    (37) specialfunction -> . set_title
-    (38) specialfunction -> . set_dimension
-    (39) specialfunction -> . set_color
-    (40) specialfunction -> . create_object
-    (41) specialfunction -> . create_text
-    (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
-    (43) size -> . SIZE LEFTPAR RIGHTPAR
-    (44) head -> . HEAD LEFTPAR RIGHTPAR
-    (45) tail -> . TAIL LEFTPAR RIGHTPAR
-    (46) last -> . LAST LEFTPAR RIGHTPAR
-    (47) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
-    (48) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
-    (49) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
-    (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
-    (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
-
-  ! shift/reduce conflict for EX resolved as shift
-    EX              shift and go to state 156
-    LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
-    RIGHTBRACKET    reduce using rule 132 (cte -> .)
-    ID              shift and go to state 79
-    INT             shift and go to state 80
-    FLOAT           shift and go to state 81
-    TRUE            shift and go to state 82
-    FALSE           shift and go to state 83
-    STRING          shift and go to state 84
-    DRAW            shift and go to state 95
-    SIZE            shift and go to state 96
-    HEAD            shift and go to state 97
-    TAIL            shift and go to state 98
-    LAST            shift and go to state 99
-    SET_TITLE       shift and go to state 100
-    SET_DIMENSION   shift and go to state 101
-    SET_COLOR       shift and go to state 102
-    CREATE_OBJECT   shift and go to state 103
-    CREATE_TEXT     shift and go to state 104
-
-  ! EX              [ reduce using rule 132 (cte -> .) ]
-
-    term                           shift and go to state 282
     factor                         shift and go to state 154
     factor_action1                 shift and go to state 155
     cte                            shift and go to state 157
@@ -5776,68 +5681,33 @@ state 263
 
 state 264
 
-    (114) factor -> factor_action1 LEFTPAR expression RIGHTPAR . factor_action2
-    (118) factor_action2 -> .
-
-    TERMS           reduce using rule 118 (factor_action2 -> .)
-    EX              reduce using rule 118 (factor_action2 -> .)
-    RELOP           reduce using rule 118 (factor_action2 -> .)
-    LOGIC           reduce using rule 118 (factor_action2 -> .)
-    COMMA           reduce using rule 118 (factor_action2 -> .)
-    RIGHTPAR        reduce using rule 118 (factor_action2 -> .)
-    SEMICOLON       reduce using rule 118 (factor_action2 -> .)
-    RIGHTBRACKET    reduce using rule 118 (factor_action2 -> .)
-
-    factor_action2                 shift and go to state 283
-
-state 265
-
-    (48) set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .
-
-    RIGHTBRACKET    reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
-    TERMS           reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
-    EX              reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
-    RELOP           reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
-    LOGIC           reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
-    COMMA           reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
-    RIGHTPAR        reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
-    SEMICOLON       reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
-
-
-state 266
-
-    (49) set_color -> SET_COLOR LEFTPAR expression COMMA expression COMMA . expression RIGHTPAR
-    (98) expression -> . exp RELOP relop_action1 exp relop_action2
-    (99) expression -> . exp LOGIC logic_action1 exp logic_action2
-    (100) expression -> . exp
-    (105) exp -> . term exp_action recexp
-    (106) exp -> . term exp_action
+    (112) recterm -> TERMS add_operator . term
     (109) term -> . factor term_action recterm
     (110) term -> . factor term_action
     (114) factor -> . factor_action1 LEFTPAR expression RIGHTPAR factor_action2
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -5862,10 +5732,13 @@ state 266
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
+    RIGHTBRACKET    reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -5883,9 +5756,144 @@ state 266
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    expression                     shift and go to state 284
+    term                           shift and go to state 284
+    factor                         shift and go to state 154
+    factor_action1                 shift and go to state 155
+    cte                            shift and go to state 157
+    id                             shift and go to state 70
+    int                            shift and go to state 71
+    float                          shift and go to state 72
+    bool                           shift and go to state 73
+    string                         shift and go to state 74
+    nestedvalue                    shift and go to state 75
+    functioncall                   shift and go to state 76
+    listaccess                     shift and go to state 77
+    specialfunction                shift and go to state 78
+    draw                           shift and go to state 85
+    size                           shift and go to state 86
+    head                           shift and go to state 87
+    tail                           shift and go to state 88
+    last                           shift and go to state 89
+    set_title                      shift and go to state 90
+    set_dimension                  shift and go to state 91
+    set_color                      shift and go to state 92
+    create_object                  shift and go to state 93
+    create_text                    shift and go to state 94
+
+state 265
+
+    (114) factor -> factor_action1 LEFTPAR expression RIGHTPAR . factor_action2
+    (118) factor_action2 -> .
+
+    TERMS           reduce using rule 118 (factor_action2 -> .)
+    EX              reduce using rule 118 (factor_action2 -> .)
+    RELOP           reduce using rule 118 (factor_action2 -> .)
+    LOGIC           reduce using rule 118 (factor_action2 -> .)
+    COMMA           reduce using rule 118 (factor_action2 -> .)
+    RIGHTPAR        reduce using rule 118 (factor_action2 -> .)
+    SEMICOLON       reduce using rule 118 (factor_action2 -> .)
+    RIGHTBRACKET    reduce using rule 118 (factor_action2 -> .)
+
+    factor_action2                 shift and go to state 285
+
+state 266
+
+    (48) set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .
+
+    RIGHTBRACKET    reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
+    TERMS           reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
+    EX              reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
+    RELOP           reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
+    LOGIC           reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
+    COMMA           reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
+    RIGHTPAR        reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
+    SEMICOLON       reduce using rule 48 (set_dimension -> SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR .)
+
+
+state 267
+
+    (49) set_color -> SET_COLOR LEFTPAR expression COMMA expression COMMA . expression RIGHTPAR
+    (98) expression -> . exp RELOP relop_action1 exp relop_action2
+    (99) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (100) expression -> . exp
+    (105) exp -> . term exp_action recexp
+    (106) exp -> . term exp_action
+    (109) term -> . factor term_action recterm
+    (110) term -> . factor term_action
+    (114) factor -> . factor_action1 LEFTPAR expression RIGHTPAR factor_action2
+    (115) factor -> . EX cte
+    (116) factor -> . cte
+    (117) factor_action1 -> .
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
+    (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
+    (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (32) specialfunction -> . draw
+    (33) specialfunction -> . size
+    (34) specialfunction -> . head
+    (35) specialfunction -> . tail
+    (36) specialfunction -> . last
+    (37) specialfunction -> . set_title
+    (38) specialfunction -> . set_dimension
+    (39) specialfunction -> . set_color
+    (40) specialfunction -> . create_object
+    (41) specialfunction -> . create_text
+    (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
+    (43) size -> . SIZE LEFTPAR RIGHTPAR
+    (44) head -> . HEAD LEFTPAR RIGHTPAR
+    (45) tail -> . TAIL LEFTPAR RIGHTPAR
+    (46) last -> . LAST LEFTPAR RIGHTPAR
+    (47) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
+    (48) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
+    (49) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
+    (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
+    (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
+
+  ! shift/reduce conflict for EX resolved as shift
+    EX              shift and go to state 156
+    LEFTPAR         reduce using rule 117 (factor_action1 -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
+    ID              shift and go to state 79
+    INT             shift and go to state 80
+    FLOAT           shift and go to state 81
+    TRUE            shift and go to state 82
+    FALSE           shift and go to state 83
+    STRING          shift and go to state 84
+    DRAW            shift and go to state 95
+    SIZE            shift and go to state 96
+    HEAD            shift and go to state 97
+    TAIL            shift and go to state 98
+    LAST            shift and go to state 99
+    SET_TITLE       shift and go to state 100
+    SET_DIMENSION   shift and go to state 101
+    SET_COLOR       shift and go to state 102
+    CREATE_OBJECT   shift and go to state 103
+    CREATE_TEXT     shift and go to state 104
+
+  ! EX              [ reduce using rule 133 (cte -> .) ]
+
+    expression                     shift and go to state 286
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -5911,23 +5919,23 @@ state 266
     create_object                  shift and go to state 93
     create_text                    shift and go to state 94
 
-state 267
+state 268
 
     (10) run -> VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR . main_cont block
     (12) main_cont -> .
 
     COLON           reduce using rule 12 (main_cont -> .)
 
-    main_cont                      shift and go to state 285
+    main_cont                      shift and go to state 287
 
-state 268
+state 269
 
     (8) start -> VOID FUNC start_action1 START startscope_action LEFTPAR RIGHTPAR main_cont block .
 
     VOID            reduce using rule 8 (start -> VOID FUNC start_action1 START startscope_action LEFTPAR RIGHTPAR main_cont block .)
 
 
-state 269
+state 270
 
     (19) block -> COLON LEFTKEY recstatement RIGHTKEY SEMICOLON .
 
@@ -5960,7 +5968,7 @@ state 269
     CREATE_TEXT     reduce using rule 19 (block -> COLON LEFTKEY recstatement RIGHTKEY SEMICOLON .)
 
 
-state 270
+state 271
 
     (52) assign -> ID assign_action1 EQUAL . assign_action2 expression
     (55) assign_action2 -> .
@@ -5988,11 +5996,11 @@ state 270
     LEFTPAR         reduce using rule 55 (assign_action2 -> .)
     SEMICOLON       reduce using rule 55 (assign_action2 -> .)
 
-    assign_action2                 shift and go to state 286
+    assign_action2                 shift and go to state 288
 
-state 271
+state 272
 
-    (53) assign -> listaccess EQUAL assign_action2 . expression
+    (127) assign_list -> ID list_action1 LEFTBRACKET . expression list_action_3 RIGHTBRACKET
     (98) expression -> . exp RELOP relop_action1 exp relop_action2
     (99) expression -> . exp LOGIC logic_action1 exp logic_action2
     (100) expression -> . exp
@@ -6004,26 +6012,26 @@ state 271
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -6048,10 +6056,10 @@ state 271
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    RIGHTBRACKET    reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -6069,10 +6077,9 @@ state 271
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    listaccess                     shift and go to state 77
-    expression                     shift and go to state 287
+    expression                     shift and go to state 289
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -6085,6 +6092,7 @@ state 271
     string                         shift and go to state 74
     nestedvalue                    shift and go to state 75
     functioncall                   shift and go to state 76
+    listaccess                     shift and go to state 77
     specialfunction                shift and go to state 78
     draw                           shift and go to state 85
     size                           shift and go to state 86
@@ -6097,7 +6105,114 @@ state 271
     create_object                  shift and go to state 93
     create_text                    shift and go to state 94
 
-state 272
+state 273
+
+    (53) assign -> assign_list EQUAL assign_action2 . expression
+    (98) expression -> . exp RELOP relop_action1 exp relop_action2
+    (99) expression -> . exp LOGIC logic_action1 exp logic_action2
+    (100) expression -> . exp
+    (105) exp -> . term exp_action recexp
+    (106) exp -> . term exp_action
+    (109) term -> . factor term_action recterm
+    (110) term -> . factor term_action
+    (114) factor -> . factor_action1 LEFTPAR expression RIGHTPAR factor_action2
+    (115) factor -> . EX cte
+    (116) factor -> . cte
+    (117) factor_action1 -> .
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
+    (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
+    (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (32) specialfunction -> . draw
+    (33) specialfunction -> . size
+    (34) specialfunction -> . head
+    (35) specialfunction -> . tail
+    (36) specialfunction -> . last
+    (37) specialfunction -> . set_title
+    (38) specialfunction -> . set_dimension
+    (39) specialfunction -> . set_color
+    (40) specialfunction -> . create_object
+    (41) specialfunction -> . create_text
+    (42) draw -> . DRAW LEFTPAR recfuncexp RIGHTPAR
+    (43) size -> . SIZE LEFTPAR RIGHTPAR
+    (44) head -> . HEAD LEFTPAR RIGHTPAR
+    (45) tail -> . TAIL LEFTPAR RIGHTPAR
+    (46) last -> . LAST LEFTPAR RIGHTPAR
+    (47) set_title -> . SET_TITLE LEFTPAR expression RIGHTPAR
+    (48) set_dimension -> . SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
+    (49) set_color -> . SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
+    (50) create_object -> . CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
+    (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
+
+  ! shift/reduce conflict for EX resolved as shift
+    EX              shift and go to state 156
+    LEFTPAR         reduce using rule 117 (factor_action1 -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
+    ID              shift and go to state 79
+    INT             shift and go to state 80
+    FLOAT           shift and go to state 81
+    TRUE            shift and go to state 82
+    FALSE           shift and go to state 83
+    STRING          shift and go to state 84
+    DRAW            shift and go to state 95
+    SIZE            shift and go to state 96
+    HEAD            shift and go to state 97
+    TAIL            shift and go to state 98
+    LAST            shift and go to state 99
+    SET_TITLE       shift and go to state 100
+    SET_DIMENSION   shift and go to state 101
+    SET_COLOR       shift and go to state 102
+    CREATE_OBJECT   shift and go to state 103
+    CREATE_TEXT     shift and go to state 104
+
+  ! EX              [ reduce using rule 133 (cte -> .) ]
+
+    expression                     shift and go to state 290
+    exp                            shift and go to state 152
+    term                           shift and go to state 153
+    factor                         shift and go to state 154
+    factor_action1                 shift and go to state 155
+    cte                            shift and go to state 157
+    id                             shift and go to state 70
+    int                            shift and go to state 71
+    float                          shift and go to state 72
+    bool                           shift and go to state 73
+    string                         shift and go to state 74
+    nestedvalue                    shift and go to state 75
+    functioncall                   shift and go to state 76
+    listaccess                     shift and go to state 77
+    specialfunction                shift and go to state 78
+    draw                           shift and go to state 85
+    size                           shift and go to state 86
+    head                           shift and go to state 87
+    tail                           shift and go to state 88
+    last                           shift and go to state 89
+    set_title                      shift and go to state 90
+    set_dimension                  shift and go to state 91
+    set_color                      shift and go to state 92
+    create_object                  shift and go to state 93
+    create_text                    shift and go to state 94
+
+state 274
 
     (56) condition -> IF LEFTPAR expression . condition_action1 RIGHTPAR block condition_action2
     (57) condition -> IF LEFTPAR expression . condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2
@@ -6105,16 +6220,16 @@ state 272
 
     RIGHTPAR        reduce using rule 58 (condition_action1 -> .)
 
-    condition_action1              shift and go to state 288
+    condition_action1              shift and go to state 291
 
-state 273
+state 275
 
     (83) write -> PRINT LEFTPAR recwrite . RIGHTPAR
 
-    RIGHTPAR        shift and go to state 289
+    RIGHTPAR        shift and go to state 292
 
 
-state 274
+state 276
 
     (84) recwrite -> expression . action_recwrite_exp COMMA recwrite
     (86) recwrite -> expression . action_recwrite_exp
@@ -6123,56 +6238,56 @@ state 274
     COMMA           reduce using rule 88 (action_recwrite_exp -> .)
     RIGHTPAR        reduce using rule 88 (action_recwrite_exp -> .)
 
-    action_recwrite_exp            shift and go to state 290
+    action_recwrite_exp            shift and go to state 293
 
-state 275
+state 277
 
     (85) recwrite -> STRING . action_recwrite_cte COMMA recwrite
     (87) recwrite -> STRING . action_recwrite_cte
-    (143) string -> STRING .
+    (144) string -> STRING .
     (89) action_recwrite_cte -> .
 
   ! reduce/reduce conflict for COMMA resolved using rule 89 (action_recwrite_cte -> .)
   ! reduce/reduce conflict for RIGHTPAR resolved using rule 89 (action_recwrite_cte -> .)
-    TERMS           reduce using rule 143 (string -> STRING .)
-    EX              reduce using rule 143 (string -> STRING .)
-    RELOP           reduce using rule 143 (string -> STRING .)
-    LOGIC           reduce using rule 143 (string -> STRING .)
+    TERMS           reduce using rule 144 (string -> STRING .)
+    EX              reduce using rule 144 (string -> STRING .)
+    RELOP           reduce using rule 144 (string -> STRING .)
+    LOGIC           reduce using rule 144 (string -> STRING .)
     COMMA           reduce using rule 89 (action_recwrite_cte -> .)
     RIGHTPAR        reduce using rule 89 (action_recwrite_cte -> .)
 
-  ! COMMA           [ reduce using rule 143 (string -> STRING .) ]
-  ! RIGHTPAR        [ reduce using rule 143 (string -> STRING .) ]
+  ! COMMA           [ reduce using rule 144 (string -> STRING .) ]
+  ! RIGHTPAR        [ reduce using rule 144 (string -> STRING .) ]
 
-    action_recwrite_cte            shift and go to state 291
-
-state 276
-
-    (131) nestedassign -> nestedvalue EQUAL expression .
-
-    SEMICOLON       reduce using rule 131 (nestedassign -> nestedvalue EQUAL expression .)
-
-
-state 277
-
-    (63) for -> FOR startscope_action LEFTPAR . assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
-    (52) assign -> . ID assign_action1 EQUAL assign_action2 expression
-    (53) assign -> . listaccess EQUAL assign_action2 expression
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
-
-    ID              shift and go to state 293
-
-    assign                         shift and go to state 292
-    listaccess                     shift and go to state 213
+    action_recwrite_cte            shift and go to state 294
 
 state 278
 
-    (67) while -> WHILE startscope_action while_action1 . LEFTPAR expression while_action2 RIGHTPAR block while_action3
+    (132) nestedassign -> nestedvalue EQUAL expression .
 
-    LEFTPAR         shift and go to state 294
+    SEMICOLON       reduce using rule 132 (nestedassign -> nestedvalue EQUAL expression .)
 
 
 state 279
+
+    (63) for -> FOR startscope_action LEFTPAR . assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
+    (52) assign -> . ID assign_action1 EQUAL assign_action2 expression
+    (53) assign -> . assign_list EQUAL assign_action2 expression
+    (127) assign_list -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+
+    ID              shift and go to state 296
+
+    assign                         shift and go to state 295
+    assign_list                    shift and go to state 213
+
+state 280
+
+    (67) while -> WHILE startscope_action while_action1 . LEFTPAR expression while_action2 RIGHTPAR block while_action3
+
+    LEFTPAR         shift and go to state 297
+
+
+state 281
 
     (98) expression -> exp RELOP relop_action1 exp relop_action2 .
 
@@ -6182,7 +6297,7 @@ state 279
     RIGHTBRACKET    reduce using rule 98 (expression -> exp RELOP relop_action1 exp relop_action2 .)
 
 
-state 280
+state 282
 
     (99) expression -> exp LOGIC logic_action1 exp logic_action2 .
 
@@ -6192,7 +6307,7 @@ state 280
     RIGHTBRACKET    reduce using rule 99 (expression -> exp LOGIC logic_action1 exp logic_action2 .)
 
 
-state 281
+state 283
 
     (108) recexp -> EX add_operator exp .
 
@@ -6204,7 +6319,7 @@ state 281
     RIGHTBRACKET    reduce using rule 108 (recexp -> EX add_operator exp .)
 
 
-state 282
+state 284
 
     (112) recterm -> TERMS add_operator term .
 
@@ -6217,7 +6332,7 @@ state 282
     RIGHTBRACKET    reduce using rule 112 (recterm -> TERMS add_operator term .)
 
 
-state 283
+state 285
 
     (114) factor -> factor_action1 LEFTPAR expression RIGHTPAR factor_action2 .
 
@@ -6231,14 +6346,14 @@ state 283
     RIGHTBRACKET    reduce using rule 114 (factor -> factor_action1 LEFTPAR expression RIGHTPAR factor_action2 .)
 
 
-state 284
+state 286
 
     (49) set_color -> SET_COLOR LEFTPAR expression COMMA expression COMMA expression . RIGHTPAR
 
-    RIGHTPAR        shift and go to state 295
+    RIGHTPAR        shift and go to state 298
 
 
-state 285
+state 287
 
     (10) run -> VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont . block
     (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
@@ -6246,9 +6361,9 @@ state 285
 
     COLON           shift and go to state 143
 
-    block                          shift and go to state 296
+    block                          shift and go to state 299
 
-state 286
+state 288
 
     (52) assign -> ID assign_action1 EQUAL assign_action2 . expression
     (98) expression -> . exp RELOP relop_action1 exp relop_action2
@@ -6262,26 +6377,26 @@ state 286
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -6306,10 +6421,10 @@ state 286
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -6327,9 +6442,9 @@ state 286
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    expression                     shift and go to state 297
+    expression                     shift and go to state 300
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -6355,67 +6470,76 @@ state 286
     create_object                  shift and go to state 93
     create_text                    shift and go to state 94
 
-state 287
+state 289
 
-    (53) assign -> listaccess EQUAL assign_action2 expression .
+    (127) assign_list -> ID list_action1 LEFTBRACKET expression . list_action_3 RIGHTBRACKET
+    (130) list_action_3 -> .
 
-    SEMICOLON       reduce using rule 53 (assign -> listaccess EQUAL assign_action2 expression .)
+    RIGHTBRACKET    reduce using rule 130 (list_action_3 -> .)
+
+    list_action_3                  shift and go to state 301
+
+state 290
+
+    (53) assign -> assign_list EQUAL assign_action2 expression .
+
+    SEMICOLON       reduce using rule 53 (assign -> assign_list EQUAL assign_action2 expression .)
 
 
-state 288
+state 291
 
     (56) condition -> IF LEFTPAR expression condition_action1 . RIGHTPAR block condition_action2
     (57) condition -> IF LEFTPAR expression condition_action1 . RIGHTPAR block condition_action3 ELSE block condition_action2
 
-    RIGHTPAR        shift and go to state 298
+    RIGHTPAR        shift and go to state 302
 
 
-state 289
+state 292
 
     (83) write -> PRINT LEFTPAR recwrite RIGHTPAR .
 
     SEMICOLON       reduce using rule 83 (write -> PRINT LEFTPAR recwrite RIGHTPAR .)
 
 
-state 290
+state 293
 
     (84) recwrite -> expression action_recwrite_exp . COMMA recwrite
     (86) recwrite -> expression action_recwrite_exp .
 
-    COMMA           shift and go to state 299
+    COMMA           shift and go to state 303
     RIGHTPAR        reduce using rule 86 (recwrite -> expression action_recwrite_exp .)
 
 
-state 291
+state 294
 
     (85) recwrite -> STRING action_recwrite_cte . COMMA recwrite
     (87) recwrite -> STRING action_recwrite_cte .
 
-    COMMA           shift and go to state 300
+    COMMA           shift and go to state 304
     RIGHTPAR        reduce using rule 87 (recwrite -> STRING action_recwrite_cte .)
 
 
-state 292
+state 295
 
     (63) for -> FOR startscope_action LEFTPAR assign . SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
 
-    SEMICOLON       shift and go to state 301
+    SEMICOLON       shift and go to state 305
 
 
-state 293
+state 296
 
     (52) assign -> ID . assign_action1 EQUAL assign_action2 expression
-    (127) listaccess -> ID . list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (127) assign_list -> ID . list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (54) assign_action1 -> .
-    (128) list_action1 -> .
+    (129) list_action1 -> .
 
     EQUAL           reduce using rule 54 (assign_action1 -> .)
-    LEFTBRACKET     reduce using rule 128 (list_action1 -> .)
+    LEFTBRACKET     reduce using rule 129 (list_action1 -> .)
 
     assign_action1                 shift and go to state 249
-    list_action1                   shift and go to state 121
+    list_action1                   shift and go to state 250
 
-state 294
+state 297
 
     (67) while -> WHILE startscope_action while_action1 LEFTPAR . expression while_action2 RIGHTPAR block while_action3
     (98) expression -> . exp RELOP relop_action1 exp relop_action2
@@ -6429,26 +6553,26 @@ state 294
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -6473,10 +6597,10 @@ state 294
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -6494,9 +6618,9 @@ state 294
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    expression                     shift and go to state 302
+    expression                     shift and go to state 306
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -6522,7 +6646,7 @@ state 294
     create_object                  shift and go to state 93
     create_text                    shift and go to state 94
 
-state 295
+state 298
 
     (49) set_color -> SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR .
 
@@ -6536,21 +6660,28 @@ state 295
     SEMICOLON       reduce using rule 49 (set_color -> SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR .)
 
 
-state 296
+state 299
 
     (10) run -> VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block .
 
     RIGHTKEY        reduce using rule 10 (run -> VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block .)
 
 
-state 297
+state 300
 
     (52) assign -> ID assign_action1 EQUAL assign_action2 expression .
 
     SEMICOLON       reduce using rule 52 (assign -> ID assign_action1 EQUAL assign_action2 expression .)
 
 
-state 298
+state 301
+
+    (127) assign_list -> ID list_action1 LEFTBRACKET expression list_action_3 . RIGHTBRACKET
+
+    RIGHTBRACKET    shift and go to state 307
+
+
+state 302
 
     (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR . block condition_action2
     (57) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR . block condition_action3 ELSE block condition_action2
@@ -6559,9 +6690,9 @@ state 298
 
     COLON           shift and go to state 143
 
-    block                          shift and go to state 303
+    block                          shift and go to state 308
 
-state 299
+state 303
 
     (84) recwrite -> expression action_recwrite_exp COMMA . recwrite
     (84) recwrite -> . expression action_recwrite_exp COMMA recwrite
@@ -6579,26 +6710,26 @@ state 299
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -6621,14 +6752,14 @@ state 299
     (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
 
   ! shift/reduce conflict for EX resolved as shift
-    STRING          shift and go to state 275
+    STRING          shift and go to state 277
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -6645,10 +6776,10 @@ state 299
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    expression                     shift and go to state 274
-    recwrite                       shift and go to state 304
+    expression                     shift and go to state 276
+    recwrite                       shift and go to state 309
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -6674,7 +6805,7 @@ state 299
     create_object                  shift and go to state 93
     create_text                    shift and go to state 94
 
-state 300
+state 304
 
     (85) recwrite -> STRING action_recwrite_cte COMMA . recwrite
     (84) recwrite -> . expression action_recwrite_exp COMMA recwrite
@@ -6692,26 +6823,26 @@ state 300
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -6734,14 +6865,14 @@ state 300
     (51) create_text -> . CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
 
   ! shift/reduce conflict for EX resolved as shift
-    STRING          shift and go to state 275
+    STRING          shift and go to state 277
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    COMMA           reduce using rule 132 (cte -> .)
-    RIGHTPAR        reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    COMMA           reduce using rule 133 (cte -> .)
+    RIGHTPAR        reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -6758,10 +6889,10 @@ state 300
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    recwrite                       shift and go to state 305
-    expression                     shift and go to state 274
+    recwrite                       shift and go to state 310
+    expression                     shift and go to state 276
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -6787,7 +6918,7 @@ state 300
     create_object                  shift and go to state 93
     create_text                    shift and go to state 94
 
-state 301
+state 305
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON . for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     (64) for_action1 -> .
@@ -6815,18 +6946,25 @@ state 301
     TERMS           reduce using rule 64 (for_action1 -> .)
     LEFTPAR         reduce using rule 64 (for_action1 -> .)
 
-    for_action1                    shift and go to state 306
+    for_action1                    shift and go to state 311
 
-state 302
+state 306
 
     (67) while -> WHILE startscope_action while_action1 LEFTPAR expression . while_action2 RIGHTPAR block while_action3
     (69) while_action2 -> .
 
     RIGHTPAR        reduce using rule 69 (while_action2 -> .)
 
-    while_action2                  shift and go to state 307
+    while_action2                  shift and go to state 312
 
-state 303
+state 307
+
+    (127) assign_list -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .
+
+    EQUAL           reduce using rule 127 (assign_list -> ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET .)
+
+
+state 308
 
     (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block . condition_action2
     (57) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block . condition_action3 ELSE block condition_action2
@@ -6853,24 +6991,24 @@ state 303
     RIGHTKEY        reduce using rule 59 (condition_action2 -> .)
     ELSE            reduce using rule 60 (condition_action3 -> .)
 
-    condition_action2              shift and go to state 308
-    condition_action3              shift and go to state 309
+    condition_action2              shift and go to state 313
+    condition_action3              shift and go to state 314
 
-state 304
+state 309
 
     (84) recwrite -> expression action_recwrite_exp COMMA recwrite .
 
     RIGHTPAR        reduce using rule 84 (recwrite -> expression action_recwrite_exp COMMA recwrite .)
 
 
-state 305
+state 310
 
     (85) recwrite -> STRING action_recwrite_cte COMMA recwrite .
 
     RIGHTPAR        reduce using rule 85 (recwrite -> STRING action_recwrite_cte COMMA recwrite .)
 
 
-state 306
+state 311
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 . expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     (98) expression -> . exp RELOP relop_action1 exp relop_action2
@@ -6884,26 +7022,26 @@ state 306
     (115) factor -> . EX cte
     (116) factor -> . cte
     (117) factor_action1 -> .
-    (132) cte -> .
-    (133) cte -> . id
-    (134) cte -> . int
-    (135) cte -> . float
-    (136) cte -> . bool
-    (137) cte -> . string
-    (138) cte -> . nestedvalue
-    (139) cte -> . functioncall
-    (140) cte -> . listaccess
-    (141) cte -> . specialfunction
-    (142) id -> . ID
-    (144) int -> . INT
-    (145) float -> . FLOAT
-    (146) bool -> . TRUE
-    (147) bool -> . FALSE
-    (143) string -> . STRING
-    (130) nestedvalue -> . ID DOT ID
+    (133) cte -> .
+    (134) cte -> . id
+    (135) cte -> . int
+    (136) cte -> . float
+    (137) cte -> . bool
+    (138) cte -> . string
+    (139) cte -> . nestedvalue
+    (140) cte -> . functioncall
+    (141) cte -> . listaccess
+    (142) cte -> . specialfunction
+    (143) id -> . ID
+    (145) int -> . INT
+    (146) float -> . FLOAT
+    (147) bool -> . TRUE
+    (148) bool -> . FALSE
+    (144) string -> . STRING
+    (131) nestedvalue -> . ID DOT ID
     (91) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR
     (92) functioncall -> . ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (128) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
     (32) specialfunction -> . draw
     (33) specialfunction -> . size
     (34) specialfunction -> . head
@@ -6928,10 +7066,10 @@ state 306
   ! shift/reduce conflict for EX resolved as shift
     EX              shift and go to state 156
     LEFTPAR         reduce using rule 117 (factor_action1 -> .)
-    TERMS           reduce using rule 132 (cte -> .)
-    RELOP           reduce using rule 132 (cte -> .)
-    LOGIC           reduce using rule 132 (cte -> .)
-    SEMICOLON       reduce using rule 132 (cte -> .)
+    TERMS           reduce using rule 133 (cte -> .)
+    RELOP           reduce using rule 133 (cte -> .)
+    LOGIC           reduce using rule 133 (cte -> .)
+    SEMICOLON       reduce using rule 133 (cte -> .)
     ID              shift and go to state 79
     INT             shift and go to state 80
     FLOAT           shift and go to state 81
@@ -6949,9 +7087,9 @@ state 306
     CREATE_OBJECT   shift and go to state 103
     CREATE_TEXT     shift and go to state 104
 
-  ! EX              [ reduce using rule 132 (cte -> .) ]
+  ! EX              [ reduce using rule 133 (cte -> .) ]
 
-    expression                     shift and go to state 310
+    expression                     shift and go to state 315
     exp                            shift and go to state 152
     term                           shift and go to state 153
     factor                         shift and go to state 154
@@ -6977,14 +7115,14 @@ state 306
     create_object                  shift and go to state 93
     create_text                    shift and go to state 94
 
-state 307
+state 312
 
     (67) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 . RIGHTPAR block while_action3
 
-    RIGHTPAR        shift and go to state 311
+    RIGHTPAR        shift and go to state 316
 
 
-state 308
+state 313
 
     (56) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .
 
@@ -7008,23 +7146,23 @@ state 308
     RIGHTKEY        reduce using rule 56 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action2 .)
 
 
-state 309
+state 314
 
     (57) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 . ELSE block condition_action2
 
-    ELSE            shift and go to state 312
+    ELSE            shift and go to state 317
 
 
-state 310
+state 315
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression . for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     (65) for_action2 -> .
 
     SEMICOLON       reduce using rule 65 (for_action2 -> .)
 
-    for_action2                    shift and go to state 313
+    for_action2                    shift and go to state 318
 
-state 311
+state 316
 
     (67) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR . block while_action3
     (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
@@ -7032,9 +7170,9 @@ state 311
 
     COLON           shift and go to state 143
 
-    block                          shift and go to state 314
+    block                          shift and go to state 319
 
-state 312
+state 317
 
     (57) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE . block condition_action2
     (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
@@ -7042,16 +7180,16 @@ state 312
 
     COLON           shift and go to state 143
 
-    block                          shift and go to state 315
+    block                          shift and go to state 320
 
-state 313
+state 318
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 . SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
 
-    SEMICOLON       shift and go to state 316
+    SEMICOLON       shift and go to state 321
 
 
-state 314
+state 319
 
     (67) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block . while_action3
     (70) while_action3 -> .
@@ -7075,9 +7213,9 @@ state 314
     CREATE_TEXT     reduce using rule 70 (while_action3 -> .)
     RIGHTKEY        reduce using rule 70 (while_action3 -> .)
 
-    while_action3                  shift and go to state 317
+    while_action3                  shift and go to state 322
 
-state 315
+state 320
 
     (57) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block . condition_action2
     (59) condition_action2 -> .
@@ -7101,21 +7239,21 @@ state 315
     CREATE_TEXT     reduce using rule 59 (condition_action2 -> .)
     RIGHTKEY        reduce using rule 59 (condition_action2 -> .)
 
-    condition_action2              shift and go to state 318
+    condition_action2              shift and go to state 323
 
-state 316
+state 321
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON . assign SEMICOLON RIGHTPAR block for_action3
     (52) assign -> . ID assign_action1 EQUAL assign_action2 expression
-    (53) assign -> . listaccess EQUAL assign_action2 expression
-    (127) listaccess -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
+    (53) assign -> . assign_list EQUAL assign_action2 expression
+    (127) assign_list -> . ID list_action1 LEFTBRACKET expression list_action_3 RIGHTBRACKET
 
-    ID              shift and go to state 293
+    ID              shift and go to state 296
 
-    assign                         shift and go to state 319
-    listaccess                     shift and go to state 213
+    assign                         shift and go to state 324
+    assign_list                    shift and go to state 213
 
-state 317
+state 322
 
     (67) while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .
 
@@ -7139,7 +7277,7 @@ state 317
     RIGHTKEY        reduce using rule 67 (while -> WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3 .)
 
 
-state 318
+state 323
 
     (57) condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .
 
@@ -7163,21 +7301,21 @@ state 318
     RIGHTKEY        reduce using rule 57 (condition -> IF LEFTPAR expression condition_action1 RIGHTPAR block condition_action3 ELSE block condition_action2 .)
 
 
-state 319
+state 324
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign . SEMICOLON RIGHTPAR block for_action3
 
-    SEMICOLON       shift and go to state 320
+    SEMICOLON       shift and go to state 325
 
 
-state 320
+state 325
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON . RIGHTPAR block for_action3
 
-    RIGHTPAR        shift and go to state 321
+    RIGHTPAR        shift and go to state 326
 
 
-state 321
+state 326
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR . block for_action3
     (19) block -> . COLON LEFTKEY recstatement RIGHTKEY SEMICOLON
@@ -7185,9 +7323,9 @@ state 321
 
     COLON           shift and go to state 143
 
-    block                          shift and go to state 322
+    block                          shift and go to state 327
 
-state 322
+state 327
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block . for_action3
     (66) for_action3 -> .
@@ -7211,9 +7349,9 @@ state 322
     CREATE_TEXT     reduce using rule 66 (for_action3 -> .)
     RIGHTKEY        reduce using rule 66 (for_action3 -> .)
 
-    for_action3                    shift and go to state 323
+    for_action3                    shift and go to state 328
 
-state 323
+state 328
 
     (63) for -> FOR startscope_action LEFTPAR assign SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3 .
 
@@ -7258,17 +7396,18 @@ WARNING: shift/reduce conflict for VAR in state 197 resolved as shift
 WARNING: shift/reduce conflict for EX in state 218 resolved as shift
 WARNING: shift/reduce conflict for EX in state 227 resolved as shift
 WARNING: shift/reduce conflict for EX in state 228 resolved as shift
-WARNING: shift/reduce conflict for EX in state 251 resolved as shift
 WARNING: shift/reduce conflict for EX in state 252 resolved as shift
-WARNING: shift/reduce conflict for EX in state 254 resolved as shift
-WARNING: shift/reduce conflict for EX in state 262 resolved as shift
+WARNING: shift/reduce conflict for EX in state 253 resolved as shift
+WARNING: shift/reduce conflict for EX in state 255 resolved as shift
 WARNING: shift/reduce conflict for EX in state 263 resolved as shift
-WARNING: shift/reduce conflict for EX in state 266 resolved as shift
-WARNING: shift/reduce conflict for EX in state 271 resolved as shift
-WARNING: shift/reduce conflict for EX in state 286 resolved as shift
-WARNING: shift/reduce conflict for EX in state 294 resolved as shift
-WARNING: shift/reduce conflict for EX in state 299 resolved as shift
-WARNING: shift/reduce conflict for EX in state 300 resolved as shift
-WARNING: shift/reduce conflict for EX in state 306 resolved as shift
-WARNING: reduce/reduce conflict in state 275 resolved using rule (action_recwrite_cte -> <empty>)
-WARNING: rejected rule (string -> STRING) in state 275
+WARNING: shift/reduce conflict for EX in state 264 resolved as shift
+WARNING: shift/reduce conflict for EX in state 267 resolved as shift
+WARNING: shift/reduce conflict for EX in state 272 resolved as shift
+WARNING: shift/reduce conflict for EX in state 273 resolved as shift
+WARNING: shift/reduce conflict for EX in state 288 resolved as shift
+WARNING: shift/reduce conflict for EX in state 297 resolved as shift
+WARNING: shift/reduce conflict for EX in state 303 resolved as shift
+WARNING: shift/reduce conflict for EX in state 304 resolved as shift
+WARNING: shift/reduce conflict for EX in state 311 resolved as shift
+WARNING: reduce/reduce conflict in state 277 resolved using rule (action_recwrite_cte -> <empty>)
+WARNING: rejected rule (string -> STRING) in state 277

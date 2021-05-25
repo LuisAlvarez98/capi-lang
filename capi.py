@@ -466,7 +466,7 @@ def p_create_text(p):
 def p_assign(p):
     '''
     assign : ID assign_action1 EQUAL assign_action2 expression 
-           | listaccess EQUAL assign_action2 expression
+           | assign_list EQUAL assign_action2 expression
     '''
     # we need to do the same for var i :int = 5;
     result = operand_stack.pop()
@@ -1076,6 +1076,18 @@ def p_primitivetype(p):
                   | TOBJECT
     '''
     p[0] = p[1][0].lower()
+
+
+def p_assign_list(p):
+    '''
+    assign_list : ID list_action1 LEFTBRACKET expression  list_action_3 RIGHTBRACKET 
+    '''
+    aux1 = operand_stack.pop()
+    aux1_type = types_stack.pop()
+    list_obj = get_list_obj(p[1])
+    temp = get_next_avail(aux1_type, False)
+    quadruples.append(quadruple("+", aux1,list_obj.address,temp, False))
+    p[0] = (temp,aux1_type)
         
 def p_listaccess(p):
     '''
