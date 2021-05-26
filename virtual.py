@@ -26,6 +26,7 @@ def action(quadruple):
             value_from_pointer = get_value_visited_func(temp + 1).value 
             current_context.memory_list[quadruple.temp] = memory(value_from_pointer, quadruple.temp)
         else:
+            print(get_value_visited_func(quadruple.left_operand).value , get_value_visited_func(quadruple.right_operand).value )
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
             current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '-':
@@ -69,6 +70,7 @@ def action(quadruple):
         if index >= upper_bound or index < lower_bound:
             raise Exception("Index out of bounds.")
     elif quadruple.operator == '=':
+        print(quadruple)
         if quadruple.isptr:
             # We obtain the list address
             list_address = quadruple.temp
@@ -80,6 +82,7 @@ def action(quadruple):
                 current_context.memory_list[index].value = get_value(quadruple.left_operand).value
         else:
             if quadruple.temp not in current_context.memory_list:
+                print(call_stack)
                 set_global_var(quadruple.temp, get_value(quadruple.left_operand).value)
             else:
                 current_context.memory_list[quadruple.temp].value = get_value(quadruple.left_operand).value
