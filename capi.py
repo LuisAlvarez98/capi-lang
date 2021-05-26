@@ -838,8 +838,14 @@ def p_functioncall(p):
         t = ''
     else: 
         raise Exception('Function does not exists.')
-    print("exp ",(temp,func_type) )
-    p[0] = (temp,func_type)
+
+
+    
+    if func_type != 'void':
+        print("exp ",(temp,func_type) )
+        p[0] = (temp,func_type)
+    else: 
+        p[0] = (operand,t)
     current_callId = ''
 
 def p_function_call_action1(p):
@@ -1253,7 +1259,7 @@ def p_error(p):
 import ply.yacc as yacc
 yacc.yacc()
 
-f = open('code.capi')
+f = open('bubble-sort.capi')
 s = f.read()
 f.close()
 
