@@ -156,6 +156,7 @@ def get_next_avail(tp, convert = True):
 quadruples = [] #Lista de cuadruplos
 current_callId = '' #Id para la llamada de función
 current_returnAddress = '' #Address de return
+is_assign_for = False # we use this when handling assignation of variables inside forloop
 current_functionId = '' # Id for function
 operator_stack = deque() # Stack de operadores + - * /
 operand_stack = deque() # Stack de operandos variables 
@@ -295,7 +296,6 @@ def p_start_action1(p):
     '''
     quadruples.append(quadruple("ERA","start" ,None, None))
     quadruples.append(quadruple("GOSUB","start",None,None))
-
 def p_run(p):
     '''
     run : VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block 
@@ -316,6 +316,7 @@ def p_run_action1(p):
     run_action1 :
     '''
     quadruples.append(quadruple("ERA", "run",None, None))
+    #go_to_stack.append(len(quadruples))
 
 def p_main_cont(p):
     '''
@@ -468,9 +469,10 @@ def p_assign(p):
            | assign_list EQUAL assign_action2 expression
     '''
     # we need to do the same for var i :int = 5;
+    global is_assign_for
     result = operand_stack.pop()
     type_result = types_stack.pop()
-
+    quad_list = []
     if len(operand_stack) > 0:
         left_operand = operand_stack.pop()
         left_operand_type = types_stack.pop()
@@ -513,9 +515,16 @@ def p_assign(p):
                 if(len(current_active_scopes) <= 0):
                     raise Exception("Variable does not exist")
                 else:
-                    quadruples.append(quadruple(operator, result, None, address))
+                    quad_list.append(quadruple(operator, result, None, address))
+                    if not is_assign_for:
+                        quadruples.append(quadruple(operator, result, None, address))
             else:
                 raise Exception("Type mismatch at assignation")
+            if is_assign_for:
+                p[0] = quad_list
+            is_assign_for = False
+            quad_list = []
+
 def p_assign_action1(p):
     '''
     assign_action1 : 
@@ -576,16 +585,21 @@ def p_loop(p):
 
 def p_for(p):
     '''
-    for : FOR startscope_action LEFTPAR  assign  SEMICOLON for_action1 expression for_action2 SEMICOLON  assign  SEMICOLON RIGHTPAR block for_action3
+    for : FOR startscope_action LEFTPAR  assign  SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     '''
+
     new_func = active_scopes.pop() # Get the last function created
     new_func.functiontype =  ""  # Assign a name to the function
     new_func.params = []
 
+
+    
 def p_for_action1(p):
     '''
     for_action1 : 
     '''
+    global is_assign_for
+    is_assign_for = True
     go_to_stack.append(len(quadruples))
 
 def p_for_action2(p):
@@ -607,6 +621,10 @@ def p_for_action3(p):
     '''
     falso = go_to_stack.pop() 
     ref = go_to_stack.pop()
+    quad_list = p[-4]
+    for quad in quad_list:
+        quadruples.append(quad)
+        
     quadruples.append(quadruple("GOTO", None, None, ref))
     quadruples[falso] = quadruple(quadruples[falso].operator, quadruples[falso].left_operand,None, len(quadruples))
     
@@ -725,7 +743,7 @@ def p_recparams(p):
         p[0] = [(variable(p[1],p[3],address,get_const_address(0,'i')))]
     elif rule_len  == 5:
         p[0] = [(variable(p[1],p[3],address,get_const_address(0,'i')))] + p[5]
-
+    
 
 def p_recfunc(p):
     '''
@@ -793,19 +811,18 @@ def p_functioncall(p):
     functioncall : ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR 
                  | ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR 
     '''
-   
     global current_callId,func_dir
     # TODO
     if current_callId in func_dir:
         func_type = func_dir[current_callId].functiontype 
-        # function call operations
+        # function call operations TODO fix this :c
         if func_type != 'void':
             temp = get_next_avail(func_type, False)
             current_returnAddress = func_dir["global"].vars[current_callId].address
             operand_stack.append(temp)
             types_stack.append(func_type)
             quadruples.append(quadruple('=',current_returnAddress,None,temp))
-
+            print(temp)
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
         t = func_dir["global"].vars[current_callId].type

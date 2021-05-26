@@ -9,8 +9,8 @@ quad = []
 visitedFuncs = deque()
 def init_virtual(quadruples, func_dir):
     global current_context,cont
-    # for i, q in enumerate(quadruples):
-    #     print(i, " ", q)
+    for i, q in enumerate(quadruples):
+        print(i, " ", q)
 
     init_memory(func_dir)
     current_context = call_stack[-1]
@@ -19,7 +19,7 @@ def init_virtual(quadruples, func_dir):
         cont+=1
 def action(quadruple):
     global cont, param_pointer, current_context, quad
-   # print("Running ", cont, " ", quadruple)
+    # print("Running ", cont, " ", quadruple)
     if quadruple.operator == '+':
         if quadruple.isptr:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
