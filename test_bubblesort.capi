@@ -6,15 +6,6 @@ global : {
 };
 
 void func bubble(n:int):{ 
-<<<<<<< HEAD
-    for(i = 0; i < n - 1; i = i + 1;):{
-        for(j = 0; j < n - i - 1; j = j + 1;):{
-            if(arr[j] > arr[j + 1]):{
-                temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            };
-=======
     print("bubbleSort");
     for(i = 0; i < (n - 1); i = i + 1;):{
         for(j = 0; j < (n - i ); j = j + 1;):{
@@ -24,7 +15,6 @@ void func bubble(n:int):{
                 arr[j] = temp;
             };
             
->>>>>>> 9648af00eacb2fedc3880a1b77f49d424f255648
         };
     };
 };
@@ -43,27 +33,19 @@ void func printList(n: int):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        arr[4] = (5 - 10);
+        arr[0] = 3;
         arr[1] = 1;
         arr[2] = 2;
-<<<<<<< HEAD
-        arr[3] = 0;
-        arr[0] = 5;
-        print("listaAntes");
-        printList(5);
-        bubble(5);
-        print("despues");
-=======
         arr[3] = 100;
         arr[4] = 5;
         print("listaAntes");
         printList(5);
         bubble(5);
->>>>>>> 9648af00eacb2fedc3880a1b77f49d424f255648
         printList(5);
     };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
+
     };
 };
