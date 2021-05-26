@@ -516,7 +516,6 @@ def p_assign(p):
                     quadruples.append(quadruple(operator, result, None, address))
             else:
                 raise Exception("Type mismatch at assignation")
-   
 def p_assign_action1(p):
     '''
     assign_action1 : 
