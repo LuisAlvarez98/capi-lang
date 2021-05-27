@@ -2,6 +2,7 @@
 
 global : {
     var arr:list|int|[5];
+    var event: string;
 };
 
 @ Definition of main module
@@ -16,8 +17,9 @@ main :{
     @ Definition of run function - this function is the game infinite loop
     void func run():{
         set_fill(255,0,0);
-        if(get_event() == "KEYDOWN"):{
-            print("Hola");
+        event = get_event();
+        if(event == "KEYDOWN"):{
+            print("Abajo");
         };
         update();
     };

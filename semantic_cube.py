@@ -57,9 +57,9 @@ class semantic_cube():
         "!=#ff": types["bool"],
         # String values
         "+#ss": types["string"],
-        "==#ss": types["string"],
+        "==#ss": types["bool"],
         "=#ss" : types["string"],
-        "!=#ss": types["string"],
+        "!=#ss": types["bool"],
         # Boolean Values
         "==#bb": types["bool"],
         "=#bb" : types["bool"],

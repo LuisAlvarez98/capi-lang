@@ -8,6 +8,7 @@ current_context = func_memory() # We use this to handle the current context
 visitedFuncs = deque() # We use this to handle visited functions
 
 screen = None
+clock = pygame.time.Clock()
 
 def init_virtual(quadruples, func_dir):
     global current_context,cont
@@ -23,7 +24,7 @@ def init_virtual(quadruples, func_dir):
 
 # We handle the quadruple with this function
 def action(quadruple):
-    global cont, current_context, screen
+    global cont, current_context, screen, clock
     #print("Running quad: ", cont, " ", quadruple)
     if quadruple.operator == '+':
         if quadruple.isptr:
@@ -115,15 +116,9 @@ def action(quadruple):
     elif quadruple.operator == 'GET_EVENT':
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if quadruple.temp not in visitedFuncs[-1].memory_list:
-                    visitedFuncs[-1].memory_list[quadruple.temp] = memory("\"KEYDOWN\"", quadruple.temp)
-                else:
-                    visitedFuncs[-1].memory_list[quadruple.temp].value = "\"KEYDOWN\""
+                handle_event(quadruple, "\"KEYDOWN\"")
             else:
-                if quadruple.temp not in visitedFuncs[-1].memory_list:
-                    visitedFuncs[-1].memory_list[quadruple.temp] = memory("\"NULL\"", quadruple.temp)
-                else:
-                    visitedFuncs[-1].memory_list[quadruple.temp].value = "\"NULL\""
+                handle_event(quadruple, "\"NULL\"")
     elif quadruple.operator == 'print':
         print(get_value_visited_func(quadruple.temp).value)
     elif quadruple.operator == 'GOTO':
@@ -155,6 +150,12 @@ def action(quadruple):
         current_context = call_stack[-1]
         current_context.prev = cont 
         cont = current_context.cont
+
+def handle_event(quadruple, action):
+    if quadruple.temp not in visitedFuncs[-1].memory_list:
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(action, quadruple.temp)
+    else:
+        visitedFuncs[-1].memory_list[quadruple.temp].value = action
     
 # function used to get value from different scopes
 def get_value(address):
