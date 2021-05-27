@@ -251,6 +251,7 @@ def p_capi(p):
          | capi_action1 global MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
          | capi_action1 MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
     '''
+
 def p_capi_action1(p):
     '''
     capi_action1 :
@@ -678,7 +679,6 @@ def p_function(p):
     quadruples.append(quadruple("ENDFUNC",None,None,None))
     temporals = 0
     func_dir[p[3]] = new_func
-
     if p[1] != "void":
         add = func_dir['global'].vars[current_functionId].address
         for quad in quadruples:
@@ -729,7 +729,6 @@ def p_function_action3(p):
     '''
     function_action3 :
     '''
-    func_dir[current_functionId] = active_scopes[-1]
     active_scopes[-1].cont = len(quadruples) - 1
 
 def p_recparams(p):
@@ -795,7 +794,6 @@ def p_return(p):
         return_address = get_next_global(operand_type)
         current_returnAddress = return_address
         func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, current_returnAddress,0)
-       
 
     if func_type != "void":
 
@@ -815,18 +813,16 @@ def p_functioncall(p):
     '''
     global current_callId,func_dir
     # TODO
-    print("Buenas!!!", operand_stack)
-    quadruples.append(quadruple("GOSUB", current_callId, None, None))
-
     if current_callId in func_dir:
         func_type = func_dir[current_callId].functiontype 
         # function call operations TODO fix this :c
         if func_type != 'void':
             temp = get_next_avail(func_type, False)
-            print(temp)
             current_returnAddress = func_dir["global"].vars[current_callId].address
+            operand_stack.append(temp)
+            types_stack.append(func_type)
             quadruples.append(quadruple('=',current_returnAddress,None,temp))
-    print(current_callId)
+            print(temp)
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
         t = func_dir["global"].vars[current_callId].type
@@ -838,8 +834,9 @@ def p_functioncall(p):
         t = ''
     else: 
         raise Exception('Function does not exists.')
-    print("exp ",(temp,func_type) )
-    p[0] = (temp,func_type)
+
+    quadruples.append(quadruple("GOSUB", current_callId, None, None))
+    p[0] = (operand,t)
     current_callId = ''
 
 def p_function_call_action1(p):
@@ -912,7 +909,6 @@ def p_recfunc_action1(p):
  
     if counter - 1 == k:
         print("All parameters where processed")
-     
         operator_stack.pop()
     p[0] = params_order
     
@@ -922,7 +918,6 @@ def p_expression(p):
                | exp LOGIC logic_action1 exp logic_action2
                | exp
     '''
-  
 
 def p_relop_action1(p):
     '''
@@ -992,8 +987,6 @@ def p_exp_action(p):
     '''
     exp_action :
     '''
-    print("term", operand_stack)
-
     if len(operator_stack) > 0:
         if  operator_stack[-1] == "+" or operator_stack[-1] == "-":
             right_operand = operand_stack.pop()
@@ -1024,6 +1017,7 @@ def p_term(p):
     term : factor term_action recterm 
          | factor term_action 
     '''
+
 def p_term_action(p):
     '''
     term_action :
@@ -1073,7 +1067,6 @@ def p_factor(p):
        operand_stack.append(p[1][0])
        types_stack.append(p[1][1])
     p[0] = p[1]  
-  
 
 def p_factor_action1(p):
     '''
