@@ -1246,7 +1246,7 @@ def p_error(p):
 import ply.yacc as yacc
 yacc.yacc()
 
-f = open('code.capi')
+f = open('bubble-sort.capi')
 s = f.read()
 f.close()
 
