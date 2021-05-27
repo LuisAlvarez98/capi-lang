@@ -4,6 +4,14 @@ global : {
     var i,j,temp:int;
 };
 
+int func fib(n:int):{
+    if(n <= 1):{
+        return n;
+    };else:{
+        return fib(n-1) + fib(n-2);
+    };
+};
+
 int func factRec(n:int):{
     if(n == 1):{
         return n;
@@ -13,12 +21,11 @@ int func factRec(n:int):{
 };
 
 
-
 @ Definition of main module
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        print(factRec(10));
+        print(factRec(2)));
     };
 
     @ Definition of run function - this function is the game infinite loop

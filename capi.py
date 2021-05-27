@@ -734,6 +734,8 @@ def p_function_action3(p):
     '''
     function_action3 :
     '''
+    global current_functionId
+    func_dir[current_functionId] = active_scopes[-1]
     active_scopes[-1].cont = len(quadruples) - 1
 
 def p_recparams(p):
@@ -819,15 +821,13 @@ def p_functioncall(p):
     '''
     global current_callId,func_dir
     # TODO
+    quadruples.append(quadruple("GOSUB", current_callId, None, None))
+
     if current_callId in func_dir:
         func_type = func_dir[current_callId].functiontype 
-        # function call operations TODO fix this :c
         if func_type != 'void':
             temp = get_next_avail(func_type, False)
-            print(func_dir)
             current_returnAddress = func_dir["global"].vars[current_callId].address
-            operand_stack.append(temp)
-            types_stack.append(func_type)
             quadruples.append(quadruple('=',current_returnAddress,None,temp))
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
@@ -841,8 +841,11 @@ def p_functioncall(p):
     else: 
         raise Exception('Function does not exists.')
 
-    quadruples.append(quadruple("GOSUB", current_callId, None, None))
-    p[0] = (operand,t)
+    if func_type != 'void':
+        p[0] = (temp,func_type)
+    else: 
+        pass
+    
     current_callId = ''
 
 def p_function_call_action1(p):

@@ -19,7 +19,6 @@ def init_virtual(quadruples, func_dir):
         cont+=1
 def action(quadruple):
     global cont, param_pointer, current_context, quad
-    # print("Running ", cont, " ", quadruple)
     if quadruple.operator == '+':
         if quadruple.isptr:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
@@ -68,6 +67,7 @@ def action(quadruple):
         if index >= upper_bound or index < lower_bound:
             raise Exception("Index out of bounds.")
     elif quadruple.operator == '=':
+     
         if quadruple.isptr:
             # We obtain the list address
             list_address = quadruple.temp
@@ -78,10 +78,14 @@ def action(quadruple):
             else:
                 visitedFuncs[-1].memory_list[index].value = get_value_visited_func(quadruple.left_operand).value
         else:
-            if quadruple.temp not in visitedFuncs[-1].memory_list:
+            if quadruple.temp >= GLOBAL_START and quadruple.temp <= LOCAL_START - 1:
                 set_global_var(quadruple.temp, get_value_visited_func(quadruple.left_operand).value)
             else:
-                visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand).value
+                if quadruple.temp not in visitedFuncs[-1].memory_list:
+                    visitedFuncs[-1].memory_list[quadruple.temp] = memory(get_value_visited_func(quadruple.left_operand).value, quadruple.temp)
+                else:
+                    visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand).value
+                   
     elif quadruple.operator == 'print':
         print(get_value_visited_func(quadruple.temp).value)
     elif quadruple.operator == 'GOTO':
@@ -91,11 +95,12 @@ def action(quadruple):
             cont = quadruple.temp - 1
     elif quadruple.operator == 'PARAM':
         param_index = int(quadruple.temp.split(" ")[1]) - 1
-        call_stack[-1].params[param_index].value = get_value(quadruple.left_operand).value
+        call_stack[-1].params[param_index].value = get_value_visited_func(quadruple.left_operand).value
     elif quadruple.operator == 'ERA':
         # We push the context into the call_stack
         new_func = create_func_memory(quadruple.left_operand)
         call_stack.append(new_func)
+        
     elif quadruple.operator == 'ENDFUNC':
         # It checks if the function is not run and start so that the cont does not reset.
         if visitedFuncs:
@@ -168,3 +173,4 @@ def get_global_var(address):
      for p in call_stack:
         if p.function_name == "global":
             return p.memory_list[address]
+    
