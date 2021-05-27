@@ -1,3 +1,4 @@
+# This is a utility function to format the type
 def get_type_s(cte):
     if cte == "Int" or cte == "int":
         return "i"

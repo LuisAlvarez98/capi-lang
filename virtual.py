@@ -1,12 +1,10 @@
 
-from memory import  memory_table,print_const_table, memory,constant_table, init_memory,create_func_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
+from memory import  memory_table, memory,constant_table, init_memory,create_func_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
 from time import sleep
 from collections import deque
-cont = 0
-param_pointer = 0
-current_context = func_memory()
-quad = []
-visitedFuncs = deque()
+cont = 0 # Quadruple counter
+current_context = func_memory() # We use this to handle the current context
+visitedFuncs = deque() # We use this to handle visited functions
 def init_virtual(quadruples, func_dir):
     global current_context,cont
     # for i, q in enumerate(quadruples):
@@ -14,11 +12,14 @@ def init_virtual(quadruples, func_dir):
 
     init_memory(func_dir)
     current_context = call_stack[-1]
+    # We use this to loop through the quadruples
     while cont < len(quadruples):
         action(quadruples[cont])
         cont+=1
+
+# We handle the quadruple with this function
 def action(quadruple):
-    global cont, param_pointer, current_context, quad
+    global cont, current_context
     if quadruple.operator == '+':
         if quadruple.isptr:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
@@ -67,7 +68,6 @@ def action(quadruple):
         if index >= upper_bound or index < lower_bound:
             raise Exception("Index out of bounds.")
     elif quadruple.operator == '=':
-     
         if quadruple.isptr:
             # We obtain the list address
             list_address = quadruple.temp
@@ -111,19 +111,15 @@ def action(quadruple):
             cont = current_context.prev
         call_stack.pop()
    
-
-       
     elif quadruple.operator == 'GOSUB':
         visitedFuncs.append(call_stack[-1])
         current_context = call_stack[-1]
         current_context.prev = cont 
         cont = current_context.cont
     
-       
-
 # function used to get value from different scopes
 def get_value(address):
-    global param_pointer, current_context
+    global  current_context
     if address >= CONSTANT_START:
         return memory_table[address]
     elif address >= LOCAL_START and address <= CONSTANT_START - 1:
@@ -142,7 +138,7 @@ def get_value(address):
         return value
 # function used to get value from different scopes
 def get_value_visited_func(address):
-    global param_pointer, current_context
+    global  current_context
     if address >= CONSTANT_START:
         return memory_table[address]
     elif address >= LOCAL_START and address <= CONSTANT_START - 1:

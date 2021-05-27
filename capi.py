@@ -10,7 +10,7 @@ import ply.lex as lex
 from collections import deque #Para el stack de scopes
 from semantic_cube import *
 from util import  get_type_s
-from memory import get_next_global, get_next_local, get_next_temporal, get_const_address, print_const_table, get_next_local_list, get_next_global_list
+from memory import get_next_global, get_next_local, get_next_temporal, get_const_address, get_next_local_list, get_next_global_list
 from virtual import init_virtual
 # Inits the semantic cube
 s_cube = semantic_cube()
@@ -1164,7 +1164,7 @@ def p_list_action_3(p):
     list_obj = get_list_obj(p[-4])
     # We create this quadruple to verify the dimensions of the array
     quadruples.append(quadruple("VERIFY", operand_stack[-1],list_obj.array_block.left, list_obj.array_block.right))
-    
+
 # This utility function is used to get the list object so that we can manipulate it.
 def get_list_obj(id):
     current_active_scopes = active_scopes.copy()

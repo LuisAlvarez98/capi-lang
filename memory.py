@@ -271,6 +271,3 @@ def get_next_constant(t):
         constant_object = constant_object + 1 
         return constant_object
 
-    
-def print_const_table():
-    print(memory_table)

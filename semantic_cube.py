@@ -67,10 +67,11 @@ class semantic_cube():
         "||#bb": types["bool"],
         "!=#bb": types["bool"],
     }
-
+    # We use to get our format so that we can use it later to validate the expression
     def format_expression(self, left_op, right_op, operand):
         return operand + "#" + left_op[0] + right_op[0]
 
+    # We use this to validate the expresion between two operands
     def validate_expression(self, left_op, right_op, operand):
         formatted_exp = self.format_expression(left_op,right_op,operand)
         #print(formatted_exp)

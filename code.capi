@@ -25,7 +25,7 @@ int func factRec(n:int):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        print(z);
+        print(2);
         print(fib(3));
     };
 
