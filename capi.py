@@ -23,7 +23,7 @@ tokens = (
     'RUN','START','RETURN','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE',
     "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT","SET_DIMENSION",'MAIN',"BAR"
 )
-
+# This is used to handle reserved words
 reserved = {
     'int':'TINT',
     'float':'TFLOAT',
@@ -58,7 +58,6 @@ reserved = {
     'set_dimension': 'SET_DIMENSION'
 }
 
-temporals = 0
 
 class quadruple():
     def __init__(self, operator, left_operand, right_operand, temp, isptr = False):
@@ -153,20 +152,20 @@ def get_next_avail(tp, convert = True):
         return get_next_temporal(get_type_s(tp))
     return get_next_temporal(tp)
 
-quadruples = [] #Lista de cuadruplos
-current_callId = '' #Id para la llamada de función
-current_returnAddress = '' #Address de return
-is_assign_for = False # we use this when handling assignation of variables inside forloop
-current_functionId = '' # Id for function
-operator_stack = deque() # Stack de operadores + - * /
-operand_stack = deque() # Stack de operandos variables 
-types_stack = deque() #Stack de tipos int, float
-go_to_stack = deque() #Stack de saltos
+quadruples = [] # Quadruple List
+current_callId = '' # This is the id of the current function call
+current_returnAddress = '' # This is the current return Address when handling returns in functions
+is_assign_for = False # We use this when handling assignation of variables inside forloop
+current_functionId = '' # This is the id of the current function. It is used when declaring functions
+operator_stack = deque() # Operator Stack
+operand_stack = deque() # Operand Stack
+types_stack = deque() # Types Stack
+go_to_stack = deque() # Jump Stack
 dimension_stack = deque() #Used to store the current dimension of the array
+temporals = 0 # This is used to count the temporals in a context
 
-# Function Directory
-func_dir = {}
-active_scopes = deque() #Stack de scopes
+func_dir = {} # Function Directory
+active_scopes = deque() # Scope stacks
 active_scopes.append(function_values('global', [], {}))
 
 
@@ -220,7 +219,7 @@ def t_COMMENT(t):
     pass
     # No return value. Token discarded
 
-# Ignored characters (TO DO comments //)
+# Ignored characters
 t_ignore = " \t\r\n\f\v"
 
 def t_newline(t):
@@ -243,7 +242,7 @@ def t_error(t):
 lex = lex.lex()
 
 
-#Program
+# Program
 def p_capi(p):
     ''' 
     capi : capi_action1 global recfunc MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
@@ -256,7 +255,8 @@ def p_capi_action1(p):
     '''
     capi_action1 :
     '''
-    # This goto is created to be used later in the start function
+    # This goto is created to be used later in the start function. This is used so that at the start of the
+    # program it jumps to the start function.
     quadruples.append(quadruple("GOTO",None,None,None))
 
 def p_capi_action2(p):
@@ -278,6 +278,7 @@ def p_start(p):
     '''
     start : VOID FUNC start_action1 START startscope_action LEFTPAR RIGHTPAR main_cont block 
     '''
+    # We add the start function to the func dir
     global temporals
     new_func = active_scopes.pop()
     new_func.temp_count = temporals
@@ -296,6 +297,7 @@ def p_start_action1(p):
     '''
     quadruples.append(quadruple("ERA","start" ,None, None))
     quadruples.append(quadruple("GOSUB","start",None,None))
+
 def p_run(p):
     '''
     run : VOID FUNC run_action1 RUN startscope_action LEFTPAR RIGHTPAR main_cont block 
@@ -316,7 +318,6 @@ def p_run_action1(p):
     run_action1 :
     '''
     quadruples.append(quadruple("ERA", "run",None, None))
-    #go_to_stack.append(len(quadruples))
 
 def p_main_cont(p):
     '''
@@ -335,8 +336,9 @@ def p_vars(p):
     rule_len = len(p) - 1
     current_function = active_scopes.pop()
     address = 0
-    current_list_addr = 0 #We use this to handle multiple declarations with same dimension
-    addr_popped = False #We use this to handle multiple declarations with same dimension
+    current_list_addr = 0 # We use this to handle multiple declarations with same dimension
+    addr_popped = False  # We use this to handle multiple declarations with same dimension
+    # We use a for in here so that we can handle multiple declarations
     for l in p[2]:
         if p[4][0] == 'list':
             if not addr_popped:
@@ -359,6 +361,7 @@ def p_vars(p):
         else:   
             current_function.vars[l] = variable(l,p[4], address,get_const_address(0,'i'))
     active_scopes.append(current_function)
+
 def p_recids(p):  
     ''' 
     recids : ID 
@@ -477,7 +480,7 @@ def p_assign(p):
         left_operand = operand_stack.pop()
         left_operand_type = types_stack.pop()
         operator = operator_stack.pop()
-        ## We use this to distinguish list assign
+        # We use this to distinguish list assign from the other types
         if type(left_operand) is tuple:
             expression_type = s_cube.validate_expression(type_result, left_operand_type, operator)
             if expression_type != "ERROR":
@@ -529,7 +532,7 @@ def p_assign_action1(p):
     '''
     assign_action1 : 
     '''
-    current_id = p[-1] #get current ID
+    current_id = p[-1] # Get current ID
     get_typeof_id(current_id)
 
 
@@ -545,9 +548,6 @@ def p_condition(p):
     ''' condition : IF LEFTPAR expression condition_action1 RIGHTPAR  block condition_action2
                   | IF LEFTPAR expression condition_action1 RIGHTPAR  block condition_action3 ELSE  block condition_action2
      '''
-    #new_func = active_scopes.pop() # Get the last function created
-    #new_func.functiontype =  ""  # Assign a name to the function
-    #new_func.params = []
      
 def p_condition_action1(p):
     '''
@@ -558,6 +558,7 @@ def p_condition_action1(p):
         raise Exception("Type mismatch.")
     else:
         result = operand_stack.pop()
+        # We generate our Goto_F for the if statement
         quadruples.append(quadruple("GOTO_F", result,None,None))
         go_to_stack.append(len(quadruples)-1)
         
@@ -573,6 +574,7 @@ def p_condition_action3(p):
     condition_action3 :
     '''
     false = go_to_stack.pop()
+    # We generate the GOTO Quadruple when we have an else in our if
     quadruples.append(quadruple("GOTO", None,None,None))
     go_to_stack.append(len(quadruples) - 1)
     quadruples[false] = quadruple("GOTO_F",quadruples[false].left_operand,None,len(quadruples))
@@ -587,13 +589,10 @@ def p_for(p):
     '''
     for : FOR startscope_action LEFTPAR  assign  SEMICOLON for_action1 expression for_action2 SEMICOLON assign SEMICOLON RIGHTPAR block for_action3
     '''
-
     new_func = active_scopes.pop() # Get the last function created
-    new_func.functiontype =  ""  # Assign a name to the function
+    new_func.functiontype =  ""  # We clear out the name of the function
     new_func.params = []
 
-
-    
 def p_for_action1(p):
     '''
     for_action1 : 
@@ -612,6 +611,7 @@ def p_for_action2(p):
     if cond_type != "b":
         raise Exception("Type mismatch.")
     else:
+        # We use this GOTO_F to handle our for loop if the condition is false
         quadruples.append(quadruple("GOTO_F", cond,None,None))
         go_to_stack.append(len(quadruples)-1)
         
@@ -624,7 +624,7 @@ def p_for_action3(p):
     quad_list = p[-4]
     for quad in quad_list:
         quadruples.append(quad)
-        
+    # We generate this to return to the expresion and re evaluate it
     quadruples.append(quadruple("GOTO", None, None, ref))
     quadruples[falso] = quadruple(quadruples[falso].operator, quadruples[falso].left_operand,None, len(quadruples))
     
@@ -634,7 +634,7 @@ def p_while(p):
     while : WHILE startscope_action while_action1 LEFTPAR expression while_action2 RIGHTPAR block while_action3
     '''
     new_func = active_scopes.pop() # Get the last function created
-    new_func.functiontype =  ""  # Assign a name to the function
+    new_func.functiontype =  ""  # Assign empty string to the function type
     new_func.params = []
 
 
@@ -654,6 +654,7 @@ def p_while_action2(p):
     if cond_type != "b":
         raise Exception("Type mismatch.")
     else:
+        # We use this quadruple to handle when the while expression is false
         quadruples.append(quadruple("GOTO_F", cond,None,None))
         go_to_stack.append(len(quadruples)-1)
 
@@ -663,6 +664,7 @@ def p_while_action3(p):
     '''
     falso = go_to_stack.pop() 
     ref = go_to_stack.pop()
+    # We generate this to return to the expresion and re evaluate it
     quadruples.append(quadruple("GOTO", None, None, ref))
     quadruples[falso] = quadruple(quadruples[falso].operator, quadruples[falso].left_operand,None, len(quadruples))
 
@@ -676,9 +678,10 @@ def p_function(p):
     global temporals, current_functionId,current_returnAddress
     new_func = active_scopes.pop()
     new_func.temp_count = temporals
+    # We generate this quadruple to hanlde when the function terminates
     quadruples.append(quadruple("ENDFUNC",None,None,None))
     temporals = 0
-    func_dir[p[3]] = new_func
+    func_dir[p[3]] = new_func # We add the function to the function directory
     if p[1] != "void":
         add = func_dir['global'].vars[current_functionId].address
         for quad in quadruples:
@@ -693,7 +696,7 @@ def p_function(p):
     current_returnAddress = ""
     
 
-
+# We use this to handle scopes between, functions, while, for and if statements
 def p_startscope_action(p):
     '''
     startscope_action : 
@@ -738,6 +741,7 @@ def p_function_action3(p):
     func_dir[current_functionId] = active_scopes[-1]
     active_scopes[-1].cont = len(quadruples) - 1
 
+# We use this to handle multiple or single parameters in functions
 def p_recparams(p):
     '''
     recparams : ID COLON type
@@ -774,9 +778,9 @@ def p_action_recwrite_exp(p):
     '''
     action_recwrite_exp :
     '''
-    # We need to validate the ID. Check if it exists.
     result = operand_stack.pop()
     types_stack.pop()
+    # We use this quadruple to handle prints in our lang
     quadruples.append(quadruple("print", None, None, result))
 
 def p_action_recwrite_cte(p):
@@ -798,15 +802,15 @@ def p_return(p):
 
 
     if current_returnAddress == "":
-        print(current_functionId)
         return_address = get_next_global(operand_type)
         current_returnAddress = return_address
         func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, current_returnAddress,0)
 
     if func_type != "void":
-
         if func_type == operand_type:
+            # When the function returns a value then we assign the value to the return address.
             quadruples.append(quadruple('=',operand_value,None,current_returnAddress))
+            # We terminate the function using endfunc
             quadruples.append(quadruple('ENDFUNC', None, None, None))
         else:
             raise Exception("Type mismatch")
@@ -820,14 +824,14 @@ def p_functioncall(p):
                  | ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR 
     '''
     global current_callId,func_dir
-    # TODO
+    # We generate a GOSUB so that will be used to jump to the function quadruple counter
     quadruples.append(quadruple("GOSUB", current_callId, None, None))
-
     if current_callId in func_dir:
         func_type = func_dir[current_callId].functiontype 
         if func_type != 'void':
             temp = get_next_avail(func_type, False)
             current_returnAddress = func_dir["global"].vars[current_callId].address
+            # For each function called we will create a temp and assign it to the return address.
             quadruples.append(quadruple('=',current_returnAddress,None,temp))
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
@@ -1140,7 +1144,7 @@ def p_listaccess(p):
     list_obj = get_list_obj(p[1])
     temp = get_next_avail(aux1_type, False)
     quadruples.append(quadruple("+", aux1,list_obj.address,temp, True))
-    operand_stack.pop() # we pop the id because we don't need it
+    operand_stack.pop() 
     types_stack.pop()
     operator_stack.pop() # pop our |WALL|
     p[0] = (temp,aux1_type)
@@ -1151,15 +1155,17 @@ def p_list_action1(p):
     list_obj = get_list_obj(p[-1])
     operand_stack.append(list_obj.id)
     types_stack.append(list_obj.array_block.array_type)
-    operator_stack.append("|WALL|")
+    operator_stack.append("|WALL|") # We use this so that we can handle operations between lists
 
 def p_list_action_3(p):
     '''
     list_action_3 :
     '''
     list_obj = get_list_obj(p[-4])
+    # We create this quadruple to verify the dimensions of the array
     quadruples.append(quadruple("VERIFY", operand_stack[-1],list_obj.array_block.left, list_obj.array_block.right))
-
+    
+# This utility function is used to get the list object so that we can manipulate it.
 def get_list_obj(id):
     current_active_scopes = active_scopes.copy()
     list_obj = None

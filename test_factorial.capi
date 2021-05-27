@@ -28,6 +28,7 @@ main :{
         print("FactorialIterativo");
         print(factIt(2));
         print("Factorial Recursivo");
+        print(factRec(2));
     };
 
     @ Definition of run function - this function is the game infinite loop

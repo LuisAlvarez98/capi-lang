@@ -25,7 +25,8 @@ int func factRec(n:int):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        print(factRec(2)));
+        print(z);
+        print(fib(3));
     };
 
     @ Definition of run function - this function is the game infinite loop
