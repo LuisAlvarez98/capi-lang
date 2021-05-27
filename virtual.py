@@ -2,13 +2,17 @@
 from memory import  memory_table, memory,constant_table, init_memory,create_func_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
 from time import sleep
 from collections import deque
+import pygame
 cont = 0 # Quadruple counter
 current_context = func_memory() # We use this to handle the current context
 visitedFuncs = deque() # We use this to handle visited functions
+
+screen = None
+
 def init_virtual(quadruples, func_dir):
     global current_context,cont
-    # for i, q in enumerate(quadruples):
-    #     print(i, " ", q)
+    for i, q in enumerate(quadruples):
+        print(i, " ", q)
 
     init_memory(func_dir)
     current_context = call_stack[-1]
@@ -19,7 +23,8 @@ def init_virtual(quadruples, func_dir):
 
 # We handle the quadruple with this function
 def action(quadruple):
-    global cont, current_context
+    global cont, current_context, screen
+    #print("Running quad: ", cont, " ", quadruple)
     if quadruple.operator == '+':
         if quadruple.isptr:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
@@ -85,7 +90,40 @@ def action(quadruple):
                     visitedFuncs[-1].memory_list[quadruple.temp] = memory(get_value_visited_func(quadruple.left_operand).value, quadruple.temp)
                 else:
                     visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand).value
-                   
+
+    elif quadruple.operator == 'SIZE':
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(get_value_visited_func(quadruple.left_operand).value, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand).value
+    elif quadruple.operator == 'HEAD':
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(get_value_visited_func(quadruple.left_operand + 1).value, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand + 1).value
+    elif quadruple.operator == 'INIT':
+        print("Pygame was initialized")
+        pygame.init()
+    elif quadruple.operator == 'SET_DIM':
+        screen = pygame.display.set_mode((get_value_visited_func(quadruple.left_operand).value,get_value_visited_func(quadruple.right_operand).value))
+    elif quadruple.operator == 'SET_TITLE':
+        pygame.display.set_caption(get_value_visited_func(quadruple.left_operand).value)
+    elif quadruple.operator == 'SET_FILL':
+        screen.fill((get_value_visited_func(quadruple.left_operand).value, get_value_visited_func(quadruple.right_operand).value, get_value_visited_func(quadruple.temp).value))
+    elif quadruple.operator == 'UPDATE':
+        pygame.display.update()
+    elif quadruple.operator == 'GET_EVENT':
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if quadruple.temp not in visitedFuncs[-1].memory_list:
+                    visitedFuncs[-1].memory_list[quadruple.temp] = memory("\"KEYDOWN\"", quadruple.temp)
+                else:
+                    visitedFuncs[-1].memory_list[quadruple.temp].value = "\"KEYDOWN\""
+            else:
+                if quadruple.temp not in visitedFuncs[-1].memory_list:
+                    visitedFuncs[-1].memory_list[quadruple.temp] = memory("\"NULL\"", quadruple.temp)
+                else:
+                    visitedFuncs[-1].memory_list[quadruple.temp].value = "\"NULL\""
     elif quadruple.operator == 'print':
         print(get_value_visited_func(quadruple.temp).value)
     elif quadruple.operator == 'GOTO':
@@ -94,6 +132,7 @@ def action(quadruple):
         if not get_value_visited_func(quadruple.left_operand).value:
             cont = quadruple.temp - 1
     elif quadruple.operator == 'PARAM':
+        print(quadruple)
         param_index = int(quadruple.temp.split(" ")[1]) - 1
         call_stack[-1].params[param_index].value = get_value_visited_func(quadruple.left_operand).value
     elif quadruple.operator == 'ERA':

@@ -20,8 +20,8 @@ tokens = (
     'LEFTKEY','RIGHTKEY','LEFTBRACKET','RIGHTBRACKET','EQUAL','SEMICOLON',
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
-    'RUN','START','RETURN','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE',
-    "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT","SET_DIMENSION",'MAIN',"BAR"
+    'RUN','START','RETURN','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE','INIT',
+    "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT", "UPDATE", "SET_DIMENSION", "GET_EVENT", "SET_FILL", 'MAIN',"BAR"
 )
 # This is used to handle reserved words
 reserved = {
@@ -47,10 +47,14 @@ reserved = {
     'return': 'RETURN',
     'void': 'VOID',
     'draw':'DRAW',
+    'init': 'INIT',
     'size':'SIZE',
     'head':'HEAD',
     'tail':'TAIL',
     'last':'LAST',
+    'update' : "UPDATE",
+    'set_fill': 'SET_FILL',
+    'get_event': 'GET_EVENT',
     'set_title': 'SET_TITLE',
     'set_color': 'SET_COLOR',
     'create_object': 'CREATE_OBJECT',
@@ -195,7 +199,7 @@ def t_FLOAT(t):
     return t 
 
 def t_INT(t):
-    r'\d+'
+    r'-?\d+'
     t.value = int(t.value)
     return t
 
@@ -311,6 +315,7 @@ def p_run(p):
     new_func.params_order = []
     
     func_dir[p[4]] = new_func
+    quadruples.append(quadruple("GOTO", None, None, go_to_stack.pop()))
     quadruples.append(quadruple("ENDFUNC", None,None, None))
 
 def p_run_action1(p):
@@ -318,6 +323,8 @@ def p_run_action1(p):
     run_action1 :
     '''
     quadruples.append(quadruple("ERA", "run",None, None))
+    quadruples.append(quadruple("GOSUB","run",None,None))
+    go_to_stack.append(len(quadruples))
 
 def p_main_cont(p):
     '''
@@ -404,16 +411,21 @@ def p_statement(p):
 def p_specialfunction(p):
     '''
     specialfunction : draw
+                    | init
                     | size
                     | head
                     | tail
                     | last
+                    | set_fill
                     | set_title
+                    | get_event
+                    | update
                     | set_dimension
                     | set_color
                     | create_object
                     | create_text
     '''
+    p[0] = p[1]
 
 def p_draw(p):
     '''
@@ -421,16 +433,70 @@ def p_draw(p):
         
     '''
 
+
+
+def p_init(p):
+    '''
+    init : INIT LEFTPAR RIGHTPAR
+    '''
+    quadruples.append(quadruple('INIT', None, None, None))
+
 def p_size(p):
     '''
-    size : SIZE LEFTPAR RIGHTPAR
+    size : ID DOT SIZE LEFTPAR RIGHTPAR
     '''
+    var_id = p[1]
+    id_valid = False
+    size = 0
+    current_active_scopes = active_scopes.copy()
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        if var_id in current_vars:
+            if current_vars[var_id].type == 'list':
+                is_valid = True
+                size = current_vars[var_id].array_block.right
+            else:
+                is_valid = False
+            break
+        current_active_scopes.pop()
+ 
+    if(len(current_active_scopes) <= 0 ):
+        raise Exception("Variable does not exist")
+    if not is_valid:
+        raise Exception("Size function does not exist for this type of variable.")
+
+    temp = get_next_avail('i', False)
+    quadruples.append(quadruple('SIZE', size, None, temp))
+    p[0] = (temp, 'i')
 
 def p_head(p):
     '''
-    head : HEAD LEFTPAR RIGHTPAR
+    head : ID DOT HEAD LEFTPAR RIGHTPAR
     '''
+    var_id = p[1]
+    id_valid = False
+    address = 0
+    element_type = ''
+    current_active_scopes = active_scopes.copy()
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        if var_id in current_vars:
+            if current_vars[var_id].type == 'list':
+                is_valid = True
+                address = current_vars[var_id].address
+                element_type = current_vars[var_id].array_block.array_type
+            else:
+                is_valid = False
+            break
+        current_active_scopes.pop()
+    if(len(current_active_scopes) <= 0 ):
+        raise Exception("Variable does not exist")
+    if not is_valid:
+        raise Exception("Size function does not exist for this type of variable.")
 
+    temp = get_next_avail(element_type, False)
+    quadruples.append(quadruple('HEAD', address, None, temp))
+    p[0] = (temp, element_type)
 def p_tail(p):
     '''
     tail : TAIL LEFTPAR RIGHTPAR
@@ -445,11 +511,50 @@ def p_set_title(p):
     '''
     set_title : SET_TITLE LEFTPAR expression RIGHTPAR
     '''
+    title = operand_stack.pop()
+    title_type = types_stack.pop()
+    # Quadruple used to send the title to the VM
+    print(title_type)
+    if title_type == 's':
+        quadruples.append(quadruple('SET_TITLE', title, None, None))
+    else:
+        raise Exception("The title expression must be a string.")
 
+def p_set_fill(p):
+    '''
+    set_fill : SET_FILL LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
+    '''  
+    b = operand_stack.pop()
+    g = operand_stack.pop()
+    r = operand_stack.pop()
+    types_stack.pop()
+    types_stack.pop()
+    types_stack.pop()
+    quadruples.append(quadruple('SET_FILL', r, g, b))
 def p_set_dimension(p):
     '''
     set_dimension : SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
     '''
+    x = operand_stack.pop()
+    y = operand_stack.pop()
+    types_stack.pop()
+    types_stack.pop()
+    # Quadruple used to send the dimension to the VM
+    quadruples.append(quadruple('SET_DIM', x, y, None))
+
+def p_update(p):
+    '''
+    update : UPDATE LEFTPAR RIGHTPAR
+    '''
+    quadruples.append(quadruple('UPDATE', None, None, None))
+
+def p_get_event(p):
+    '''
+    get_event : GET_EVENT LEFTPAR RIGHTPAR
+    '''
+    temp = get_next_avail('s', False)
+    quadruples.append(quadruple('GET_EVENT', None, None, temp))
+    p[0] = (temp, 's')
 
 def p_set_color(p):
     '''
