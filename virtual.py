@@ -9,8 +9,8 @@ quad = []
 visitedFuncs = deque()
 def init_virtual(quadruples, func_dir):
     global current_context,cont
-    for i, q in enumerate(quadruples):
-        print(i, " ", q)
+    # for i, q in enumerate(quadruples):
+    #     print(i, " ", q)
 
     init_memory(func_dir)
     current_context = call_stack[-1]
@@ -24,44 +24,43 @@ def action(quadruple):
         if quadruple.isptr:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
             value_from_pointer = get_value_visited_func(temp + 1).value 
-            current_context.memory_list[quadruple.temp] = memory(value_from_pointer, quadruple.temp)
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(value_from_pointer, quadruple.temp)
         else:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
-            current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '-':
         temp = get_value_visited_func(quadruple.left_operand).value - get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '*':
         temp = get_value_visited_func(quadruple.left_operand).value * get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '/':
         temp = get_value_visited_func(quadruple.left_operand).value / get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '&&':
         temp = get_value_visited_func(quadruple.left_operand).value and get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '||':
         temp = get_value_visited_func(quadruple.left_operand).value or get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '>=':
         temp = get_value_visited_func(quadruple.left_operand).value >= get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '<=':
         temp = get_value_visited_func(quadruple.left_operand).value <= get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '>':
-        quadruple
         temp = get_value_visited_func(quadruple.left_operand).value > get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '<':
         temp = get_value_visited_func(quadruple.left_operand).value < get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '!=':
         temp = get_value_visited_func(quadruple.left_operand).value != get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '==':
         temp = get_value_visited_func(quadruple.left_operand).value == get_value_visited_func(quadruple.right_operand).value
-        current_context.memory_list[quadruple.temp] = memory(temp, quadruple.temp)
+        visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == 'VERIFY':
         index = get_value_visited_func(quadruple.left_operand).value
         lower_bound = get_value_visited_func(quadruple.right_operand).value
@@ -73,22 +72,22 @@ def action(quadruple):
             # We obtain the list address
             list_address = quadruple.temp
             # We get the value of the list addres and that is our address of our list.
-            index = get_value(list_address).value + 1 # we add up one to get into the correct address.
-            if index not in current_context.memory_list:
-                set_global_var(index, get_value(quadruple.left_operand).value)
+            index = get_value_visited_func(list_address).value + 1 # we add up one to get into the correct address.
+            if index not in visitedFuncs[-1].memory_list:
+                set_global_var(index, get_value_visited_func(quadruple.left_operand).value)
             else:
-                current_context.memory_list[index].value = get_value(quadruple.left_operand).value
+                visitedFuncs[-1].memory_list[index].value = get_value_visited_func(quadruple.left_operand).value
         else:
-            if quadruple.temp not in current_context.memory_list:
-                set_global_var(quadruple.temp, get_value(quadruple.left_operand).value)
+            if quadruple.temp not in visitedFuncs[-1].memory_list:
+                set_global_var(quadruple.temp, get_value_visited_func(quadruple.left_operand).value)
             else:
-                current_context.memory_list[quadruple.temp].value = get_value(quadruple.left_operand).value
+                visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand).value
     elif quadruple.operator == 'print':
-        print(get_value(quadruple.temp).value)
+        print(get_value_visited_func(quadruple.temp).value)
     elif quadruple.operator == 'GOTO':
         cont = quadruple.temp - 1
     elif quadruple.operator == 'GOTO_F':
-        if not get_value(quadruple.left_operand).value:
+        if not get_value_visited_func(quadruple.left_operand).value:
             cont = quadruple.temp - 1
     elif quadruple.operator == 'PARAM':
         param_index = int(quadruple.temp.split(" ")[1]) - 1
@@ -102,9 +101,12 @@ def action(quadruple):
         if visitedFuncs:
             visitedFuncs.pop()
         current_context = call_stack[-1] #-1 -> top()
+        
         if current_context.function_name != "run" and current_context.function_name != "start" :
             cont = current_context.prev
         call_stack.pop()
+   
+
        
     elif quadruple.operator == 'GOSUB':
         visitedFuncs.append(call_stack[-1])

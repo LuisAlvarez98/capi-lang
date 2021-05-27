@@ -703,10 +703,15 @@ def p_startscope_action(p):
         raise Exception("Function name already exists.")
     
     else:
-        current_functionId = p[-1]
-        new_function = function_values()
-        new_function.functiontype = p[-3]
-        active_scopes.append(new_function)
+        if p[-1] != 'for' and p[-1] != 'while' and p[-1] != 'if':
+            current_functionId = p[-1]
+            new_function = function_values()
+            new_function.functiontype = p[-3]
+            active_scopes.append(new_function)
+        else:
+            new_function = function_values()
+            new_function.functiontype = p[-3]
+            active_scopes.append(new_function)
 
 def p_function_action1(p):
     '''
@@ -791,6 +796,7 @@ def p_return(p):
 
 
     if current_returnAddress == "":
+        print(current_functionId)
         return_address = get_next_global(operand_type)
         current_returnAddress = return_address
         func_dir['global'].vars[current_functionId] = variable(current_functionId, operand_type, current_returnAddress,0)
@@ -818,11 +824,11 @@ def p_functioncall(p):
         # function call operations TODO fix this :c
         if func_type != 'void':
             temp = get_next_avail(func_type, False)
+            print(func_dir)
             current_returnAddress = func_dir["global"].vars[current_callId].address
             operand_stack.append(temp)
             types_stack.append(func_type)
             quadruples.append(quadruple('=',current_returnAddress,None,temp))
-            print(temp)
     if current_callId in func_dir["global"].vars:
         operand = func_dir["global"].vars[current_callId].address
         t = func_dir["global"].vars[current_callId].type
@@ -1246,7 +1252,7 @@ def p_error(p):
 import ply.yacc as yacc
 yacc.yacc()
 
-f = open('bubble-sort.capi')
+f = open('code.capi')
 s = f.read()
 f.close()
 

@@ -1,7 +1,36 @@
-int func fact(n:int):{
+@ Global Definition of Variables
+
+global : {
+    var i,j,temp:int;
+};
+
+int func factIt(n:int):{
+    var res: int;
+    res = 1;
+    for(i = 2; i <= n; i = i +1;):{
+        res = res * i;
+    };
+    return res;
+};
+
+int func factRec(n:int):{
     if(n == 1):{
         return n;
     };else:{
-        return n * fact(n - 1);
+        return n * factRec(n - 1);
+    };
+};
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+        print("FactorialIterativo");
+        print(factIt(2));
+        print("Factorial Recursivo");
+    };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
     };
 };
