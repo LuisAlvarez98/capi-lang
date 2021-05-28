@@ -1,0 +1,26 @@
+@ Global Definition of Variables
+
+global : {
+    var i,j,temp:int;
+};
+
+int func fib(n:int):{
+    if(n <= 1):{
+        return n;
+    };else:{
+        return fib(n - 1) + fib(n - 2);
+    };
+};
+
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+        print(fib(6));
+    };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+    };
+};

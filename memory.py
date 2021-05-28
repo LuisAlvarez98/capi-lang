@@ -232,9 +232,9 @@ def get_next_temporal(t):
         temporal_int = temporal_int + 1
         return temporal_int
     elif (t == "f"):
-        global temportal_float
-        temportal_float = temportal_float + 1
-        return temportal_float 
+        global temporal_float
+        temporal_float = temporal_float + 1
+        return temporal_float 
     elif (t == "b"):
         global temporal_bool
         temporal_bool = temporal_bool + 1
