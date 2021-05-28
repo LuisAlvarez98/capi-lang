@@ -16,6 +16,8 @@ colors ={
     "\"RED\"": (255,0,0),
 }
 
+events={}
+
 def init_virtual(quadruples, func_dir):
     global current_context,cont
     for i, q in enumerate(quadruples):
@@ -134,8 +136,28 @@ def action(quadruple):
                     handle_event(quadruple, "\"KEYLEFT\"")
                 if event.key == pygame.K_RIGHT:
                     handle_event(quadruple, "\"KEYRIGHT\"")
+                if event.key == pygame.K_UP:
+                    handle_event(quadruple, "\"KEYUP\"")
+                if event.key == pygame.K_DOWN:
+                    handle_event(quadruple, "\"KEYDOWN\"")
             else:
                 handle_event(quadruple, "\"NULL\"")
+            # We use this so that the user can quit the game
+            if event.type == pygame.QUIT:
+                print("Game terminated. Thank you for using Capi :)")
+                exit()
+    elif quadruple.operator == 'WINDOW_H':
+        x,y = screen.get_size()
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(y, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = y
+    elif quadruple.operator == 'WINDOW_W':
+        x,y = screen.get_size()
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(x, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = x
     elif quadruple.operator == 'print':
         print(get_value_visited_func(quadruple.temp).value)
     elif quadruple.operator == 'GOTO':
@@ -144,7 +166,6 @@ def action(quadruple):
         if not get_value_visited_func(quadruple.left_operand).value:
             cont = quadruple.temp - 1
     elif quadruple.operator == 'PARAM':
-        print(quadruple)
         param_index = int(quadruple.temp.split(" ")[1]) - 1
         call_stack[-1].params[param_index].value = get_value_visited_func(quadruple.left_operand).value
     elif quadruple.operator == 'ERA':

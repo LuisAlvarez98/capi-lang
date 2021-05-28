@@ -5,17 +5,11 @@ global : {
     var event: string;
     var x:int;
     var y:int;
-    var z:int;
-    var w:int;
 };
 
 
 void func drawPlayer(x:int, y:int):{
-    draw("GREEN",x,y,50,50);
-};
-
-void func drawEnemy(x:int, y:int):{
-    draw("BLUE",x,y,50,50);
+    capigame.draw("GREEN",x,y,50,50);
 };
 
 
@@ -23,27 +17,33 @@ void func drawEnemy(x:int, y:int):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-       init();
-       set_dimension(500,500);
-       set_title("Video game");
+       capigame.init();
+       capigame.set_dimension(700,500);
+       capigame.set_title("Video game");
        x = 0;
        y = 0;
-       z = 100;
-       w = 100;
+       print("Height");
+       print(capigame.window_h());
    };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
-        set_fill(255,0,0);
-        event = get_event();
+        capigame.set_fill(255,0,0);
+        event = capigame.get_event();
         drawPlayer(x,y);
-        drawEnemy(z,w);
         if(event == "KEYLEFT"):{
-            x = x + 1;
+            x = x - 1;
         };
         if(event == "KEYRIGHT"):{
+            x = x + 1;
+        };
+        if(event == "KEYUP"):{
+            y = y - 1;
+        };
+        if(event == "KEYDOWN"):{
             y = y + 1;
         };
-        update();
+
+        capigame.update();
     };
 };

@@ -21,7 +21,7 @@ tokens = (
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
     'RUN','START','RETURN','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE','INIT',
-    "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT", "UPDATE", "SET_DIMENSION", "GET_EVENT", "SET_FILL", 'MAIN',"BAR"
+    "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT", "UPDATE", "SET_DIMENSION", "GET_EVENT", "SET_FILL", 'MAIN',"BAR", "WINDOW_H", "WINDOW_W", "CAPIGAME"
 )
 # This is used to handle reserved words
 reserved = {
@@ -59,7 +59,10 @@ reserved = {
     'set_color': 'SET_COLOR',
     'create_object': 'CREATE_OBJECT',
     'create_text': 'CREATE_TEXT',
-    'set_dimension': 'SET_DIMENSION'
+    'set_dimension': 'SET_DIMENSION',
+    'window_h': 'WINDOW_H',
+    'window_w': 'WINDOW_W',
+    'capigame':'CAPIGAME',
 }
 
 
@@ -420,6 +423,8 @@ def p_specialfunction(p):
                     | set_title
                     | get_event
                     | update
+                    | window_h
+                    | window_w
                     | set_dimension
                     | set_color
                     | create_object
@@ -429,7 +434,7 @@ def p_specialfunction(p):
 
 def p_draw(p):
     '''
-    draw : DRAW LEFTPAR expression COMMA expression COMMA expression COMMA expression COMMA expression RIGHTPAR
+    draw : CAPIGAME DOT DRAW LEFTPAR expression COMMA expression COMMA expression COMMA expression COMMA expression RIGHTPAR
     '''
     height = operand_stack.pop()
     types_stack.pop()
@@ -446,7 +451,7 @@ def p_draw(p):
     p[0] = (temp, 'o')
 def p_init(p):
     '''
-    init : INIT LEFTPAR RIGHTPAR
+    init : CAPIGAME DOT INIT LEFTPAR RIGHTPAR
     '''
     quadruples.append(quadruple('INIT', None, None, None))
 
@@ -506,6 +511,25 @@ def p_head(p):
     temp = get_next_avail(element_type, False)
     quadruples.append(quadruple('HEAD', address, None, temp))
     p[0] = (temp, element_type)
+
+# Height of the window
+def p_window_h(p):
+    '''
+    window_h : CAPIGAME DOT WINDOW_H LEFTPAR RIGHTPAR
+    '''
+    temp = get_next_avail('i', False)
+    quadruples.append(quadruple('WINDOW_H', None, None, temp))
+    p[0] = (temp, 'i')
+
+# Width of the window
+def p_window_w(p):
+    '''
+    window_w : CAPIGAME DOT WINDOW_H LEFTPAR RIGHTPAR
+    '''
+    temp = get_next_avail('i', False)
+    quadruples.append(quadruple('WINDOW_W', None, None, temp))
+    p[0] = (temp, 'i')
+
 def p_tail(p):
     '''
     tail : TAIL LEFTPAR RIGHTPAR
@@ -518,7 +542,7 @@ def p_last(p):
 
 def p_set_title(p):
     '''
-    set_title : SET_TITLE LEFTPAR expression RIGHTPAR
+    set_title : CAPIGAME DOT SET_TITLE LEFTPAR expression RIGHTPAR
     '''
     title = operand_stack.pop()
     title_type = types_stack.pop()
@@ -531,7 +555,7 @@ def p_set_title(p):
 
 def p_set_fill(p):
     '''
-    set_fill : SET_FILL LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
+    set_fill : CAPIGAME DOT SET_FILL LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
     '''  
     b = operand_stack.pop()
     g = operand_stack.pop()
@@ -542,7 +566,7 @@ def p_set_fill(p):
     quadruples.append(quadruple('SET_FILL', r, g, b))
 def p_set_dimension(p):
     '''
-    set_dimension : SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
+    set_dimension : CAPIGAME DOT SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
     '''
     x = operand_stack.pop()
     y = operand_stack.pop()
@@ -553,13 +577,13 @@ def p_set_dimension(p):
 
 def p_update(p):
     '''
-    update : UPDATE LEFTPAR RIGHTPAR
+    update : CAPIGAME DOT UPDATE LEFTPAR RIGHTPAR
     '''
     quadruples.append(quadruple('UPDATE', None, None, None))
 
 def p_get_event(p):
     '''
-    get_event : GET_EVENT LEFTPAR RIGHTPAR
+    get_event : CAPIGAME DOT GET_EVENT LEFTPAR RIGHTPAR
     '''
     temp = get_next_avail('s', False)
     quadruples.append(quadruple('GET_EVENT', None, None, temp))
