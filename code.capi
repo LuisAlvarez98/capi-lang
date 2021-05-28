@@ -3,7 +3,21 @@
 global : {
     var arr:list|int|[5];
     var event: string;
+    var x:int;
+    var y:int;
+    var z:int;
+    var w:int;
 };
+
+
+void func drawPlayer(x:int, y:int):{
+    draw("GREEN",x,y,50,50);
+};
+
+void func drawEnemy(x:int, y:int):{
+    draw("BLUE",x,y,50,50);
+};
+
 
 @ Definition of main module
 main :{
@@ -12,14 +26,23 @@ main :{
        init();
        set_dimension(500,500);
        set_title("Video game");
+       x = 0;
+       y = 0;
+       z = 100;
+       w = 100;
    };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
         set_fill(255,0,0);
         event = get_event();
-        if(event == "KEYDOWN"):{
-            print("Abajo");
+        drawPlayer(x,y);
+        drawEnemy(z,w);
+        if(event == "KEYLEFT"):{
+            x = x + 1;
+        };
+        if(event == "KEYRIGHT"):{
+            y = y + 1;
         };
         update();
     };

@@ -429,12 +429,21 @@ def p_specialfunction(p):
 
 def p_draw(p):
     '''
-    draw : DRAW LEFTPAR recfuncexp RIGHTPAR
-        
+    draw : DRAW LEFTPAR expression COMMA expression COMMA expression COMMA expression COMMA expression RIGHTPAR
     '''
-
-
-
+    height = operand_stack.pop()
+    types_stack.pop()
+    width = operand_stack.pop()
+    types_stack.pop()
+    y = operand_stack.pop()
+    types_stack.pop()
+    x = operand_stack.pop()
+    types_stack.pop()
+    color = operand_stack.pop()
+    types_stack.pop()
+    temp = get_next_avail('o', False)
+    quadruples.append(quadruple('DRAW', color, (x,y,width,height), temp))
+    p[0] = (temp, 'o')
 def p_init(p):
     '''
     init : INIT LEFTPAR RIGHTPAR

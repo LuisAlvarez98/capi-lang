@@ -10,6 +10,12 @@ visitedFuncs = deque() # We use this to handle visited functions
 screen = None
 clock = pygame.time.Clock()
 
+colors ={
+    "\"BLUE\"": (0,0,255),
+    "\"GREEN\"": (0,255,0),
+    "\"RED\"": (255,0,0),
+}
+
 def init_virtual(quadruples, func_dir):
     global current_context,cont
     for i, q in enumerate(quadruples):
@@ -113,10 +119,21 @@ def action(quadruple):
         screen.fill((get_value_visited_func(quadruple.left_operand).value, get_value_visited_func(quadruple.right_operand).value, get_value_visited_func(quadruple.temp).value))
     elif quadruple.operator == 'UPDATE':
         pygame.display.update()
+    elif quadruple.operator == 'DRAW':
+        color = colors[get_value_visited_func(quadruple.left_operand).value]
+        x = get_value_visited_func(quadruple.right_operand[0]).value
+        y = get_value_visited_func(quadruple.right_operand[1]).value
+        w = get_value_visited_func(quadruple.right_operand[2]).value
+        h = get_value_visited_func(quadruple.right_operand[3]).value
+        pygame.draw.rect(screen,color,(x,y,w,h))
+        pygame.display.flip()
     elif quadruple.operator == 'GET_EVENT':
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                handle_event(quadruple, "\"KEYDOWN\"")
+                if event.key == pygame.K_LEFT:
+                    handle_event(quadruple, "\"KEYLEFT\"")
+                if event.key == pygame.K_RIGHT:
+                    handle_event(quadruple, "\"KEYRIGHT\"")
             else:
                 handle_event(quadruple, "\"NULL\"")
     elif quadruple.operator == 'print':
