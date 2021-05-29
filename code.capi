@@ -1,10 +1,19 @@
 @ Global Definition of Variables
 
 global : {
-    var arr:list|int|[5];
+    var x_array:list|int|[2];
+    var y_array:list|int|[2];
     var event: string;
     var x:int;
     var y:int;
+    var w:int;
+    var z:int;
+    var bullet_state:string;
+    var bullet_x:int;
+    var bullet_y:int;
+    var bullet_x_change:int;
+    var bullet_y_change:int;
+    var i:int;
 };
 
 
@@ -12,6 +21,13 @@ void func drawPlayer(x:int, y:int):{
     capigame.draw("GREEN",x,y,50,50);
 };
 
+void func drawEnemy(param1:int, param2:int):{
+    capigame.draw("BLUE",param1,param2,50,50);
+};
+
+void func fireBullet(bullet_x:int, bullet_y:int):{
+    capigame.draw("GREEN",bullet_x,bullet_y,20,20);
+};
 
 @ Definition of main module
 main :{
@@ -19,11 +35,22 @@ main :{
     void func start():{
        capigame.init();
        capigame.set_dimension(700,500);
-       capigame.set_title("Video game");
-       x = 0;
-       y = 0;
+       capigame.set_title("Space Invaders");
+       x = capigame.window_w() - 300;
+       y = capigame.window_h() - 100;
+       w = 100;
+       z = 100;
+       x_array[0] = w + 50;
+       y_array[0] = z;
+       x_array[1] = w + 150;
+       y_array[1] = z;
+
+       bullet_x = x;
+       bullet_y = y;
+
        print("Height");
-       print(capigame.window_h());
+       print(5 - pow(2, 5));
+
    };
 
     @ Definition of run function - this function is the game infinite loop
@@ -31,6 +58,11 @@ main :{
         capigame.set_fill(255,0,0);
         event = capigame.get_event();
         drawPlayer(x,y);
+        create_text("Hola", "BLUE", 0,0);
+        for(i = 0; i < x_array.size(); i = i + 1;):{
+            drawEnemy(x_array[i], y_array[i]);
+        };
+        
         if(event == "KEYLEFT"):{
             x = x - 1;
         };
@@ -38,12 +70,27 @@ main :{
             x = x + 1;
         };
         if(event == "KEYUP"):{
-            y = y - 1;
+          bullet_state = "fire";
         };
-        if(event == "KEYDOWN"):{
-            y = y + 1;
+        if(x <= 0):{
+            x = 0;
+        };else:{
+            if(x >= capigame.window_w()- 50):{
+                x = capigame.window_w()- 50;
+            };
+        };
+        
+        if(bullet_y <= 0):{
+            bullet_state = "ready";
+            bullet_x = x;
+            bullet_y = y;
         };
 
+        if(bullet_state == "fire"):{
+            fireBullet(bullet_x, bullet_y);
+            bullet_y = bullet_y - 1;
+        };
+        
         capigame.update();
     };
 };

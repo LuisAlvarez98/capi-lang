@@ -21,7 +21,7 @@ tokens = (
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
     'RUN','START','RETURN','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE','INIT',
-    "HEAD","TAIL","LAST","SET_TITLE","SET_COLOR","CREATE_OBJECT","CREATE_TEXT", "UPDATE", "SET_DIMENSION", "GET_EVENT", "SET_FILL", 'MAIN',"BAR", "WINDOW_H", "WINDOW_W", "CAPIGAME"
+    "HEAD","TAIL","LAST","SET_TITLE","CREATE_TEXT", "UPDATE", "SET_DIMENSION","GET_EVENT","POW","SQRT", "SET_FILL", 'MAIN',"BAR", "WINDOW_H", "WINDOW_W", "CAPIGAME"
 )
 # This is used to handle reserved words
 reserved = {
@@ -56,12 +56,12 @@ reserved = {
     'set_fill': 'SET_FILL',
     'get_event': 'GET_EVENT',
     'set_title': 'SET_TITLE',
-    'set_color': 'SET_COLOR',
-    'create_object': 'CREATE_OBJECT',
     'create_text': 'CREATE_TEXT',
     'set_dimension': 'SET_DIMENSION',
     'window_h': 'WINDOW_H',
     'window_w': 'WINDOW_W',
+    'pow':'POW',
+    'sqrt':'SQRT',
     'capigame':'CAPIGAME',
 }
 
@@ -426,11 +426,37 @@ def p_specialfunction(p):
                     | window_h
                     | window_w
                     | set_dimension
-                    | set_color
-                    | create_object
                     | create_text
+                    | pow
+                    | sqrt
     '''
     p[0] = p[1]
+
+def p_pow(p):
+    '''
+    pow : POW pow_action1 LEFTPAR expression COMMA expression RIGHTPAR
+    '''
+    pot = operand_stack.pop()
+    types_stack.pop()
+    num = operand_stack.pop()
+    t = types_stack.pop()
+    temp = get_next_avail('f', False)
+    quadruples.append(quadruple('POW', num, pot, temp))
+    operator_stack.pop()
+    p[0] = (temp, 'f')
+
+def p_pow_action1(p):
+    '''
+    pow_action1 :
+    '''
+    operator_stack.append("|WALL|")
+    
+def p_sqrt(p):
+    '''
+    sqrt : SQRT LEFTPAR expression RIGHTPAR
+    '''
+
+
 
 def p_draw(p):
     '''
@@ -524,7 +550,7 @@ def p_window_h(p):
 # Width of the window
 def p_window_w(p):
     '''
-    window_w : CAPIGAME DOT WINDOW_H LEFTPAR RIGHTPAR
+    window_w : CAPIGAME DOT WINDOW_W LEFTPAR RIGHTPAR
     '''
     temp = get_next_avail('i', False)
     quadruples.append(quadruple('WINDOW_W', None, None, temp))
@@ -589,20 +615,23 @@ def p_get_event(p):
     quadruples.append(quadruple('GET_EVENT', None, None, temp))
     p[0] = (temp, 's')
 
-def p_set_color(p):
-    '''
-    set_color : SET_COLOR LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
-    '''
-
-def p_create_object(p):
-    '''
-    create_object : CREATE_OBJECT LEFTPAR recfuncexp RIGHTPAR
-    '''
 
 def p_create_text(p):
     '''
-    create_text : CREATE_TEXT LEFTPAR recfuncexp RIGHTPAR
+    create_text : CREATE_TEXT LEFTPAR expression COMMA expression COMMA expression COMMA expression RIGHTPAR
     '''
+    y = operand_stack.pop()
+    types_stack.pop()
+    x = operand_stack.pop()
+    types_stack.pop()
+    color = operand_stack.pop()
+    types_stack.pop()
+    text = operand_stack.pop()
+    types_stack.pop()
+
+    temp = get_next_avail('o', False)
+    quadruples.append(quadruple('CREATE_TEXT', text,(color,x,y), temp))
+    p[0] = (temp, 'o')
     
 def p_assign(p):
     '''

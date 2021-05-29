@@ -1,6 +1,7 @@
 
 from memory import  memory_table, memory,constant_table, init_memory,create_func_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
 from time import sleep
+import math
 from collections import deque
 import pygame
 cont = 0 # Quadruple counter
@@ -17,6 +18,25 @@ colors ={
 }
 
 events={}
+
+class capi_object():
+    def __init__(self, screen,color, x, y, w, h, address):
+        self.screen = screen
+        self.color = color
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.address = address
+        def draw_object():
+            pygame.draw.rect(self.screen,self.color,(self.x,self.y,self.w,self.h))
+        self.draw_object = draw_object
+    def __str__(self):
+        return f'Color: {self.color}, x: {self.x}, y: {self.y}, w: {self.w}, h:{self.h}, Address: {self.address}\n'
+    def __repr__(self):
+        return f'Color: {self.color}, x: {self.x}, y: {self.y}, w: {self.w}, h:{self.h}, Address: {self.address}\n'
+
+
 
 def init_virtual(quadruples, func_dir):
     global current_context,cont
@@ -120,15 +140,39 @@ def action(quadruple):
     elif quadruple.operator == 'SET_FILL':
         screen.fill((get_value_visited_func(quadruple.left_operand).value, get_value_visited_func(quadruple.right_operand).value, get_value_visited_func(quadruple.temp).value))
     elif quadruple.operator == 'UPDATE':
-        pygame.display.update()
+        pygame.display.flip() #Draws the objects in pygame
+        pygame.display.update() # Updates the frames
+    elif quadruple.operator =='CREATE_TEXT':
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        color = colors[get_value_visited_func(quadruple.right_operand[0]).value]
+        x = get_value_visited_func(quadruple.right_operand[1]).value
+        y = get_value_visited_func(quadruple.right_operand[2]).value
+        text = get_value_visited_func(quadruple.left_operand).value
+        text_obj = font.render(text, True, color)
+        screen.blit(text_obj,(x,y))
     elif quadruple.operator == 'DRAW':
         color = colors[get_value_visited_func(quadruple.left_operand).value]
         x = get_value_visited_func(quadruple.right_operand[0]).value
         y = get_value_visited_func(quadruple.right_operand[1]).value
         w = get_value_visited_func(quadruple.right_operand[2]).value
         h = get_value_visited_func(quadruple.right_operand[3]).value
-        pygame.draw.rect(screen,color,(x,y,w,h))
-        pygame.display.flip()
+        c = capi_object(screen, color, x,y,w,h,quadruple.temp)
+        # We add our object to our memory list
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(c, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = c
+        # We draw the object
+        c.draw_object()
+    elif quadruple.operator == 'POW':
+        num = get_value_visited_func(quadruple.left_operand).value
+        pot = get_value_visited_func(quadruple.right_operand).value
+        result = math.pow(num,pot)
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(result, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = result
+
     elif quadruple.operator == 'GET_EVENT':
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -140,6 +184,9 @@ def action(quadruple):
                     handle_event(quadruple, "\"KEYUP\"")
                 if event.key == pygame.K_DOWN:
                     handle_event(quadruple, "\"KEYDOWN\"")
+                if event.key == pygame.K_SPACE:
+                    print("space")
+                    handle_event(quadruple, "\"KEYSPACE\"")
             else:
                 handle_event(quadruple, "\"NULL\"")
             # We use this so that the user can quit the game
