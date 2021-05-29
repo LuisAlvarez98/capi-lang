@@ -172,7 +172,13 @@ def action(quadruple):
             visitedFuncs[-1].memory_list[quadruple.temp] = memory(result, quadruple.temp)
         else:
             visitedFuncs[-1].memory_list[quadruple.temp].value = result
-
+    elif quadruple.operator == 'SQRT':
+        num = get_value_visited_func(quadruple.left_operand).value
+        result = math.sqrt(num)
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(result, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = result
     elif quadruple.operator == 'GET_EVENT':
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:

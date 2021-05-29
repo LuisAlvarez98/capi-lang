@@ -453,8 +453,20 @@ def p_pow_action1(p):
     
 def p_sqrt(p):
     '''
-    sqrt : SQRT LEFTPAR expression RIGHTPAR
+    sqrt : SQRT sqrt_action1 LEFTPAR expression RIGHTPAR
     '''
+    num = operand_stack.pop()
+    t = types_stack.pop()
+    temp = get_next_avail(t, False)
+    quadruples.append(quadruple('SQRT', num, None, temp))
+    operator_stack.pop()
+    p[0] = (temp, t)
+
+def p_sqrt_action1(p):
+    '''
+    sqrt_action1 :
+    '''
+    operator_stack.append("|WALL|")
 
 
 

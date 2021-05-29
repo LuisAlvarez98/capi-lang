@@ -49,6 +49,9 @@ main :{
        bullet_y = y;
 
        print("Height");
+       var res: int;
+       res = 5 + 2 * sqrt(pow(2,2));
+       print(res);
        print(5 - pow(2, 5));
 
    };
