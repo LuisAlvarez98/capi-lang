@@ -21,7 +21,7 @@ tokens = (
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
     'RUN','START','RETURN','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE','INIT',
-    "HEAD","TAIL","LAST","SET_TITLE","CREATE_TEXT", "UPDATE", "SET_DIMENSION","GET_EVENT","POW","SQRT", "SET_FILL", 'MAIN',"BAR", "WINDOW_H", "WINDOW_W", "CAPIGAME"
+    "HEAD","LAST","SET_TITLE","CREATE_TEXT", "UPDATE", "SET_DIMENSION","GET_EVENT","POW","SQRT", "SET_FILL", 'MAIN',"BAR", "WINDOW_H", "WINDOW_W", "CAPIGAME","FIND","RAND"
 )
 # This is used to handle reserved words
 reserved = {
@@ -50,7 +50,7 @@ reserved = {
     'init': 'INIT',
     'size':'SIZE',
     'head':'HEAD',
-    'tail':'TAIL',
+    'find':'FIND',
     'last':'LAST',
     'update' : "UPDATE",
     'set_fill': 'SET_FILL',
@@ -60,6 +60,7 @@ reserved = {
     'set_dimension': 'SET_DIMENSION',
     'window_h': 'WINDOW_H',
     'window_w': 'WINDOW_W',
+    'rand':'RAND',
     'pow':'POW',
     'sqrt':'SQRT',
     'capigame':'CAPIGAME',
@@ -417,7 +418,7 @@ def p_specialfunction(p):
                     | init
                     | size
                     | head
-                    | tail
+                    | find
                     | last
                     | set_fill
                     | set_title
@@ -427,6 +428,7 @@ def p_specialfunction(p):
                     | window_w
                     | set_dimension
                     | create_text
+                    | rand
                     | pow
                     | sqrt
     '''
@@ -450,7 +452,7 @@ def p_pow_action1(p):
     pow_action1 :
     '''
     operator_stack.append("|WALL|")
-    
+
 def p_sqrt(p):
     '''
     sqrt : SQRT sqrt_action1 LEFTPAR expression RIGHTPAR
@@ -568,15 +570,82 @@ def p_window_w(p):
     quadruples.append(quadruple('WINDOW_W', None, None, temp))
     p[0] = (temp, 'i')
 
-def p_tail(p):
+def p_rand(p):
     '''
-    tail : TAIL LEFTPAR RIGHTPAR
+    rand : CAPIGAME DOT RAND LEFTPAR expression COMMA expression RIGHTPAR
     '''
+    sup_num = operand_stack.pop()
+    types_stack.pop()
+    inf_num = operand_stack.pop()
+    types_stack.pop()
+
+    temp = get_next_avail('i', False)
+    quadruples.append(quadruple('RAND', inf_num, sup_num, temp))
+    p[0] = (temp, 'i')
+def p_find(p):
+    '''
+    find : ID DOT FIND LEFTPAR expression RIGHTPAR
+    '''
+    var_id = p[1]
+    id_valid = False
+    find_value = operand_stack.pop()
+    types_stack.pop()
+    address = 0
+    element_type = ''
+    right = 0
+    current_active_scopes = active_scopes.copy()
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        if var_id in current_vars:
+            if current_vars[var_id].type == 'list':
+                is_valid = True
+                address = current_vars[var_id].address
+                right = current_vars[var_id].array_block.right
+                element_type = current_vars[var_id].array_block.array_type
+            else:
+                is_valid = False
+            break
+        current_active_scopes.pop()
+    if(len(current_active_scopes) <= 0 ):
+        raise Exception("Variable does not exist")
+    if not is_valid:
+        raise Exception("Find function does not exist for this type of variable.")
+
+    temp = get_next_avail('b', False)
+    quadruples.append(quadruple('FIND', (address, right), find_value, temp))
+    p[0] = (temp, 'b')
 
 def p_last(p):
     '''
-    last : LAST LEFTPAR RIGHTPAR
+    last : ID DOT LAST LEFTPAR RIGHTPAR
     '''
+    var_id = p[1]
+    id_valid = False
+    address = 0
+    element_type = ''
+    right = 0
+    current_active_scopes = active_scopes.copy()
+    while len(current_active_scopes) != 0:
+        current_vars = current_active_scopes[-1].vars
+        if var_id in current_vars:
+            if current_vars[var_id].type == 'list':
+                is_valid = True
+                address = current_vars[var_id].address
+                right = current_vars[var_id].array_block.right
+                element_type = current_vars[var_id].array_block.array_type
+            else:
+                is_valid = False
+            break
+        current_active_scopes.pop()
+    if(len(current_active_scopes) <= 0 ):
+        raise Exception("Variable does not exist")
+    if not is_valid:
+        raise Exception("Last function does not exist for this type of variable.")
+
+    temp = get_next_avail(element_type, False)
+    quadruples.append(quadruple('LAST', address, right, temp))
+    p[0] = (temp, element_type)
+    
 
 def p_set_title(p):
     '''
@@ -1074,6 +1143,7 @@ def p_recfunc_action1(p):
         param_order = active_scopes[-1].params_order
 
     params_order = []
+    print(types_stack)
     copy_types = types_stack.copy()
     copy_operands = operand_stack.copy()
     k = len(param_order) - 1
@@ -1088,7 +1158,7 @@ def p_recfunc_action1(p):
     counter = 0
     q_operand_stack = operand_stack.copy()
 
-
+    print(param_order, params_order)
     while counter <= k:
         if param_order[counter] == params_order[counter]:
             quadruples.append(quadruple("PARAM", q_operand_stack.pop(), None, "Param " + str(counter + 1)))
@@ -1297,7 +1367,6 @@ def p_primitivetype(p):
                   | TFLOAT
                   | TSTRING
                   | TBOOL
-                  | TOBJECT
     '''
     p[0] = p[1][0].lower()
 

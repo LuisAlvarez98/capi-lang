@@ -2,6 +2,7 @@
 from memory import  memory_table, memory,constant_table, init_memory,create_func_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
 from time import sleep
 import math
+import random
 from collections import deque
 import pygame
 cont = 0 # Quadruple counter
@@ -15,6 +16,13 @@ colors ={
     "\"BLUE\"": (0,0,255),
     "\"GREEN\"": (0,255,0),
     "\"RED\"": (255,0,0),
+    "\"YELLOW\"": (255,255,0),
+    "\"ORANGE\"": (255,153,51),
+    "\"PINK\"": (255,102,178),
+    "\"GREY\"": (96,96,96),
+    "\"WHITE\"": (255,255,255),
+    "\"BLACK\"": (0,0,0),
+    "\"CYAN\"":(0,255,255),
 }
 
 events={}
@@ -130,25 +138,52 @@ def action(quadruple):
             visitedFuncs[-1].memory_list[quadruple.temp] = memory(get_value_visited_func(quadruple.left_operand + 1).value, quadruple.temp)
         else:
             visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand + 1).value
+    elif quadruple.operator == 'FIND':
+        start = get_value_visited_func(quadruple.left_operand[0]).value
+        end =  get_value_visited_func(quadruple.left_operand[1]).value
+        find = get_value_visited_func(quadruple.right_operand).value
+        result = False
+        for i in range(1,end + 1):
+            value = get_value_visited_func(start + i).value
+            if value == find:
+                result = True
+                break
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(result, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = result
+    elif quadruple.operator == 'LAST':
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(get_value_visited_func(quadruple.left_operand + get_value_visited_func(quadruple.right_operand).value).value, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand +  get_value_visited_func(quadruple.right_operand).value).value
     elif quadruple.operator == 'INIT':
-        print("Pygame was initialized")
+        print("Capi was initialized")
         pygame.init()
     elif quadruple.operator == 'SET_DIM':
         screen = pygame.display.set_mode((get_value_visited_func(quadruple.left_operand).value,get_value_visited_func(quadruple.right_operand).value))
     elif quadruple.operator == 'SET_TITLE':
-        pygame.display.set_caption(get_value_visited_func(quadruple.left_operand).value)
+        if type(get_value_visited_func(quadruple.left_operand).value) is not str:
+            raise Exception("Type mismatch!")
+        pygame.display.set_caption(removeQuotes(get_value_visited_func(quadruple.left_operand).value))
     elif quadruple.operator == 'SET_FILL':
         screen.fill((get_value_visited_func(quadruple.left_operand).value, get_value_visited_func(quadruple.right_operand).value, get_value_visited_func(quadruple.temp).value))
     elif quadruple.operator == 'UPDATE':
         pygame.display.flip() #Draws the objects in pygame
         pygame.display.update() # Updates the frames
     elif quadruple.operator =='CREATE_TEXT':
-        font = pygame.font.Font('freesansbold.ttf', 32)
+        font = pygame.font.Font('freesansbold.ttf', 16)
         color = colors[get_value_visited_func(quadruple.right_operand[0]).value]
         x = get_value_visited_func(quadruple.right_operand[1]).value
         y = get_value_visited_func(quadruple.right_operand[2]).value
         text = get_value_visited_func(quadruple.left_operand).value
-        text_obj = font.render(text, True, color)
+
+
+        if type(text) is int or type(text) is float:
+            text = str(text)
+        if type(text) is bool:
+            raise Exception("Type mismatch!")
+        text_obj = font.render(removeQuotes(text), True, color)
         screen.blit(text_obj,(x,y))
     elif quadruple.operator == 'DRAW':
         color = colors[get_value_visited_func(quadruple.left_operand).value]
@@ -172,6 +207,14 @@ def action(quadruple):
             visitedFuncs[-1].memory_list[quadruple.temp] = memory(result, quadruple.temp)
         else:
             visitedFuncs[-1].memory_list[quadruple.temp].value = result
+    elif quadruple.operator == 'RAND':
+        inf_num = get_value_visited_func(quadruple.left_operand).value
+        sup_num = get_value_visited_func(quadruple.right_operand).value
+        rand_num = random.randint(inf_num, sup_num)
+        if quadruple.temp not in visitedFuncs[-1].memory_list:
+            visitedFuncs[-1].memory_list[quadruple.temp] = memory(rand_num, quadruple.temp)
+        else:
+            visitedFuncs[-1].memory_list[quadruple.temp].value = rand_num
     elif quadruple.operator == 'SQRT':
         num = get_value_visited_func(quadruple.left_operand).value
         result = math.sqrt(num)
@@ -190,9 +233,6 @@ def action(quadruple):
                     handle_event(quadruple, "\"KEYUP\"")
                 if event.key == pygame.K_DOWN:
                     handle_event(quadruple, "\"KEYDOWN\"")
-                if event.key == pygame.K_SPACE:
-                    print("space")
-                    handle_event(quadruple, "\"KEYSPACE\"")
             else:
                 handle_event(quadruple, "\"NULL\"")
             # We use this so that the user can quit the game
@@ -295,6 +335,9 @@ def set_global_var(address,value):
     for p in call_stack:
         if p.function_name == "global":
             p.memory_list[address] = memory(value,address)
+
+def removeQuotes(s):
+    return s.replace('"','')
 
 def get_global_var(address):
      for p in call_stack:
