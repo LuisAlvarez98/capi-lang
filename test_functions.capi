@@ -1,0 +1,36 @@
+@ Global Definition of Variables
+
+global : {
+    var i,j,temp:float;
+};
+
+float func floatFunction():{
+    return 5.0;
+};
+
+bool func boolFunction():{
+    return false;
+};
+
+int func intFunction():{
+    return 6;
+};
+
+string func stringFunction():{
+    return "string";
+};
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+        print(floatFunction());
+        print(boolFunction());
+        print(intFunction());
+        print(stringFunction());
+    };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+    };
+};

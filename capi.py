@@ -734,6 +734,10 @@ def p_assign(p):
     '''
     # we need to do the same for var i :int = 5;
     global is_assign_for
+    # We use this to ignore the wall and just pop it
+    if operator_stack[-1] == '|WALL|':
+        operator_stack.pop()
+    
     result = operand_stack.pop()
     type_result = types_stack.pop()
     quad_list = []

@@ -17,7 +17,8 @@ int func fib(n:int):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        print(fib(6));
+        j = fib(6);
+        print(j);
     };
 
     @ Definition of run function - this function is the game infinite loop
