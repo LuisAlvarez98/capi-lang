@@ -12,12 +12,26 @@ int func fib(n:int):{
     };
 };
 
+int func fibIt(n:int):{
+    var a, b,z: int;
+    a = 0;
+    b = 1;
+    z = 0;
+    for(i = 0; i < n; i = i + 1;):{
+        z = a + b;
+        a = b;
+        b = z;
+    };
+    return a;
+};
+
 
 @ Definition of main module
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
         j = fib(6);
+        print("Fibonnaci de 6");
         print(j);
     };
 

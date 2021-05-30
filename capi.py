@@ -958,15 +958,18 @@ def p_function(p):
     func_dir[p[3]] = new_func # We add the function to the function directory
     if p[1] != "void":
         # TODO We need to handle this error
-        add = func_dir['global'].vars[current_functionId].address
-        for quad in quadruples:
-            if quad.operator != 'ERA' and quad.operator != 'GOSUB':
-                if quad.left_operand == current_functionId:
-                    quad.left_operand = add
-                if quad.right_operand == current_functionId:
-                    quad.right_operand = add
-                if quad.temp == current_functionId:
-                    quad.temp = add
+        if current_functionId in func_dir['global'].vars:
+            add = func_dir['global'].vars[current_functionId].address
+            for quad in quadruples:
+                if quad.operator != 'ERA' and quad.operator != 'GOSUB':
+                    if quad.left_operand == current_functionId:
+                        quad.left_operand = add
+                    if quad.right_operand == current_functionId:
+                        quad.right_operand = add
+                    if quad.temp == current_functionId:
+                        quad.temp = add
+        else:
+            raise Exception("Return missing in function:", current_functionId)
     current_functionId = ""
     current_returnAddress = ""
     

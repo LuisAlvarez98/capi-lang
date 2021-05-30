@@ -18,7 +18,7 @@ int func intFunction():{
 };
 
 string func stringFunction():{
-    return "string";
+    return "hola";
 };
 
 @ Definition of main module

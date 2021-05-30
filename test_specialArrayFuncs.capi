@@ -1,0 +1,34 @@
+@ Global Definition of Variables
+
+global : {
+    var arr:list|int|[5];
+    var i,j,temp:int;
+};
+
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+        arr[0] = 3;
+        arr[1] = 1;
+        arr[2] = 2;
+        arr[3] = 100;
+        arr[4] = 4;
+        var x,y,z: int; 
+        x = arr.size();
+        print("Size of array", x);
+        y = arr.head();
+        print("Head of array", y);
+        z = arr.last();
+        print("Last element of array", z);
+        print("Finding if a number is in the array", arr.find(100));
+        print("Finding if a number is not in the array", arr.find(75));
+
+    };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+        quit();
+    };
+};
