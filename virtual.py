@@ -48,8 +48,8 @@ class capi_object():
 
 def init_virtual(quadruples, func_dir):
     global current_context,cont
-    # for i, q in enumerate(quadruples):
-    #     print(i, " ", q)
+    for i, q in enumerate(quadruples):
+        print(i, " ", q)
 
     init_memory(func_dir)
     current_context = call_stack[-1]

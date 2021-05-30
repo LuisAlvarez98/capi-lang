@@ -1,20 +1,20 @@
 @ Global Definition of Variables
 
 global : {
-    var i,j,temp:float;
+    var i,j,temp:int;
     var x: bool;
 };
 
 float func floatFunction():{
-    return i;
+    return 2.0;
 };
 
 bool func boolFunction():{
-    return false;
+    return true;
 };
 
-int func intFunction():{
-    return 0;
+int func intFunction(j:int):{
+    return j;
 };
 
 string func stringFunction():{
@@ -25,7 +25,8 @@ string func stringFunction():{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        print(boolFunction());
+        j = 100;
+        print(intFunction(10));
     };
 
     @ Definition of run function - this function is the game infinite loop

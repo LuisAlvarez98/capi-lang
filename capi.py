@@ -272,7 +272,6 @@ def p_capi(p):
          | capi_action1 global MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
          | capi_action1 MAIN COLON LEFTKEY start capi_action2 run RIGHTKEY SEMICOLON
     '''
-
 def p_capi_action1(p):
     '''
     capi_action1 :
@@ -1461,7 +1460,6 @@ def get_list_obj(id):
     list_obj = None
     while len(current_active_scopes) != 0:
         current_vars = current_active_scopes[-1].vars
-        # TODO Params
         if id in current_vars:
             list_obj = current_vars[id]
             break
@@ -1510,8 +1508,10 @@ def p_id(p):
         if p[1] in current_vars:
             id_address = current_vars[p[1]].address
             break
-        current_active_scopes.pop()
-    # TODO we will need to validate for param and local variable. CHECK PARAMS
+        if id_address == "":
+            current_active_scopes.pop()
+        else:
+            break
     p[0] = (id_address, get_typeof_id_test(p[1]))
 
 def p_string(p):
