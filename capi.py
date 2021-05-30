@@ -12,6 +12,7 @@ from semantic_cube import *
 from util import  get_type_s
 from memory import get_next_global, get_next_local, get_next_temporal, get_const_address, get_next_local_list, get_next_global_list
 from virtual import init_virtual
+import argparse
 # Inits the semantic cube
 s_cube = semantic_cube()
 
@@ -67,6 +68,18 @@ reserved = {
 }
 
 
+# Argument parser.
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "-f",
+    "--file",
+    type=argparse.FileType("r"),
+    help="The capi file used as source",
+    required=True,
+)
+args = parser.parse_args()
+
+fileName = args.file
 class quadruple():
     def __init__(self, operator, left_operand, right_operand, temp, isptr = False):
         self.id = -1
@@ -1509,7 +1522,8 @@ def p_error(p):
 import ply.yacc as yacc
 yacc.yacc()
 
-f = open('code.capi')
+print(fileName)
+f = open(fileName.name)
 s = f.read()
 f.close()
 
