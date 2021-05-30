@@ -1,5 +1,5 @@
 
-from memory import  memory_table, memory,constant_table, init_memory,create_func_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START
+from memory import  memory_table, memory,constant_table, init_memory,create_func_memory, call_stack, function_list,func_memory, GLOBAL_START, LOCAL_START, TEMPORAL_START, CONSTANT_START, temporal_bool, temporal_object
 from time import sleep
 import math
 import random
@@ -48,8 +48,8 @@ class capi_object():
 
 def init_virtual(quadruples, func_dir):
     global current_context,cont
-    for i, q in enumerate(quadruples):
-        print(i, " ", q)
+    # for i, q in enumerate(quadruples):
+    #     print(i, " ", q)
 
     init_memory(func_dir)
     current_context = call_stack[-1]
@@ -81,28 +81,59 @@ def action(quadruple):
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '&&':
         temp = get_value_visited_func(quadruple.left_operand).value and get_value_visited_func(quadruple.right_operand).value
-        print(temp)
+        if temp == 0:
+            temp = False
+        elif temp == 1:
+            temp = True
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '||':
         temp = get_value_visited_func(quadruple.left_operand).value or get_value_visited_func(quadruple.right_operand).value
+        if temp == 0:
+            temp = False
+        elif temp == 1:
+            temp = True
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '>=':
         temp = get_value_visited_func(quadruple.left_operand).value >= get_value_visited_func(quadruple.right_operand).value
+        if temp == 0:
+            temp = False
+        elif temp == 1:
+            temp = True
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '<=':
         temp = get_value_visited_func(quadruple.left_operand).value <= get_value_visited_func(quadruple.right_operand).value
+        if temp == 0:
+            temp = False
+        elif temp == 1:
+            temp = True
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '>':
         temp = get_value_visited_func(quadruple.left_operand).value > get_value_visited_func(quadruple.right_operand).value
+        if temp == 0:
+            temp = False
+        elif temp == 1:
+            temp = True
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '<':
         temp = get_value_visited_func(quadruple.left_operand).value < get_value_visited_func(quadruple.right_operand).value
+        if temp == 0:
+            temp = False
+        elif temp == 1:
+            temp = True
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '!=':
         temp = get_value_visited_func(quadruple.left_operand).value != get_value_visited_func(quadruple.right_operand).value
+        if temp == 0:
+            temp = False
+        elif temp == 1:
+            temp = True
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '==':
         temp = get_value_visited_func(quadruple.left_operand).value == get_value_visited_func(quadruple.right_operand).value
+        if temp == 0:
+            temp = False
+        elif temp == 1:
+            temp = True
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == 'VERIFY':
         index = get_value_visited_func(quadruple.left_operand).value
@@ -124,10 +155,16 @@ def action(quadruple):
             if quadruple.temp >= GLOBAL_START and quadruple.temp <= LOCAL_START - 1:
                 set_global_var(quadruple.temp, get_value_visited_func(quadruple.left_operand).value)
             else:
+                temp = get_value_visited_func(quadruple.left_operand).value
+                if quadruple.temp >= temporal_bool and quadruple.temp <= temporal_object - 1:
+                    if temp == 0:
+                        temp = False
+                    elif temp == 1:
+                        temp = True
                 if quadruple.temp not in visitedFuncs[-1].memory_list:
-                    visitedFuncs[-1].memory_list[quadruple.temp] = memory(get_value_visited_func(quadruple.left_operand).value, quadruple.temp)
+                    visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
                 else:
-                    visitedFuncs[-1].memory_list[quadruple.temp].value = get_value_visited_func(quadruple.left_operand).value
+                    visitedFuncs[-1].memory_list[quadruple.temp].value = temp
 
     elif quadruple.operator == 'SIZE':
         if quadruple.temp not in visitedFuncs[-1].memory_list:
@@ -161,6 +198,10 @@ def action(quadruple):
     elif quadruple.operator == 'INIT':
         print("Capi was initialized")
         pygame.init()
+    elif quadruple.operator == 'QUIT':
+        print('Thank you for using Capi :)')
+        pygame.quit()
+        exit()
     elif quadruple.operator == 'SET_DIM':
         screen = pygame.display.set_mode((get_value_visited_func(quadruple.left_operand).value,get_value_visited_func(quadruple.right_operand).value))
     elif quadruple.operator == 'SET_TITLE':

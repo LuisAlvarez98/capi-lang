@@ -2,6 +2,7 @@
 
 global : {
     var i,j,temp:float;
+    var x: bool;
 };
 
 float func floatFunction():{
@@ -9,11 +10,11 @@ float func floatFunction():{
 };
 
 bool func boolFunction():{
-    return false && false;
+    return false;
 };
 
-int func intFunction(i:int):{
-    return 6;
+int func intFunction():{
+    return 0;
 };
 
 string func stringFunction():{
@@ -29,5 +30,6 @@ main :{
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
+        quit();
     };
 };

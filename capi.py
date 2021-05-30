@@ -22,7 +22,7 @@ tokens = (
     'COLON','COMMA','VAR','TINT','TFLOAT','TSTRING','INT','FLOAT','STRING',
     'FOR','FUNC','WHILE','GLOBAL','LIST','TLIST','OBJECT','TOBJECT','DOT','PRINT',
     'RUN','START','RETURN','TRUE','FALSE','TBOOL', 'COMMENT', 'VOID', 'DRAW', 'SIZE','INIT',
-    "HEAD","LAST","SET_TITLE","CREATE_TEXT", "UPDATE", "SET_DIMENSION","GET_EVENT","POW","SQRT", "SET_FILL", 'MAIN',"BAR", "WINDOW_H", "WINDOW_W", "CAPIGAME","FIND","RAND"
+    "HEAD","LAST","SET_TITLE","CREATE_TEXT", "UPDATE", "SET_DIMENSION","GET_EVENT","POW","SQRT","QUIT","SET_FILL", 'MAIN',"BAR", "WINDOW_H", "WINDOW_W", "CAPIGAME","FIND","RAND"
 )
 # This is used to handle reserved words
 reserved = {
@@ -63,6 +63,7 @@ reserved = {
     'window_w': 'WINDOW_W',
     'rand':'RAND',
     'pow':'POW',
+    'quit': 'QUIT',
     'sqrt':'SQRT',
     'capigame':'CAPIGAME',
 }
@@ -227,12 +228,12 @@ def t_STRING(t):
 
 def t_TRUE(t):
     r'(true)'
-    t.value = True
+    t.value = 1
     return t
 
 def t_FALSE(t):
     r'(false)'
-    t.value = False
+    t.value = 0
     return t
 
 def t_COMMENT(t):
@@ -444,8 +445,15 @@ def p_specialfunction(p):
                     | rand
                     | pow
                     | sqrt
+                    | quit
     '''
     p[0] = p[1]
+
+def p_quit(p):
+    '''
+    quit : QUIT LEFTPAR RIGHTPAR
+    '''
+    quadruples.append(quadruple('QUIT', None, None, None))
 
 def p_pow(p):
     '''
@@ -502,6 +510,7 @@ def p_draw(p):
     temp = get_next_avail('o', False)
     quadruples.append(quadruple('DRAW', color, (x,y,width,height), temp))
     p[0] = (temp, 'o')
+
 def p_init(p):
     '''
     init : CAPIGAME DOT INIT LEFTPAR RIGHTPAR
@@ -1171,7 +1180,7 @@ def p_recfunc_action1(p):
         param_order = active_scopes[-1].params_order
 
     params_order = []
-    print(types_stack)
+    #print(types_stack)
     copy_types = types_stack.copy()
     copy_operands = operand_stack.copy()
     k = len(param_order) - 1
@@ -1200,7 +1209,7 @@ def p_recfunc_action1(p):
    # verify that all parameters where processed 
  
     if counter - 1 == k:
-        print("All parameters where processed")
+        #print("All parameters where processed")
         operator_stack.pop()
     p[0] = params_order
     
@@ -1539,7 +1548,7 @@ def p_error(p):
 import ply.yacc as yacc
 yacc.yacc()
 
-print(fileName)
+
 f = open(fileName.name)
 s = f.read()
 f.close()

@@ -25,13 +25,14 @@ int func factRec(n:int):{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        print("FactorialIterativo");
-        print(factIt(2));
+        print("Factorial Iterativo");
+        print(factIt(7));
         print("Factorial Recursivo");
-        print(factRec(2));
+        print(factRec(7));
     };
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
+        quit();
     };
 };

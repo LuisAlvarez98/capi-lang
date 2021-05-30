@@ -46,6 +46,6 @@ main :{
 
     @ Definition of run function - this function is the game infinite loop
     void func run():{
-
+        quit();
     };
 };
