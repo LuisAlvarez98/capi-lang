@@ -81,6 +81,7 @@ def action(quadruple):
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '&&':
         temp = get_value_visited_func(quadruple.left_operand).value and get_value_visited_func(quadruple.right_operand).value
+        print(temp)
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(temp, quadruple.temp)
     elif quadruple.operator == '||':
         temp = get_value_visited_func(quadruple.left_operand).value or get_value_visited_func(quadruple.right_operand).value

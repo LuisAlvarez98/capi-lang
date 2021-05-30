@@ -9,7 +9,7 @@ float func floatFunction():{
 };
 
 bool func boolFunction():{
-    return false;
+    return false && false;
 };
 
 int func intFunction(i:int):{
@@ -24,10 +24,7 @@ string func stringFunction():{
 main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
-        print(floatFunction());
         print(boolFunction());
-        print(intFunction(5,5,5));
-        print(stringFunction());
     };
 
     @ Definition of run function - this function is the game infinite loop
