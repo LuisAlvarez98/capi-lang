@@ -419,7 +419,6 @@ def p_statement(p):
               | write SEMICOLON
               | return SEMICOLON
               | functioncall SEMICOLON
-              | nestedassign SEMICOLON
               | specialfunction SEMICOLON
     '''
     # in here we are sending the first instruction of our grammar
@@ -1467,15 +1466,6 @@ def get_list_obj(id):
     if list_obj == None:
         raise Exception("List does not exist")
     return list_obj
-def p_nestedvalue(p):
-    '''
-    nestedvalue : ID DOT ID
-    '''
-
-def p_nestedassign(p):
-    '''
-    nestedassign : nestedvalue EQUAL expression
-    '''
 
 def p_cte(p):
     '''
@@ -1485,7 +1475,6 @@ def p_cte(p):
         | float
         | bool
         | string
-        | nestedvalue
         | functioncall
         | listaccess
         | specialfunction
