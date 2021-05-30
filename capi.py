@@ -948,6 +948,7 @@ def p_function(p):
     temporals = 0
     func_dir[p[3]] = new_func # We add the function to the function directory
     if p[1] != "void":
+        # TODO We need to handle this error
         add = func_dir['global'].vars[current_functionId].address
         for quad in quadruples:
             if quad.operator != 'ERA' and quad.operator != 'GOSUB':
@@ -1086,9 +1087,18 @@ def p_return(p):
 def p_functioncall(p):
     '''
     functioncall : ID function_call_action1 LEFTPAR function_call_action2 recfuncexp RIGHTPAR 
-                 | ID function_call_action1 LEFTPAR function_call_action2 RIGHTPAR 
+                 | ID function_call_action1 LEFTPAR  function_call_action2 RIGHTPAR 
     '''
     global current_callId,func_dir
+    rule_len = len(p)- 1
+    # This is used to validate function calls without params
+    if rule_len == 5:
+        if current_callId in func_dir:
+            params = func_dir[current_callId].params_order
+        else:
+            params = active_scopes[-1].params_order 
+        if(len(params) > 0):
+            raise Exception("Params mismatch.")
     # We generate a GOSUB so that will be used to jump to the function quadruple counter
     quadruples.append(quadruple("GOSUB", current_callId, None, None))
     if current_callId in func_dir:
@@ -1128,6 +1138,7 @@ def p_function_call_action1(p):
         global current_callId
         current_callId = id
        
+
 def p_function_call_action2(p):
     '''
     function_call_action2 : 
@@ -1174,8 +1185,10 @@ def p_recfunc_action1(p):
     
     counter = 0
     q_operand_stack = operand_stack.copy()
+    # Check why it fails with fibo
+    # if len(param_order) != len(params_order):
+    #     raise Exception("Params Mismatch.")
 
-    print(param_order, params_order)
     while counter <= k:
         if param_order[counter] == params_order[counter]:
             quadruples.append(quadruple("PARAM", q_operand_stack.pop(), None, "Param " + str(counter + 1)))

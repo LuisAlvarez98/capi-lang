@@ -5,14 +5,14 @@ global : {
 };
 
 float func floatFunction():{
-    return 5.0;
+    return i;
 };
 
 bool func boolFunction():{
     return false;
 };
 
-int func intFunction():{
+int func intFunction(i:int):{
     return 6;
 };
 
@@ -26,7 +26,7 @@ main :{
     void func start():{
         print(floatFunction());
         print(boolFunction());
-        print(intFunction());
+        print(intFunction(5,5,5));
         print(stringFunction());
     };
 
