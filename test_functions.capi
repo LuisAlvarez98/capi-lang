@@ -13,7 +13,7 @@ bool func boolFunction():{
     return true;
 };
 
-int func intFunction(j:int):{
+int func intFunction(j:int, p:int):{
     return j;
 };
 
@@ -26,7 +26,7 @@ main :{
     @ Definition of start function - this function runs at the start of the program
     void func start():{
         j = 100;
-        print(intFunction(10));
+        print(sqrt(pow(2,2)));
     };
 
     @ Definition of run function - this function is the game infinite loop

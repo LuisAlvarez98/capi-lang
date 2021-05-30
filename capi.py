@@ -184,6 +184,8 @@ operand_stack = deque() # Operand Stack
 types_stack = deque() # Types Stack
 go_to_stack = deque() # Jump Stack
 dimension_stack = deque() #Used to store the current dimension of the array
+params_stack = deque()
+expression_counter = 0
 temporals = 0 # This is used to count the temporals in a context
 
 func_dir = {} # Function Directory
@@ -1160,28 +1162,36 @@ def p_function_call_action2(p):
   
 def p_recfuncexp(p):
     '''
-    recfuncexp : expression COMMA recfuncexp
-               | expression recfunc_action1
+    recfuncexp : expression exp_action1 COMMA recfuncexp
+               | expression exp_action1 recfunc_action1
     '''
     rule_len = len(p) -1
     if rule_len == 2:
         p[0] = p[2]
     else:
         p[0] = p[3]
-    
+
+def p_exp_action1(p):
+    '''
+    exp_action1 :
+    '''
+    global expression_counter
+    expression_counter  = expression_counter + 1
 
 def p_recfunc_action1(p):
     '''
     recfunc_action1 :
     '''
-    global current_callId
+    global current_callId,expression_counter, params_stack
+    params_stack.append(expression_counter)
+    
     if current_callId in func_dir:
         param_order = func_dir[current_callId].params_order
     else:
         param_order = active_scopes[-1].params_order
 
     params_order = []
-    #print(types_stack)
+
     copy_types = types_stack.copy()
     copy_operands = operand_stack.copy()
     k = len(param_order) - 1
@@ -1195,10 +1205,8 @@ def p_recfunc_action1(p):
     
     counter = 0
     q_operand_stack = operand_stack.copy()
-    # Check why it fails with fibo
-    # if len(param_order) != len(params_order):
-    #     raise Exception("Params Mismatch.")
-
+    if len(param_order) != params_stack[-1]:
+        raise Exception("Params Mismatch.")
     while counter <= k:
         if param_order[counter] == params_order[counter]:
             quadruples.append(quadruple("PARAM", q_operand_stack.pop(), None, "Param " + str(counter + 1)))
@@ -1208,9 +1216,10 @@ def p_recfunc_action1(p):
             raise Exception("Param type mismatch")
         counter+=1
    # verify that all parameters where processed 
- 
     if counter - 1 == k:
-        #print("All parameters where processed")
+        print("All parameters where processed")
+        params_stack.pop()
+        expression_counter = 0
         operator_stack.pop()
     p[0] = params_order
     
