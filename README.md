@@ -357,6 +357,7 @@ Available colors:
 - KEYDOWN
 - KEYLEFT
 - KEYRIGHT
+- KEYESCAPE
 
 # Basic game setup
 Capi Lang was created so that anyone with some coding skills can build a 2D basic game.
