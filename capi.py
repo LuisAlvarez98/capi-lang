@@ -290,6 +290,7 @@ def p_capi_action2(p):
 def p_global(p):
     '''
     global : GLOBAL COLON LEFTKEY vars RIGHTKEY SEMICOLON
+           | GLOBAL COLON LEFTKEY RIGHTKEY SEMICOLON
     '''
     globalscope = active_scopes.pop()
     func_dir['global'] = globalscope

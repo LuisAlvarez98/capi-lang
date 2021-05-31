@@ -380,7 +380,6 @@ def action(quadruple):
         cont = current_context.cont
 
 def handle_event(quadruple, action):
-    print(quadruple, action)
     if quadruple.temp not in visitedFuncs[-1].memory_list:
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(action, quadruple.temp)
     else:

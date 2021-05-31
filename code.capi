@@ -119,8 +119,7 @@ main :{
         if(event == "KEYESCAPE"):{
             quit();
         };
-        print(event);
-        if(event == "KEYA"):{
+        if(event == "KEYLEFT"):{
             x_player = x_player - 1;
         };
         if(event == "KEYRIGHT"):{
