@@ -316,22 +316,369 @@ rand(x,y) @ Generates a random number between x and y.
 # Building 2D videogames with Capi Lang
 ![2021-05-31 16-57-03](https://user-images.githubusercontent.com/16018384/120245017-837b1600-c231-11eb-962c-a72e86749ac9.gif)
 
+# Capigame Functions
+```
+capigame.init() @ This will init the game environment.
+capigame.draw(color,x,y,width,height); @ This is used to draw a figure in the window.
+capigame.set_fill(r,g,b); @ Sets the color of the window
+capigame.get_event(); @ Gets the events of the game
+capigame.set_dimension(width,height);  @ Sets the dimension of the window
+capigame.set_title("Title"); @ Sets the title of the window
+capigame.update(); @ Updates the window frames
+capigame.window_h(); @ Gets the window height
+capigame.window_w(); @ Gets the window width
+create_text("Title", color, x,y); @ Creates a text object in the game window.
+quit(); # Quits the game.
+```
 
-- Definition of tokens [✔]
-- Definition of diagrams [✔]
-- Definition of context free grammars [✔]
-- Lex & Yacc in PLY [✔]
-- Function Directory [✔]
-- Tables of Variables [✔]
-- Table of Semantic Considerations (designed) [✔]
-- Implemented Stack to manage different scopes [✔]
-- Implemented Semantic Cube [✔]
-- Implemented actions to generate quadruples in arithmetic expressions [✔]
-- Implemented actions to generate quadruples in logical and relational expressions [✔]
-- Implemented actions to generate quadruples for print and assignments [✔]
-- Implemented actions to generate quadruples for non linear statements (for,if,while) [✔]
-- Implemented actions to generate quadruples for return statement [✔]
-- Implemented actions to add the parameter order to the functions, quadruple count and temporal count in the function definition [✔]
-- Implemented actions to generate quadruples in function calls.[✔]
-- Implemented a memory handler for variable declaration and constants[✔]
+# Capigame Colors
+Available colors:
+- BLUE
+- GREEN
+- RED
+- YELLOW
+- ORANGE
+- PINK
+- GREY
+- WHITE
+- BLACK
+- CYAN
 
+# Capigame Events
+- KEYUP 
+- KEYDOWN
+- KEYLEFT
+- KEYRIGHT
+
+# Basic game setup
+Capi Lang was created so that anyone with some coding skills can build a 2D basic game.
+
+In this section we will explain how to build a game from scratch using capi lang.
+
+The first step is to create a .capi file with this structure:
+```
+@ Global Definition of Variables
+global : {
+};
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+
+   };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+
+    };
+};
+```
+We will introduce capi functions in this section:
+
+To start creating videogames you will need to first initiate the video game. To do this you can simply call the function:
+```
+void func start():{
+    capigame.init(); @This function must be called in the start module, this will init the game environment.
+};
+```
+
+The next step is to create a window for you videogame:
+
+The way of doing this is by using the function set_dimension.
+```
+void func start():{
+    capigame.init(); @This function must be called in the start module, this will init the game environment.
+    capigame.set_dimension(700,500); @ The parameters are width and height of the window.
+    @ You can also set the title of the window.
+};
+```
+Setting a title to our videogame
+```
+void func start():{
+    capigame.init(); @This function must be called in the start module, this will init the game environment.
+    capigame.set_dimension(700,500); @ The parameters are width and height of the window.
+    @ You can also set the title of the window.
+    capigame.set_title("My videogame");
+};
+```
+Setting a color to our background
+```
+@ Definition of run function - this function is the game infinite loop
+void func run():{
+    capigame.set_fill(255,0,0);
+    capigame.update(); @ This function is important because it will help the game to keep updated each frame.
+};
+```
+If we combine everything we should get this
+```
+@ Global Definition of Variables
+
+global : {
+};
+
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+       @ We init the game
+       capigame.init();
+       @ We setup the dimension of the window
+       capigame.set_dimension(700,500);
+       @ We set the title of the window
+       capigame.set_title("My videogame");
+   };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+        capigame.set_fill(255,0,0);
+        capigame.update();
+    };
+};
+```
+Output:<br/>
+![image](https://user-images.githubusercontent.com/16018384/120245770-e8377000-c233-11eb-996e-d4e2dc48c678.png)
+# Adding a player to our videogame
+
+In this section we will introduce some concepts that will be usefull when creating a videogame with Capi Lang.
+
+We will create two variables 
+```
+var xPosition:int;
+var yPosition:int;
+```
+We will integrate this code to our base code:
+```
+@ Global Definition of Variables
+
+global : {
+var xPosition:int;
+var yPosition:int;
+};
+
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+       @ We init the game
+       capigame.init();
+       @ We setup the dimension of the window
+       capigame.set_dimension(700,500);
+       @ We set the title of the window
+       capigame.set_title("My videogame");
+   };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+        capigame.set_fill(255,0,0);
+        capigame.update();
+    };
+};
+```
+Then we will assign a 0 to the variables ```xPosition``` and ```yPosition```
+```
+@ Global Definition of Variables
+
+global : {
+var xPosition:int;
+var yPosition:int;
+};
+
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+       @ We init the game
+       capigame.init();
+       @ We setup the dimension of the window
+       capigame.set_dimension(700,500);
+       @ We set the title of the window
+       capigame.set_title("My videogame");
+       
+       xPosition = 0;
+       yPosition = 0;
+       
+   };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+        capigame.set_fill(255,0,0);
+        capigame.update();
+    };
+};
+```
+Now that we have our position variables created we will now create our player. We will need to create a function
+so that we can draw our player in our window. We will be using another capigame function called ```capigame.draw(color,x,y,width,height);```
+
+In Capi Lang we have several colors, we encourage you to read that section.
+
+We create this function called drawPlayer
+```
+@ Function used to draw a player
+void func drawPlayer(x:int, y:int):{
+    capigame.draw("GREEN",x,y,50,50); 
+    @ This function will draw a figure with color "GREEN" at position x and y. The width/height of the figure will be 50x50
+};
+```
+
+After creating our function we integrate the code this way.
+
+```
+@ Global Definition of Variables
+
+global : {
+var xPosition:int;
+var yPosition:int;
+};
+
+void func drawPlayer(x:int, y:int):{
+    capigame.draw("GREEN",x,y,50,50); 
+    @ This function will draw a figure with color "GREEN" at position x and y. The width/height of the figure will be 50x50
+};
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+       @ We init the game
+       capigame.init();
+       @ We setup the dimension of the window
+       capigame.set_dimension(700,500);
+       @ We set the title of the window
+       capigame.set_title("My videogame");
+       
+       xPosition = 0;
+       yPosition = 0;
+       
+   };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+        capigame.set_fill(255,0,0);
+        drawPlayer(xPosition, yPosition);
+        capigame.update();
+    };
+};
+```
+Output:<br/>
+![image](https://user-images.githubusercontent.com/16018384/120246320-811abb00-c235-11eb-870c-34155ba32c76.png)
+# Events in Capi Lang
+We will intoduce an important concept that is an Event.
+When creating a game with Capi Lang there will be plenty of events occurring in the run function. Some example of those events are:
+- Keyboard inputs
+- Quit input 
+
+We will use this events to move our player and we will need to run another capigame function called ```capigame.get_event();```
+That function will obtain all the events occurring in the run function.
+
+We will first create a string variable that will store the current event
+```
+var event: string;
+```
+Then we will initialize our event variable in the run function like this:
+```
+event = capigame.get_event(); @ This value will be changing depending of the event that is currently happening.
+```
+The next step is to integrate this into our game code:
+```
+@ Global Definition of Variables
+
+global : {
+var xPosition:int;
+var yPosition:int;
+var event: string;
+};
+
+void func drawPlayer(x:int, y:int):{
+    capigame.draw("GREEN",x,y,50,50); 
+    @ This function will draw a figure with color "GREEN" at position x and y. The width/height of the figure will be 50x50
+};
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+       @ We init the game
+       capigame.init();
+       @ We setup the dimension of the window
+       capigame.set_dimension(700,500);
+       @ We set the title of the window
+       capigame.set_title("My videogame");
+       
+       xPosition = 0;
+       yPosition = 0;
+       
+   };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+        capigame.set_fill(255,0,0);
+        event = capigame.get_event();
+        
+        drawPlayer(xPosition, yPosition);
+        capigame.update();
+    };
+};
+```
+Now we will add some events so that we can handle our player movement.
+Some of the events that can be used in Capi Lang will be listed in the event section.
+We will be using ```KEYLEFT, KEYRIGHT, KEYUP, KEYDOWN```
+
+```
+@ Global Definition of Variables
+
+global : {
+var xPosition:int;
+var yPosition:int;
+var event: string;
+};
+
+void func drawPlayer(x:int, y:int):{
+    capigame.draw("GREEN",x,y,50,50); 
+    @ This function will draw a figure with color "GREEN" at position x and y. The width/height of the figure will be 50x50
+};
+
+@ Definition of main module
+main :{
+    @ Definition of start function - this function runs at the start of the program
+    void func start():{
+       @ We init the game
+       capigame.init();
+       @ We setup the dimension of the window
+       capigame.set_dimension(700,500);
+       @ We set the title of the window
+       capigame.set_title("My videogame");
+       
+       xPosition = 0;
+       yPosition = 0;
+       
+   };
+
+    @ Definition of run function - this function is the game infinite loop
+    void func run():{
+        capigame.set_fill(255,0,0);
+        event = capigame.get_event();
+        @ We use an if statement so that we can handle the events
+        if(event == "KEYLEFT"):{
+            xPosition = xPosition - 1; @ This will move the player to the left
+        };
+        if(event == "KEYRIGHT"):{
+            xPosition = xPosition + 1;  @ This will move the player to the right
+        };
+        if(event == "KEYUP"):{
+            yPosition = yPosition - 1;  @ This will move the player up
+        };
+        if(event == "KEYDOWN"):{
+            yPosition = yPosition + 1; @ This will move the player down
+        };
+       
+        drawPlayer(xPosition, yPosition);
+        capigame.update();
+    };
+};
+```
+Output:<br/>
+![2021-05-31 17-42-59](https://user-images.githubusercontent.com/16018384/120247036-c2ac6580-c237-11eb-8acf-da1de4901a57.gif)
