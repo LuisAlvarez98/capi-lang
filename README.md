@@ -314,6 +314,7 @@ rand(x,y) @ Generates a random number between x and y.
 ```
 
 # Building 2D videogames with Capi Lang
+![2021-05-31 16-57-03](https://user-images.githubusercontent.com/16018384/120245017-837b1600-c231-11eb-962c-a72e86749ac9.gif)
 
 
 - Definition of tokens [✔]
