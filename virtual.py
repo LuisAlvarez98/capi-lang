@@ -48,8 +48,8 @@ class capi_object():
 
 def init_virtual(quadruples, func_dir):
     global current_context,cont
-    for i, q in enumerate(quadruples):
-        print(i, " ", q)
+    # for i, q in enumerate(quadruples):
+    #     print(i, " ", q)
 
     init_memory(func_dir)
     current_context = call_stack[-1]
@@ -65,7 +65,7 @@ def action(quadruple):
     if quadruple.operator == '+':
         if quadruple.isptr:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
-            value_from_pointer = get_value_visited_func(temp + 1).value 
+            value_from_pointer = get_value_visited_func(temp + 1).value
             visitedFuncs[-1].memory_list[quadruple.temp] = memory(value_from_pointer, quadruple.temp)
         else:
             temp = get_value_visited_func(quadruple.left_operand).value + get_value_visited_func(quadruple.right_operand).value
@@ -386,25 +386,7 @@ def handle_event(quadruple, action):
     else:
         visitedFuncs[-1].memory_list[quadruple.temp].value = action
     
-# function used to get value from different scopes
-def get_value(address):
-    global  current_context
-    if address >= CONSTANT_START:
-        return memory_table[address]
-    elif address >= LOCAL_START and address <= CONSTANT_START - 1:
-        memory_list = current_context.memory_list
-        params_list = current_context.params
-        if address not in memory_list:
-            for p in params_list.values():
-                if p.address == address:
-                    return p
-        return memory_list[address]
-    elif address >= GLOBAL_START and address <= LOCAL_START - 1:
-        value = None
-        for p in call_stack:
-            if p.function_name == "global":
-                return p.memory_list[address]
-        return value
+
 # function used to get value from different scopes
 def get_value_visited_func(address):
     global  current_context

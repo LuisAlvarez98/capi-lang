@@ -259,7 +259,6 @@ def t_ID(t):
     return t    
 
 def t_error(t):
-    print(t)
     print(f"Illegal character {t.value[0]!r}")
     t.lexer.skip(1)
 
@@ -674,7 +673,6 @@ def p_set_title(p):
     title = operand_stack.pop()
     title_type = types_stack.pop()
     # Quadruple used to send the title to the VM
-    print(title_type)
     if title_type == 's':
         quadruples.append(quadruple('SET_TITLE', title, None, None))
     else:
@@ -1215,7 +1213,7 @@ def p_recfunc_action1(p):
         counter+=1
    # verify that all parameters where processed 
     if counter - 1 == k:
-        print("All parameters where processed")
+        #print("All parameters where processed")
         params_stack.pop()
         expression_counter = 0
         operator_stack.pop()
