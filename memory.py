@@ -28,6 +28,7 @@ GLOBAL_START = 0
 LOCAL_START = 25000
 TEMPORAL_START = 50000
 CONSTANT_START = 75000
+CONSTANT_LIMIT = 95000
 
 
 
@@ -128,44 +129,64 @@ def get_next_global(t):
     if(t == "i"):
         global global_int
         global_int = global_int + 1
+        if global_int > LOCAL_START:
+            raise Exception("Global Memory Limit Exceeded")
         return global_int
     elif (t == "f"):
         global global_float
         global_float = global_float + 1
+        if global_float > LOCAL_START:
+            raise Exception("Global Memory Limit Exceeded")
         return global_float 
     elif (t == "b"):
         global global_bool
         global_bool = global_bool + 1
+        if global_bool > LOCAL_START:
+            raise Exception("Global Memory Limit Exceeded")
         return global_bool
     elif (t == "s"):
         global global_string
         global_string = global_string + 1
+        if global_string > LOCAL_START:
+            raise Exception("Global Memory Limit Exceeded")
         return global_string
     elif (t == "o"):   
         global global_object
         global_object = global_object + 1 
+        if global_object > LOCAL_START:
+            raise Exception("Global Memory Limit Exceeded")
         return global_object
 
 def get_next_local(t):
     if(t == "i"):
         global local_int
         local_int = local_int + 1
+        if local_int > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_int
     elif (t == "f"):
         global local_float
         local_float = local_float + 1
+        if local_float > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_float 
     elif (t == "b"):
         global local_bool
         local_bool = local_bool + 1
+        if local_bool > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_bool
     elif (t == "s"):
         global local_string
         local_string = local_string + 1
+        if local_string > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_string
     elif (t == "o"):   
         global local_object
-        local_object = local_object + 1 
+        local_object = local_object + 1
+        if local_object > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_object
 
 def get_next_local_list(t, dim):
@@ -174,26 +195,36 @@ def get_next_local_list(t, dim):
         global local_int
         local_int_aux = local_int + 1
         local_int = local_int + (dimension + 1)
+        if local_int > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_int_aux
     elif (t == "f"):
         global local_float
         local_float_aux = local_float + 1
         local_float = local_float + (dimension + 1)
+        if local_float > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_float
     elif (t == "b"):
         global local_bool
         local_bool_aux = local_bool + 1
         local_bool = local_bool + (dimension + 1)
+        if local_bool > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_bool_aux
     elif (t == "s"):
         global local_string
         local_string_aux = local_string + 1
         local_string = local_string + (dimension + 1)
+        if local_string > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_string_aux
     elif (t == "o"):   
         global local_object
         local_object_aux = local_object + 1
         local_object = local_object + (dimension + 1)
+        if local_object > TEMPORAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return local_object_aux
 
 def get_next_global_list(t, dim):
@@ -202,48 +233,68 @@ def get_next_global_list(t, dim):
         global global_int
         global_int_aux = global_int + 1
         global_int = global_int + (dimension + 1)
+        if global_int > LOCAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return global_int_aux
     elif (t == "f"):
         global global_float
         global_float_aux = global_float + 1
         global_float = global_float + (dimension + 1)
+        if global_float > LOCAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return global_float_aux
     elif (t == "b"):
         global global_bool
         global_bool_aux = global_bool + 1
         global_bool = global_bool + (dimension + 1)
+        if global_bool > LOCAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return global_bool_aux
     elif (t == "s"):
         global global_string
         global_string_aux = global_string + 1
         global_string = global_string + (dimension + 1)
+        if global_string > LOCAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return global_string_aux
     elif (t == "o"):   
         global global_object
         global_object_aux = global_object + 1
         global_object = global_object + (dimension + 1)
+        if global_object > LOCAL_START:
+            raise Exception("Local Memory Limit Exceeded") 
         return global_object_aux
     
 def get_next_temporal(t):
     if(t == "i"):
         global temporal_int
         temporal_int = temporal_int + 1
+        if temporal_int > CONSTANT_START:
+            raise Exception("Temporal Memory Limit Exceeded") 
         return temporal_int
     elif (t == "f"):
         global temporal_float
         temporal_float = temporal_float + 1
+        if temporal_float > CONSTANT_START:
+            raise Exception("Temporal Memory Limit Exceeded") 
         return temporal_float 
     elif (t == "b"):
         global temporal_bool
         temporal_bool = temporal_bool + 1
+        if temporal_bool > CONSTANT_START:
+            raise Exception("Temporal Memory Limit Exceeded") 
         return temporal_bool
     elif (t == "s"):
         global temporal_string
         temporal_string = temporal_string + 1
+        if temporal_string > CONSTANT_START:
+            raise Exception("Temporal Memory Limit Exceeded") 
         return temporal_string
     elif (t == "o"):   
         global temporal_object
         temporal_object = temporal_object + 1 
+        if temporal_object > CONSTANT_START:
+            raise Exception("Temporal Memory Limit Exceeded") 
         return temporal_object
 
 
@@ -251,21 +302,31 @@ def get_next_constant(t):
     if(t == "i"):
         global constant_int
         constant_int = constant_int + 1
+        if constant_int > CONSTANT_LIMIT:
+            raise Exception("Constant Memory Limit Exceeded") 
         return constant_int
     elif (t == "f"):
         global constant_float
         constant_float = constant_float + 1
+        if constant_float > CONSTANT_LIMIT:
+            raise Exception("Constant Memory Limit Exceeded") 
         return constant_float 
     elif (t == "b"):
         global constant_bool
         constant_bool = constant_bool + 1
+        if constant_bool > CONSTANT_LIMIT:
+            raise Exception("Constant Memory Limit Exceeded") 
         return constant_bool
     elif (t == "s"):
         global constant_string
         constant_string = constant_string + 1
+        if constant_string > CONSTANT_LIMIT:
+            raise Exception("Constant Memory Limit Exceeded") 
         return constant_string
     elif (t == "o"):   
         global constant_object
         constant_object = constant_object + 1 
+        if constant_object > CONSTANT_LIMIT:
+            raise Exception("Constant Memory Limit Exceeded") 
         return constant_object
 
