@@ -57,7 +57,15 @@ main :{
 };
 
 
+
 ```
+# Run Capi code
+To run .capi code you must create a .capi file in the /tests folder and run this command:
+
+```
+python capi.py -f "tests/code.capi"
+```
+
 Declaration of variables
 ```
 @ You can declare variables in the global section
