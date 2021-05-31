@@ -1552,5 +1552,5 @@ f.close()
 
 yacc.parse(s)
 
-print('Code is okay.')
+print('Code compiled sucessfully.')
 init_virtual(quadruples, func_dir)

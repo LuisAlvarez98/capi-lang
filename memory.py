@@ -169,7 +169,6 @@ def get_next_local(t):
         return local_object
 
 def get_next_local_list(t, dim):
-    print(t, memory_table[dim].value)
     dimension = memory_table[dim].value
     if(t == "i"):
         global local_int
@@ -198,7 +197,6 @@ def get_next_local_list(t, dim):
         return local_object_aux
 
 def get_next_global_list(t, dim):
-    print(t, memory_table[dim].value)
     dimension = memory_table[dim].value
     if(t == "i"):
         global global_int
