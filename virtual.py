@@ -275,6 +275,61 @@ def action(quadruple):
                     handle_event(quadruple, "\"KEYUP\"")
                 if event.key == pygame.K_DOWN:
                     handle_event(quadruple, "\"KEYDOWN\"")
+                if event.key == pygame.K_ESCAPE:
+                    handle_event(quadruple,"\"KEYESCAPE\"")
+                if event.key == pygame.K_a:
+                    handle_event(quadruple,"\"KEYA\"")
+                if event.key == pygame.K_b:
+                    handle_event(quadruple,"\"KEYB\"")
+                if event.key == pygame.K_c:
+                    handle_event(quadruple,"\"KEYC\"")
+                if event.key == pygame.K_d:
+                    handle_event(quadruple,"\"KEYD\"")
+                if event.key == pygame.K_e:
+                    handle_event(quadruple,"\"KEYE\"")
+                if event.key == pygame.K_f:
+                    handle_event(quadruple,"\"KEYF\"")
+                if event.key == pygame.K_g:
+                    handle_event(quadruple,"\"KEYG\"")
+                if event.key == pygame.K_h:
+                    handle_event(quadruple,"\"KEYH\"")
+                if event.key == pygame.K_i:
+                    handle_event(quadruple,"\"KEYI\"")
+                if event.key == pygame.K_j:
+                    handle_event(quadruple,"\"KEYJ\"")
+                if event.key == pygame.K_k:
+                    handle_event(quadruple,"\"KEYK\"")
+                if event.key == pygame.K_l:
+                    handle_event(quadruple,"\"KEYL\"")
+                if event.key == pygame.K_m:
+                    handle_event(quadruple,"\"KEYM\"")
+                if event.key == pygame.K_n:
+                    handle_event(quadruple,"\"KEYN\"")
+                if event.key == pygame.K_o:
+                    handle_event(quadruple,"\"KEYO\"")
+                if event.key == pygame.K_p:
+                    handle_event(quadruple,"\"KEYP\"")
+                if event.key == pygame.K_q:
+                    handle_event(quadruple,"\"KEYQ\"")
+                if event.key == pygame.K_r:
+                    handle_event(quadruple,"\"KEYR\"")
+                if event.key == pygame.K_s:
+                    handle_event(quadruple,"\"KEYS\"")
+                if event.key == pygame.K_t:
+                    handle_event(quadruple,"\"KEYT\"")
+                if event.key == pygame.K_u:
+                    handle_event(quadruple,"\"KEYU\"")
+                if event.key == pygame.K_v:
+                    handle_event(quadruple,"\"KEYV\"")
+                if event.key == pygame.K_w:
+                    handle_event(quadruple,"\"KEYW\"")
+                if event.key == pygame.K_x:
+                    handle_event(quadruple,"\"KEYX\"")
+                if event.key == pygame.K_y:
+                    handle_event(quadruple,"\"KEYY\"")
+                if event.key == pygame.K_z:
+                    handle_event(quadruple,"\"KEYZ\"")  
+                    
             else:
                 handle_event(quadruple, "\"NULL\"")
             # We use this so that the user can quit the game
@@ -325,6 +380,7 @@ def action(quadruple):
         cont = current_context.cont
 
 def handle_event(quadruple, action):
+    print(quadruple, action)
     if quadruple.temp not in visitedFuncs[-1].memory_list:
         visitedFuncs[-1].memory_list[quadruple.temp] = memory(action, quadruple.temp)
     else:

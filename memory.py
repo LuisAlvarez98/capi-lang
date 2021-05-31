@@ -56,9 +56,9 @@ class func_memory():
     def __repr__(self):
         return f'Function Name: {self.function_name}, Cont: {self.cont}, Memory List: {self.memory_list}, Params: {self.params}, Prev: {self.prev}\n'
 
-function_list = {}
-memory_table = {}
-constant_table= {}
+function_list = {} # This is used basically to store the functions generated in init_memory
+memory_table = {} # It is used to store the constant values but with the key->address
+constant_table= {} # It is used to store the constant values
 
 
 def init_memory(func_dir):

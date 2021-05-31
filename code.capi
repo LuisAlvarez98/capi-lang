@@ -19,7 +19,6 @@ global : {
     var collision:int; @ Used to determine collision
     var score:int; @ Score of the videogame
     var numEnemies:int; @ Number of enemies
-    var h:int;
 };
 
 @ Function used to draw a player
@@ -116,8 +115,12 @@ main :{
                 print("Shot");
             };
         };
-        
-        if(event == "KEYLEFT"):{
+
+        if(event == "KEYESCAPE"):{
+            quit();
+        };
+        print(event);
+        if(event == "KEYA"):{
             x_player = x_player - 1;
         };
         if(event == "KEYRIGHT"):{

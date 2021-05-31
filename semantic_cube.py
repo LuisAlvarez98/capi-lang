@@ -68,12 +68,12 @@ class semantic_cube():
         "!=#bb": types["bool"],
     }
     # We use to get our format so that we can use it later to validate the expression
-    def format_expression(self, left_op, right_op, operand):
-        return operand + "#" + left_op[0] + right_op[0]
+    def format_expression(self, left_op, right_op, operator):
+        return operator + "#" + left_op[0] + right_op[0]
 
     # We use this to validate the expresion between two operands
-    def validate_expression(self, left_op, right_op, operand):
-        formatted_exp = self.format_expression(left_op,right_op,operand)
+    def validate_expression(self, left_op, right_op, operator):
+        formatted_exp = self.format_expression(left_op,right_op,operator)
         #print(formatted_exp)
         if formatted_exp in self.sem_cube.keys():
             return self.sem_cube[formatted_exp]

@@ -147,13 +147,13 @@ def get_typeof_id(inc_id):
         types_stack.append(current_type)
     return current_type
 
-def get_typeof_id_test(inc_id):
+def get_typeof_id_vp(inc_id):
     current_active_scopes = active_scopes.copy()
     current_type = ""
     while len(current_active_scopes) != 0:
         current_vars = current_active_scopes[-1].vars
         current_params = current_active_scopes[-1].params
-        for param in current_params:# check this later TODO
+        for param in current_params:
             if inc_id == param.id:
                 current_type = param.type
                 break
@@ -353,9 +353,7 @@ def p_main_cont(p):
 
 def p_vars(p): 
     ''' 
-    vars :    VAR recids COLON type EQUAL expression SEMICOLON vars 
-            | VAR recids COLON type EQUAL expression SEMICOLON
-            | VAR recids COLON type SEMICOLON vars
+    vars : VAR recids COLON type SEMICOLON vars
             | VAR recids COLON type SEMICOLON
     '''
     global dimension_stack
@@ -1510,7 +1508,7 @@ def p_id(p):
             current_active_scopes.pop()
         else:
             break
-    p[0] = (id_address, get_typeof_id_test(p[1]))
+    p[0] = (id_address, get_typeof_id_vp(p[1]))
 
 def p_string(p):
     '''
