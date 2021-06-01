@@ -56,9 +56,13 @@ main :{
     };
 };
 
-
-
 ```
+# Before creating Capi code
+Check if you have python installed, then run this command to install the needed dependencies:
+```
+pip install -r requirements.txt
+```
+
 # Run Capi code
 To run .capi code you must create a .capi file in the /tests folder and run this command:
 
