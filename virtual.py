@@ -25,8 +25,7 @@ colors ={
     "\"CYAN\"":(0,255,255),
 }
 
-events={}
-
+# This is used when drawing a figure
 class capi_object():
     def __init__(self, screen,color, x, y, w, h, address):
         self.screen = screen
@@ -44,8 +43,7 @@ class capi_object():
     def __repr__(self):
         return f'Color: {self.color}, x: {self.x}, y: {self.y}, w: {self.w}, h:{self.h}, Address: {self.address}\n'
 
-
-
+# Inits the virtual machine
 def init_virtual(quadruples, func_dir):
     global current_context,cont
     # for i, q in enumerate(quadruples):
@@ -333,7 +331,7 @@ def handle_event(quadruple, action):
         visitedFuncs[-1].memory_list[quadruple.temp].value = action
     
 
-# function used to get value from different scopes
+# Function used to get value from different scopes
 def get_value_visited_func(address):
     global  current_context
     if address >= CONSTANT_START:
@@ -345,7 +343,7 @@ def get_value_visited_func(address):
             for p in params_list.values():
                 if p.address == address:
                     return p
-        # this is used when the assign is created at the end of the function call
+        # This is used when the assign is created at the end of the function call
         if address not in memory_list.keys():
             return get_global_var(address)
       
@@ -356,7 +354,7 @@ def get_value_visited_func(address):
             if p.function_name == "global":
                 return p.memory_list[address]
         return value
-# function used in assign to set in global scope when the variables does not exist in current.
+# Function used in assign to set in global scope when the variables does not exist in current.
 def set_global_var(address,value):
     for p in call_stack:
         if p.function_name == "global":

@@ -81,6 +81,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 fileName = args.file
+# Used for generating code
 class quadruple():
     def __init__(self, operator, left_operand, right_operand, temp, isptr = False):
         self.id = -1
@@ -93,7 +94,7 @@ class quadruple():
         return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}, isptr:{self.isptr}\n'
     def __repr__(self):
         return f'operator: {self.operator}, left_operand: {self.left_operand}, right_operand: {self.right_operand}, temp: {self.temp}, isptr:{self.isptr}\n'
-
+# Used for variables
 class variable():
     def __init__(self, varid, vartype, address, dim, array_block = None):
         self.id = varid
@@ -105,7 +106,7 @@ class variable():
         return f'Id: {self.id}, Type: {self.type}, Addr: {self.address}, Dim: {self.dim}, ArrayBlock:{self.array_block}'
     def __repr__(self):
         return f'Id: {self.id}, Type: {self.type}, Addr: {self.address}, Dim: {self.dim}, ArrayBlock:{self.array_block}'
-
+# Used for list type variables
 class array_block():
     def __init__(self, array_type ,left, right, k):
         self.array_type = array_type
@@ -116,7 +117,7 @@ class array_block():
         return f'array_type: {self.array_type}, left: {self.left}, right: {self.right}, k: {self.k}'
     def __repr__(self):
         return f'array_type: {self.array_type}, left: {self.left}, right: {self.right}, k: {self.k}'
-
+# Used for creating function scope
 class function_values():
     def __init__(self, functiontype='', params=[], scopevars={}, params_order=[]):
         self.functiontype = functiontype
@@ -129,7 +130,7 @@ class function_values():
         return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}, Params_Order: {self.params_order}, CONT: {self.cont}, TEMP_COUNT: {self.temp_count}\n'
     def __repr__(self):
         return f'Type: {self.functiontype}, Params: {self.params}, Vars: {self.vars}, Params_Order: {self.params_order}, CONT: {self.cont}, TEMP_COUNT: {self.temp_count}\n'
-
+# Gets the type of the id
 def get_typeof_id(inc_id):
     current_active_scopes = active_scopes.copy()
     current_type = ""
@@ -146,7 +147,7 @@ def get_typeof_id(inc_id):
         operand_stack.append(inc_id)
         types_stack.append(current_type)
     return current_type
-
+# Gets the type of id for both vars and params
 def get_typeof_id_vp(inc_id):
     current_active_scopes = active_scopes.copy()
     current_type = ""
@@ -184,8 +185,8 @@ operand_stack = deque() # Operand Stack
 types_stack = deque() # Types Stack
 go_to_stack = deque() # Jump Stack
 dimension_stack = deque() #Used to store the current dimension of the array
-params_stack = deque()
-expression_counter = 0
+params_stack = deque() # We use this to handle params
+expression_counter = 0 # We use this to count the expressions
 temporals = 0 # This is used to count the temporals in a context
 
 func_dir = {} # Function Directory
@@ -369,8 +370,7 @@ def p_vars(p):
                 current_list_addr = dimension_stack.pop()
                 addr_popped = True
         if(current_function.functiontype == 'global'):
-            #we create global addresses
-            # validate repeated ids
+            # We create global addresses
             if p[4][0] == 'list':
                 address = get_next_global_list(p[4][1], current_list_addr)
             else:
@@ -408,7 +408,6 @@ def p_recstatement(p):
     recstatement : statement recstatement  
                  | statement  
     '''
-    # this currently works just for one statement
 
 def p_statement(p):
     '''
@@ -421,7 +420,7 @@ def p_statement(p):
               | functioncall SEMICOLON
               | specialfunction SEMICOLON
     '''
-    # in here we are sending the first instruction of our grammar
+    # In here we are sending the first instruction of our grammar
     p[0] = p[1]
 
 def p_specialfunction(p):
@@ -589,7 +588,7 @@ def p_window_w(p):
     temp = get_next_avail('i', False)
     quadruples.append(quadruple('WINDOW_W', None, None, temp))
     p[0] = (temp, 'i')
-
+# Random number
 def p_rand(p):
     '''
     rand : CAPIGAME DOT RAND LEFTPAR expression COMMA expression RIGHTPAR
@@ -602,6 +601,7 @@ def p_rand(p):
     temp = get_next_avail('i', False)
     quadruples.append(quadruple('RAND', inf_num, sup_num, temp))
     p[0] = (temp, 'i')
+# Find an element in an array
 def p_find(p):
     '''
     find : ID DOT FIND LEFTPAR expression RIGHTPAR
@@ -634,7 +634,7 @@ def p_find(p):
     temp = get_next_avail('b', False)
     quadruples.append(quadruple('FIND', (address, right), find_value, temp))
     p[0] = (temp, 'b')
-
+# Gets the last element of an array
 def p_last(p):
     '''
     last : ID DOT LAST LEFTPAR RIGHTPAR
@@ -666,7 +666,7 @@ def p_last(p):
     quadruples.append(quadruple('LAST', address, right, temp))
     p[0] = (temp, element_type)
     
-
+# Sets the window title
 def p_set_title(p):
     '''
     set_title : CAPIGAME DOT SET_TITLE LEFTPAR expression RIGHTPAR
@@ -678,7 +678,7 @@ def p_set_title(p):
         quadruples.append(quadruple('SET_TITLE', title, None, None))
     else:
         raise Exception("The title expression must be a string.")
-
+# Sets the color of the window
 def p_set_fill(p):
     '''
     set_fill : CAPIGAME DOT SET_FILL LEFTPAR expression COMMA expression COMMA expression RIGHTPAR
@@ -690,6 +690,7 @@ def p_set_fill(p):
     types_stack.pop()
     types_stack.pop()
     quadruples.append(quadruple('SET_FILL', r, g, b))
+# Sets the dimension of the window    
 def p_set_dimension(p):
     '''
     set_dimension : CAPIGAME DOT SET_DIMENSION LEFTPAR expression COMMA expression RIGHTPAR
@@ -700,13 +701,13 @@ def p_set_dimension(p):
     types_stack.pop()
     # Quadruple used to send the dimension to the VM
     quadruples.append(quadruple('SET_DIM', x, y, None))
-
+# Updates the objects inside the run module.
 def p_update(p):
     '''
     update : CAPIGAME DOT UPDATE LEFTPAR RIGHTPAR
     '''
     quadruples.append(quadruple('UPDATE', None, None, None))
-
+# Gets the pygame events.
 def p_get_event(p):
     '''
     get_event : CAPIGAME DOT GET_EVENT LEFTPAR RIGHTPAR
@@ -715,7 +716,7 @@ def p_get_event(p):
     quadruples.append(quadruple('GET_EVENT', None, None, temp))
     p[0] = (temp, 's')
 
-
+# Creates a text object
 def p_create_text(p):
     '''
     create_text : CREATE_TEXT LEFTPAR expression COMMA expression COMMA expression COMMA expression RIGHTPAR

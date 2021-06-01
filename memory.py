@@ -88,6 +88,7 @@ def init_memory(func_dir):
         function_list[func_key] = func_memory(func_key,func.cont, memory_list,params)     
         if func_key == "global":
             call_stack.append(func_memory(func_key,func.cont, memory_list,params))
+# Creates an instance of func memory
 def create_func_memory(id):
     temp = function_list[id]
     temp_mem = temp.memory_list.copy()
@@ -103,7 +104,7 @@ def create_func_memory(id):
 
     fm = func_memory(temp.function_name, temp.cont,temp_mem ,copy_params )
     return fm
-
+# Gets the default value depending of the type
 def get_default_value(t):
     if t == 'i':
         return 0
@@ -115,7 +116,7 @@ def get_default_value(t):
         return False
     elif t == 'o':
         return None
-
+# Gets the constant address
 def get_const_address(value, type):
     if value in constant_table.keys():
         return constant_table[value].address
@@ -124,7 +125,7 @@ def get_const_address(value, type):
     constant_table[value] =  new_value
     memory_table[address] = new_value
     return address
-
+# Gets the next global
 def get_next_global(t):
     if(t == "i"):
         global global_int
@@ -156,7 +157,7 @@ def get_next_global(t):
         if global_object > LOCAL_START:
             raise Exception("Global Memory Limit Exceeded")
         return global_object
-
+# Gets the next local
 def get_next_local(t):
     if(t == "i"):
         global local_int
@@ -188,7 +189,7 @@ def get_next_local(t):
         if local_object > TEMPORAL_START:
             raise Exception("Local Memory Limit Exceeded") 
         return local_object
-
+# Gets the next local for lists
 def get_next_local_list(t, dim):
     dimension = memory_table[dim].value
     if(t == "i"):
@@ -226,7 +227,7 @@ def get_next_local_list(t, dim):
         if local_object > TEMPORAL_START:
             raise Exception("Local Memory Limit Exceeded") 
         return local_object_aux
-
+# Gets next global for list
 def get_next_global_list(t, dim):
     dimension = memory_table[dim].value
     if(t == "i"):
@@ -264,7 +265,7 @@ def get_next_global_list(t, dim):
         if global_object > LOCAL_START:
             raise Exception("Local Memory Limit Exceeded") 
         return global_object_aux
-    
+# Get next temporal
 def get_next_temporal(t):
     if(t == "i"):
         global temporal_int
@@ -297,7 +298,7 @@ def get_next_temporal(t):
             raise Exception("Temporal Memory Limit Exceeded") 
         return temporal_object
 
-
+# Get next constant
 def get_next_constant(t):
     if(t == "i"):
         global constant_int
@@ -329,4 +330,3 @@ def get_next_constant(t):
         if constant_object > CONSTANT_LIMIT:
             raise Exception("Constant Memory Limit Exceeded") 
         return constant_object
-
